@@ -24,10 +24,10 @@ public class UserServiceListener implements ServletContextListener {
         Class.forName("org.postgresql.Driver");
         Connection connection =
                 DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        BankUserRepository bankUserRepository = new BankUserRepository(connection);
-        UsersService usersService = new UsersServiceImpl(bankUserRepository);
+     //   BankUserRepository bankUserRepository = new BankUserRepository();
+     //   UsersService usersService = new UsersServiceImpl(bankUserRepository);
         ServletContext servletContext = servletContextEvent.getServletContext();
-        servletContext.setAttribute("usersService", usersService);
+      //  servletContext.setAttribute("usersService", usersService);
     }
 
     @Override

@@ -4,7 +4,9 @@ import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.Insurance;
 import models.User;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,11 +16,9 @@ import java.util.Optional;
 
 public class InsRepository implements Repository<Insurance>, AllByIDRepository<Insurance> {
     private Connection connection;
+    private JdbcTemplate jdbcTemplate;
 
 
-    public InsRepository(Connection connection){
-        this.connection = connection;
-    }
 
     //language=SQL
     public static final String SQL_SEARCH_INSURANCE_BY_USER_ID = "SELECT * FROM insurance JOIN insured_person ip on insurance.id = ip.id " +
@@ -41,11 +41,16 @@ public class InsRepository implements Repository<Insurance>, AllByIDRepository<I
             " VALUES (?,?,?,?)";
 
 
+
+    public InsRepository(DataSource dataSource){
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
     private RowMapper<Insurance> insuranceRowMapper = new RowMapper<Insurance>() {
         @Override
         @SneakyThrows
         public Insurance rowMap(ResultSet resultSet) {
-            BankUserRepository bankUserRepository = new BankUserRepository(connection);
+            BankUserRepository bankUserRepository = new BankUserRepository(jdbcTemplate.getDataSource());
             Optional<User> user = bankUserRepository.findOne(resultSet.getLong("bank_user_id"));
             Insurance insurance = Insurance.builder()
                     .typeInsurance(resultSet.getString("type_insurance"))

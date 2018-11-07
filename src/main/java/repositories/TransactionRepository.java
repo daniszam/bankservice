@@ -4,7 +4,9 @@ import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.BankAccount;
 import models.Transaction;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +18,7 @@ public class TransactionRepository implements Repository<Transaction>, Transacti
 
 
     private Connection connection;
+    private JdbcTemplate jdbcTemplate;
 
     //language=SQL
     public static final String SQL_SEARCH_ACCOUNT_BALANCE = "SELECT balance FROM bank_account WHERE id=?";
@@ -43,8 +46,8 @@ public class TransactionRepository implements Repository<Transaction>, Transacti
 
 
 
-    public TransactionRepository (Connection connection){
-        this.connection = connection;
+    public TransactionRepository (DataSource dataSource){
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -52,7 +55,7 @@ public class TransactionRepository implements Repository<Transaction>, Transacti
         @Override
         @SneakyThrows
         public Transaction rowMap(ResultSet resultSet) {
-            BankAccountRepository bankAccountRepository = new BankAccountRepository(connection);
+            BankAccountRepository bankAccountRepository = new BankAccountRepository(jdbcTemplate.getDataSource());
             Optional<BankAccount> fromBankAcoount = bankAccountRepository.findOne(resultSet.getLong("from_account"));
             Optional<BankAccount> toBankAccount = bankAccountRepository.findOne(resultSet.getLong("to_account"));
             Transaction transaction = Transaction.builder()

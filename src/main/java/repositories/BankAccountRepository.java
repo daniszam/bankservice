@@ -1,22 +1,22 @@
 package repositories;
 
 import lombok.SneakyThrows;
-import mappers.RowMapper;
 import models.BankAccount;
-import models.Card;
 import models.User;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BankAccountRepository implements Repository<BankAccount>, AllByIDRepository<BankAccount> {
 
-    private Connection connection;
+
+    private JdbcTemplate jdbcTemplate;
 
     //language=SQL
     public static final String SQL_SELECT_ALL_BANK_ACC_BY_USER_ID =
@@ -47,117 +47,72 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
     //language=SQL
     public static final String SQL_GET_TYPE_BANK_ACCOUNT = "SELECT name FROM type_bank_account";
 
-    public BankAccountRepository(Connection connection){
-        this.connection = connection;
-
+    public BankAccountRepository(DataSource dataSource){
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    private RowMapper<BankAccount> bankAccountRowMapper = new RowMapper<BankAccount>() {
-        @Override
-        @SneakyThrows
-        public BankAccount rowMap(ResultSet resultSet) {
-            BankUserRepository bankUserRepository = new BankUserRepository(connection);
-            Optional<User> user = bankUserRepository.findOne(resultSet.getLong("bank_user_id"));
-            BankAccount bankAccount = BankAccount.builder()
-                    .bankAccounNumber(resultSet.getLong("id"))
-                    .balance(resultSet.getFloat("balance"))
-                    .typeBankAccount(resultSet.getString("type_bank_account"))
-                    .codeWord(resultSet.getString("code_word"))
-                    .percent(resultSet.getFloat("percent"))
-                    .user(user.get())
-                    .build();
-            return bankAccount;
-        }
+
+
+    private org.springframework.jdbc.core.RowMapper<BankAccount> bankAccountRowMapper = (resultSet, i) -> {
+        BankAccount bankAccount = BankAccount.builder()
+                .bankAccounNumber(resultSet.getLong("id"))
+                .balance(resultSet.getFloat("balance"))
+                .typeBankAccount(resultSet.getString("type_bank_account"))
+                .codeWord(resultSet.getString("code_word"))
+                .percent(resultSet.getFloat("percent"))
+                .user(User.builder().id(resultSet.getLong("bank_user_id")).build())
+                .build();
+        return bankAccount;
     };
 
     @Override
     @SneakyThrows
     public Optional<BankAccount> findOne(Long id) {
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BY_ID);
-        preparedStatement.setLong(1,id);
-        if(preparedStatement.execute()){
-            BankAccount bankAccount = bankAccountRowMapper.rowMap(preparedStatement.getResultSet());
-            return Optional.of(bankAccount);
-        }
-        return null;
+        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID,bankAccountRowMapper, id));
     }
 
     @Override
     @SneakyThrows
     public boolean save(BankAccount bankAccount) {
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_BANK_ACCOUNT);
-        preparedStatement.setDouble(1, bankAccount.getBalance());
-        preparedStatement.setLong(2,bankAccount.getUser().getId());
-        preparedStatement.setString(3, bankAccount.getTypeBankAccount());
-        preparedStatement.setString(4, bankAccount.getCodeWord());
-        preparedStatement.executeUpdate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement preparedStatement =
+                            connection.prepareStatement(SQL_SAVE_BANK_ACCOUNT, new String[] {"id"});
+                    preparedStatement.setDouble(1, bankAccount.getBalance());
+                    preparedStatement.setLong(2,bankAccount.getUser().getId());
+                    preparedStatement.setString(3, bankAccount.getTypeBankAccount());
+                    preparedStatement.setString(4, bankAccount.getCodeWord());
+                    return preparedStatement;
+                }, keyHolder);
+
+        bankAccount.setId(keyHolder.getKey().longValue());
         return true;
     }
 
     @Override
     @SneakyThrows
     public void delete(Long id) {
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_BANK_ACCOUNT_BY_ID);
-        preparedStatement.setLong(1, id);
-        preparedStatement.executeUpdate();
+        jdbcTemplate.update(SQL_DELETE_BANK_ACCOUNT_BY_ID, id);
     }
 
     @Override
     @SneakyThrows
     public List<BankAccount> findAll(){
-    PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_BANK_ACCOUNT);
-    List<BankAccount> bankAccounts =  this.getBankAccount(preparedStatement);
-    return bankAccounts;
+        return jdbcTemplate.query(SQL_FIND_ALL_BANK_ACCOUNT, bankAccountRowMapper);
+
     }
-
-    @SneakyThrows
-    private List<BankAccount> getBankAccount(PreparedStatement preparedStatement){
-        if(preparedStatement.execute()){
-            List<BankAccount> bankAccounts = new ArrayList<>();
-            ResultSet resultSet = preparedStatement.getResultSet();
-            while (resultSet.next()){
-                bankAccounts.add(bankAccountRowMapper.rowMap(resultSet));
-            }
-            return bankAccounts;
-        }
-        return null;
-    }
-
-
 
     @SneakyThrows
     public List<BankAccount> findAllByUserId(Long id){
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_BANK_ACC_BY_USER_ID);
-        preparedStatement.setLong(1,id);
-        List<BankAccount> bankAccounts =  this.getBankAccount(preparedStatement);
-        return bankAccounts;
+        return  jdbcTemplate.query(SQL_SELECT_ALL_BANK_ACC_BY_USER_ID, bankAccountRowMapper, id);
     }
 
     @SneakyThrows
     @Override
     public void deleteAllByUserId(Long id) {
-        List<BankAccount> bankAccounts = this.findAllByUserId(id);
-        TransactionRepository transactionRepository = new TransactionRepository(this.connection);
-        for (int i=0; i<bankAccounts.size(); i++){
-            transactionRepository.deleteByAccount(bankAccounts.get(i).getBankAccounNumber());
-        }
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ALL_BY_USER_ID);
-        preparedStatement.setLong(1,id);
-        preparedStatement.executeUpdate();
+        jdbcTemplate.update(SQL_DELETE_ALL_BY_USER_ID, id);
+
     }
 
-
-    @SneakyThrows
-    public List<String> getType(){
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_TYPE_BANK_ACCOUNT);
-        if(preparedStatement.execute()){
-            ResultSet resultSet = preparedStatement.getResultSet();
-            List<String> items = new ArrayList<>();
-            while(resultSet.next()){
-                items.add(resultSet.getString("name"));
-            }
-            return items;
-        }
-        return null;
-    }
 }

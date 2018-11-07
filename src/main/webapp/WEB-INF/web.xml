@@ -27,4 +27,15 @@
         <servlet-name>Welcome</servlet-name>
         <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>homePage</servlet-name>
+        <jsp-file>/WEB-INF/JSP/home.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>homePage</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
 </web-app>
+

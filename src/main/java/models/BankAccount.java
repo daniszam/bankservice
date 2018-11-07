@@ -14,4 +14,5 @@ public class BankAccount {
     private String codeWord;
     private User user;
     private Float percent;
+    private Long id;
 }

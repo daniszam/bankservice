@@ -61,7 +61,9 @@
     </button>
 </form>
 <div id="hint"><b>Click on the tabs</b></div>
-
+<form method="post">
+    <button type="submit"></button>
+</form>
 
 
 <div>

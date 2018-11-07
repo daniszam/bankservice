@@ -21,11 +21,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void signUp(UserForm userForm) {
+        short g = 1;
         User user = User.builder()
                 .firstName(userForm.getFirstName())
                 .lastName(userForm.getLastName())
                 .email(userForm.getEmail())
-                .gender(userForm.getGender().charAt(0))
+                .gender(g)
                 .birthday(userForm.getBirthday())
                 .hashPassword(passwordEncoder.encode(userForm.getPassword()))
                 .build();

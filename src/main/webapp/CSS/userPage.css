@@ -1,0 +1,77 @@
+body{
+    font-family: "Comfortaa", cursive;
+}
+.card-list{
+    margin-left: 20%;
+    margin-top: 5%;
+    display: flex;
+    width: 65%;
+    border-radius: 20px;
+}
+
+.demo-avatar-dropdown {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+}
+
+.mdl-menu__container .mdl-menu__outline{
+    border-bottom-left-radius: 20px;
+}
+
+.mdl-layout__drawer{
+    font-family: "IBM Plex Sans";
+}
+
+.demo-drawer-header img{
+    margin-top: 5%;
+    margin-left: 5%;
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 50%;
+}
+
+.mdl-layout__drawer{
+    height: auto;
+}
+.material-icons{
+    margin-top: 0;
+}
+
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link{
+    text-align: left;
+}
+
+.mdl-layout__drawer .demo-drawer-header{
+    background-color: #AAAAAA;
+}
+
+.demo-list-action {
+    width: 300px;
+}
+.demo-list-action.mdl-list{
+    position: relative;
+    border: solid;
+    border-radius: 20px;
+    border-width: 1px;
+    width: 400px;
+    height: 270px;
+    overflow: scroll;
+    background: rgba(255,255,255,0.4);
+
+}
+
+.card-list.help{
+    margin-top: 10%;
+    width: 100%;
+    margin-left: 0%
+}

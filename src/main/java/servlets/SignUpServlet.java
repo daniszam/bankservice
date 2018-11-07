@@ -1,11 +1,10 @@
 package servlets;
 
-import forms.UserForm;
 import lombok.SneakyThrows;
 import models.User;
-import repositories.BankUserRepository;
+import models.VkAuthUser;
 import services.UsersService;
-import services.UsersServiceImpl;
+import services.VkAuth;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -15,17 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.text.SimpleDateFormat;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
 
 
     private UsersService usersService;
+    private boolean vk;
 
     @Override
     @SneakyThrows
@@ -36,13 +31,21 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(vk) {
+            VkAuth vkAuth = new VkAuth();
+            VkAuthUser vkAuthUser = vkAuth.getUserToken(request.getParameter("code"));
+            User user = vkAuth.getUser(vkAuthUser);
+            System.out.println(request.getParameter("code"));
+            System.out.println(user);
+            vk=false;
+        }
         request.getRequestDispatcher("/WEB-INF/JSP/SignUp.jsp").forward(request, response);
     }
 
     @Override
     @SneakyThrows
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
+        /*String email = request.getParameter("email");
         String password = request.getParameter("password");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -60,10 +63,13 @@ public class SignUpServlet extends HttpServlet {
                 .lastName(lastName)
                 .gender(gender)
                 .birthday(birthday)
-                .build();
-
-        usersService.signUp(userForm);
-        response.sendRedirect("/signIn");
+                .build();*/
+        vk = true;
+        response.sendRedirect("https://oauth.vk.com/authorize?client_id=6743597&display=page&redirect_uri=http://localhost:8080&scope=email&response_type=code&v=5.87");
+        VkAuth vkAuth = new VkAuth();
+       // System.out.println(vkAuth.getUserToken(request));
+        //usersService.signUp(userForm);
+        //response.sendRedirect("/signIn");
     }
 }
 

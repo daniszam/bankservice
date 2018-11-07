@@ -23,15 +23,15 @@ public class Demo {
     public static void main(String[] args) throws SQLException {
         Connection connection =
                 DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        BankUserRepository bankUserRepository = new BankUserRepository(connection);
-        List<User> users = bankUserRepository.findAll();
+      //  BankUserRepository bankUserRepository = new BankUserRepository(connection);
+      //  List<User> users = bankUserRepository.findAll();
 
         LoginForm loginForm = LoginForm.builder()
                 .email("ivanivanov@mail.ru")
                 .password("ivanisbsvanov")
                 .build();
-        UsersService usersService = new UsersServiceImpl(bankUserRepository);
-        usersService.signIn(loginForm);
+       // UsersService usersService = new UsersServiceImpl(bankUserRepository);
+      //  usersService.signIn(loginForm);
 
         //System.out.println(users);
 

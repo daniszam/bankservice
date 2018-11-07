@@ -1,10 +1,14 @@
 package repositories;
 
 import lombok.SneakyThrows;
-import mappers.RowMapper;
 import models.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 import java.sql.Date;
@@ -13,7 +17,7 @@ import java.util.*;
 
 public class BankUserRepository implements Repository<User>, UserRepository {
 
-    private Connection connection;
+    private JdbcTemplate jdbcTemplate;
 
 
     private Map<User, List<BankAccount>> userWithBankAccountMap;
@@ -67,33 +71,28 @@ public class BankUserRepository implements Repository<User>, UserRepository {
 
 
 
-    public BankUserRepository (Connection connection){
-        this.connection = connection;
+    public BankUserRepository (DataSource dataSource){
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    private RowMapper<User> userRowMapper = new RowMapper<User>() {
-        @SneakyThrows(SQLException.class)
-        public User rowMap(ResultSet resultSet) {
-            return User.builder()
-                    .id(resultSet.getLong("id"))
-                    .firstName(resultSet.getString("first_name"))
-                    .lastName(resultSet.getString("last_name"))
-                    .birthday(resultSet.getDate("birthday"))
-                    .gender(resultSet.getString("gender").charAt(0))
-                    .email(resultSet.getString("email"))
-                    .hashPassword(resultSet.getString("hash_password"))
-                    .phoneNumber(resultSet.getString("phone_number"))
-                    .build();
-        }
-    };
 
+
+    private RowMapper<User> userRowMapper = ((resultSet, i) ->User.builder()
+            .id(resultSet.getLong("id"))
+            .firstName(resultSet.getString("first_name"))
+            .lastName(resultSet.getString("last_name"))
+            .birthday(resultSet.getDate("birthday"))
+            //.gender(resultSet.getString("gender").charAt(0))
+            .email(resultSet.getString("email"))
+            .hashPassword(resultSet.getString("hash_password"))
+            .phoneNumber(resultSet.getString("phone_number"))
+            .build());
 
     private RowMapper<User> userWithOrdersForOneUserRowMapper = new RowMapper<User>() {
         @Override
-        @SneakyThrows
-        public User rowMap(ResultSet resultSet) {
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
             if (userWithBankAccountMap.size() == 0) {
-                User newUser = userRowMapper.rowMap(resultSet);
+                User newUser = userRowMapper.mapRow(resultSet, i);
                 userWithBankAccountMap.put(newUser, new ArrayList<>());
                 userWithCardMap.put(newUser, new ArrayList<>());
                 userWithCreditMap.put(newUser, new ArrayList<>());
@@ -139,16 +138,16 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             }
             return theOnlyUser;
         }
+
     };
 
 
     private RowMapper<User> userWithOrdersRowMapper = new RowMapper<User>() {
         @Override
-        @SneakyThrows
-        public User rowMap(ResultSet resultSet) {
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
             Long currentUserId = resultSet.getLong("id");
             if (!userWithIdWithMaps.containsKey(currentUserId)) {
-                User newUser = userRowMapper.rowMap(resultSet);
+                User newUser = userRowMapper.mapRow(resultSet, i);
                 newUser.setCredits(new ArrayList<>());
                 newUser.setCards(new ArrayList<>());
                 newUser.setBankAccounts(new ArrayList<>());
@@ -206,13 +205,8 @@ public class BankUserRepository implements Repository<User>, UserRepository {
         userWithCardMap =  new HashMap<>();
         userWithCreditMap =  new HashMap<>();
 
+        jdbcTemplate.query(SQL_SELECT_USER_BY_ID,userWithOrdersForOneUserRowMapper, id);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_ID);
-        preparedStatement.setLong(1,id);
-        ResultSet resultSet =preparedStatement.executeQuery();
-        while (resultSet.next()){
-            userWithOrdersForOneUserRowMapper.rowMap(resultSet);
-        }
         theOnlyUser.setBankAccounts(userWithBankAccountMap.get(theOnlyUser));
         theOnlyUser.setCards(userWithCardMap.get(theOnlyUser));
         theOnlyUser.setCredits(userWithCreditMap.get(theOnlyUser));
@@ -220,6 +214,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
 
         User result = theOnlyUser;
         theOnlyUser = null;
+
         userWithCreditMap.clear();
         userWithBankAccountMap.clear();
         userWithCardMap.clear();
@@ -229,51 +224,40 @@ public class BankUserRepository implements Repository<User>, UserRepository {
 
     @SneakyThrows
     public boolean save(User user) {
-        System.out.println("user = " + user);
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_USER, PreparedStatement.RETURN_GENERATED_KEYS);
-        preparedStatement.setString(1, user.getFirstName());
-        preparedStatement.setString(2, user.getLastName());
-        if(user.getPhoneNumber()!=null) {
-            preparedStatement.setString(3, user.getPhoneNumber());
-        } else{ preparedStatement.setNull(3, Types.VARCHAR); }
-        if(user.getBirthday() !=null) {
-            preparedStatement.setDate(4, user.getBirthday());
-        } else{preparedStatement.setNull(4, Types.DATE); }
-        preparedStatement.setString(5, user.getGender().toString());
-        preparedStatement.setString(6, user.getHashPassword());
-        preparedStatement.setString(7, user.getEmail());
-        preparedStatement.executeUpdate();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement preparedStatement =
+                            connection.prepareStatement(SQL_INSERT_INTO_USER, new String[] {"id"});
+                    preparedStatement.setString(1, user.getFirstName());
+                    preparedStatement.setString(2, user.getLastName());
+
+                    if(user.getPhoneNumber()!=null) {
+                        preparedStatement.setString(3, user.getPhoneNumber());
+                    } else{ preparedStatement.setNull(3, Types.VARCHAR); }
+                    if(user.getBirthday() !=null) {
+                        preparedStatement.setDate(4, user.getBirthday());
+                    } else{preparedStatement.setNull(4, Types.DATE); }
+
+                    preparedStatement.setString(5, user.getGender().toString());
+                    preparedStatement.setString(6, user.getHashPassword());
+                    preparedStatement.setString(7, user.getEmail());
+                    return preparedStatement;
+                }, keyHolder);
+        user.setId(keyHolder.getKey().longValue());
         return true;
     }
 
 
     @SneakyThrows
     public void delete(Long id) {
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_FROM_USER_BY_ID);
-        preparedStatement.setLong(1, id);
-      //  CardRepository cardRepository = new CardRepository(this.connection);
-      //  cardRepository.deleteAllByUserId(id);
-      //  BankAccountRepository bankAccountRepository = new BankAccountRepository(this.connection);
-      //  bankAccountRepository.deleteAllByUserId(id);
-     //   CreditRepository creditRepository = new CreditRepository(this.connection);
-     //  creditRepository.deleteAllByUserId(id);
-     //   InsRepository insRepository = new InsRepository(this.connection);
-     //   insRepository.deleteAllByUserId(id);
-        preparedStatement.executeUpdate();
-
-
+        jdbcTemplate.update(SQL_DELETE_FROM_USER_BY_ID);
     }
 
     @SneakyThrows
     public List<User> findAll() {
         userWithIdWithMaps = new HashMap<>();
-
-        PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_USER);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            userWithOrdersRowMapper.rowMap(resultSet);
-        }
-        return new ArrayList<>(userWithIdWithMaps.values());
+        return jdbcTemplate.query(SQL_SELECT_ALL_USER, userWithOrdersRowMapper);
     }
 
     @Override
@@ -283,14 +267,11 @@ public class BankUserRepository implements Repository<User>, UserRepository {
 
     @SneakyThrows
     public Optional<User> findOneByEmail(String email){
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_EMAIL);
-        preparedStatement.setString(1, email);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if(!resultSet.next()){
-            return Optional.empty();
+        List<User> userList = jdbcTemplate.query(SQL_SELECT_USER_BY_EMAIL,userRowMapper, email);
+        if(userList.size()==1){
+            return Optional.of(userList.get(0));
         }
-        return Optional.of(userRowMapper.rowMap(resultSet));
-
+        return Optional.empty();
     }
 }
 

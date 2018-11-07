@@ -15,7 +15,7 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
-    private Character gender;
+    private Short gender;
     private String phoneNumber;
     private Date birthday;
     private List<BankAccount> bankAccounts;
@@ -23,6 +23,8 @@ public class User {
     private String hashPassword;
     private List<Card> cards;
     private List<Credit> credits;
-    private List<Insurance> insurances;
+    private String country;
+    private String city;
+    private String img;
 
 }
