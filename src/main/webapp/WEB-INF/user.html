@@ -11,6 +11,35 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
     <link href="../CSS/userPage.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <style>
+        .as input[type=checkbox] {
+            position: absolute;
+            visibility: collapse;
+        }
+        input[type=checkbox]{
+            visibility: collapse;
+        }
+        .as1 label {
+            -webkit-appearance: push-button;
+            -moz-appearance: button;
+            display: inline-block;
+            margin: 60px 0 10px 0;
+            cursor: pointer;
+        }
+
+
+        input[type=checkbox]:checked ~ div {
+            font-weight: bold;
+        }
+
+        input[type=checkbox]:checked{
+            font-size: xx-large;
+        }
+    </style>
+
 
 </head>
 <body>
@@ -92,15 +121,15 @@
 <div class="card-list help">
 <div class="demo-list-action mdl-list"  >
     <div class="mdl-list__item">
-    <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-avatar">person</i>
-      <span>Bryan Cranston</span>
-    </span>
-        <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
+        <label for="toggle-1" class="as1" ><img src="/resources/bankcard.png"></label>
+        <input type="checkbox" id="toggle-1" class="as" name="2">
+        <div style="width: 100%; height: 100%">
+        <span>I'm controlled by toggle. No JavaScript!</span>
+        </div>
     </div>
     <div class="mdl-list__item">
     <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-avatar">person</i>
+    <i class="material-icons">face</i>
       <span>Aaron Paul</span>
     </span>
         <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>

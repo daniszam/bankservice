@@ -9,11 +9,10 @@ import java.sql.Date;
 @ToString
 @EqualsAndHashCode
 @Builder
-
 public class Transaction {
     private Date dateTime;
-    private BankAccount fromAccount;
-    private BankAccount toAccount;
-    private Double transfer;
+    private Category category;
+    private Float price;
     private Long id;
+    private User user;
 }

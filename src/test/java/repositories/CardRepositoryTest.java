@@ -1,6 +1,7 @@
 package repositories;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -41,6 +42,7 @@ public class CardRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void findAll() {
         System.out.println(cardRepository.findAll());
     }

@@ -15,7 +15,7 @@
             background: #e3f2fd !important;
         }
 
-        input[type=date]{
+        input[type=upDate]{
             background: #fff;
             border: none;
             border-radius: 8px;
@@ -47,7 +47,7 @@
         <input id="email" name="email" placeholder="${locale.get("signup.email")}" type="text">
         <input id="password" name="password" placeholder="${locale.get("signup.password")}" type="password">
         <input id="repassword" name="repassword" placeholder="${locale.get("signup.rePassword")}" type="password">
-        <input id="birthday" name="birthday" placeholder="${locale.get("signup.date")}" class="textbox-n" type="text" onfocus="(this.type='date')"  id="date">
+        <input id="birthday" name="birthday" placeholder="${locale.get("signup.upDate")}" class="textbox-n" type="text" onfocus="(this.type='date')"  id="date">
         <input name="sex" id="Male" type="radio" value="Male">
         <label for="Male" style="text-align: left">${locale.get("signup.male")}</label>
         <input name="sex" id="Female" type="radio" value="Female">

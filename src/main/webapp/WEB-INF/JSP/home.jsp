@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="nav" tagdir="/WEB-INF/tags"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,14 +16,8 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-    <link href="../CSS/background.css" rel="stylesheet">
-    <script src="../JavaScript/background.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-
-    <link href="../CSS/carousel.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
-    <link href="../CSS/bankassistant.css" rel="stylesheet">
+    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
 
 
     <title>Money aasistance</title>
@@ -36,9 +31,25 @@
 <div class="demo-layout-transparent mdl-layout mdl-js-layout"/>
 
 
-
 <nav:navbar/>
+<h6 style="position: absolute;bottom: 5%; right: 5%">
+    <a href="/home?thema=black">Dark</a>|<a href="/home?thema=standart">Standart</a></a>
+</h6>
 
+<style>
+    body{
+        background: ${thema};
+    <c:if test="${thema eq 'standart'}">
+        background: #99CCFF;
+    </c:if>
+    }
+    .mdl-layout__header--transparent.mdl-layout__header--transparent{
+        background: ${thema};
+    <c:if test="${thema eq 'standart'}">
+        background: #99CCFF;
+    </c:if>
+    }
+</style>
 <div class="card-list" style="width: 90%; margin-left: 5%; margin-top:2%;" >
     <div class="demo-card-square mdl-card mdl-shadow--2dp">
         <img src="https://freefrontend.com/assets/img/css-carousels/pure-css-carousel.png">

@@ -42,16 +42,19 @@ public class BankAccountRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void findAll() {
         System.out.println(bankAccountRepository.findAll());
     }
 
     @Test
+    @Ignore
     public void findAllByUserId() {
         System.out.println(bankAccountRepository.findAllByUserId(6L));
     }
 
     @Test
+    @Ignore
     public void deleteAllByUserId() {
         bankAccountRepository.deleteAllByUserId(8L);
     }

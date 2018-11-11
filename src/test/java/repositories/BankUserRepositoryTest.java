@@ -55,7 +55,10 @@ public class BankUserRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void findOneByEmail() {
-        bankUserRepository.findOneByEmail("dsssgs");
+      User user =  bankUserRepository.findOneByEmail("danis.zamaliev2011@yandex.ru").get();
+      System.out.println(user.getBalances().size());
+
     }
 }

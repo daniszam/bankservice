@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +21,8 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
 
     //language=SQL
     public static final String SQL_SELECT_ALL_BANK_ACC_BY_USER_ID =
-            "Select bank_account.id, balance,type_bank_account, code_word, percent, bank_user_id " +
+            "Select bank_account.id, balance, bank_user_id, bank_account.up_date, bank_account.up_sum " +
             "From bank_account " +
-            "JOIN type_bank_account t on bank_account.type_bank_account = t.name " +
             "WHERE bank_user_id=?; ";
 
     //language=SQL
@@ -30,18 +30,17 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
 
 
     //language=SQL
-    public static final String SQL_FIND_ALL_BANK_ACCOUNT = "SELECT * FROM bank_account JOIN  type_bank_account a on bank_account.type_bank_account = a.name";
+    public static final String SQL_FIND_ALL_BANK_ACCOUNT = "SELECT * FROM bank_account ";
 
     //language=SQL
     public static final String SQL_DELETE_BANK_ACCOUNT_BY_ID = "DELETE FROM bank_account WHERE id=? ";
 
     //language=SQL
-    public static final String SQL_SAVE_BANK_ACCOUNT = "INSERT INTO bank_account (balance, bank_user_id, " +
-            "type_bank_account, code_word) VALUES (?,?,?,?)";
+    public static final String SQL_SAVE_BANK_ACCOUNT = "INSERT INTO bank_account (balance, bank_user_id, up_sum, up_date) " +
+            " VALUES (?,?,?,?)";
 
     //language=SQL
-    public static final String SQL_SELECT_BY_ID = "SELECT * FROM bank_account JOIN type_bank_account a on " +
-            "bank_account.type_bank_account = a.name WHERE bank_account.id=?";
+    public static final String SQL_SELECT_BY_ID = "SELECT * FROM bank_account WHERE bank_account.id=?";
 
 
     //language=SQL
@@ -56,11 +55,11 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
     private org.springframework.jdbc.core.RowMapper<BankAccount> bankAccountRowMapper = (resultSet, i) -> {
         BankAccount bankAccount = BankAccount.builder()
                 .bankAccounNumber(resultSet.getLong("id"))
+                .id(resultSet.getLong("id"))
                 .balance(resultSet.getFloat("balance"))
-                .typeBankAccount(resultSet.getString("type_bank_account"))
-                .codeWord(resultSet.getString("code_word"))
-                .percent(resultSet.getFloat("percent"))
                 .user(User.builder().id(resultSet.getLong("bank_user_id")).build())
+                .upDate(resultSet.getDate("up_date"))
+                .upSum(resultSet.getFloat("up_sum"))
                 .build();
         return bankAccount;
     };
@@ -80,9 +79,14 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
                     PreparedStatement preparedStatement =
                             connection.prepareStatement(SQL_SAVE_BANK_ACCOUNT, new String[] {"id"});
                     preparedStatement.setDouble(1, bankAccount.getBalance());
-                    preparedStatement.setLong(2,bankAccount.getUser().getId());
-                    preparedStatement.setString(3, bankAccount.getTypeBankAccount());
-                    preparedStatement.setString(4, bankAccount.getCodeWord());
+                    preparedStatement.setLong(2, bankAccount.getUser().getId());
+                    if(bankAccount.getUpSum()<=0 ) {
+                        preparedStatement.setNull(4, Types.DATE);
+                        preparedStatement.setNull(3, Types.FLOAT);
+                    }else{
+                        preparedStatement.setDate(4, bankAccount.getUpDate());
+                        preparedStatement.setFloat(3, bankAccount.getUpSum());
+                    }
                     return preparedStatement;
                 }, keyHolder);
 

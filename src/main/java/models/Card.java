@@ -2,19 +2,26 @@ package models;
 
 import lombok.*;
 
-import java.time.Period;
+import java.sql.Date;
 
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-@Builder
-public class Card {
+public class Card extends Balance{
     private String cardType;
-    private Float perzent;
-    private String validityPeriod;
-    private User user;
-    private Long id;
-    private Float balance;
+    private Float percent;
+    private Date upDate;
+    private Float upSum;
+
+    @Builder
+    public Card(String name, String icon, Float balance,
+                String cardType, Float percent, User user, Long id, Date upDate, Float upSum){
+        super(balance, icon, name, id, user);
+        this.cardType = cardType;
+        this.percent = percent;
+        this.upDate = upDate;
+        this.upSum = upSum;
+    }
+
 }
 

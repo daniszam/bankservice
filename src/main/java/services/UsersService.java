@@ -1,10 +1,13 @@
 package services;
 
 import forms.LoginForm;
-import forms.UserForm;
+import forms.SignUpForm;
+import models.User;
+
+import java.util.Optional;
 
 public interface UsersService {
-    void signUp(UserForm userForm);
-
-    void signIn(LoginForm loginForm);
+    boolean signUp(SignUpForm userForm);
+    boolean signIn(User user);
+    Optional<User> signIn(LoginForm loginForm);
 }

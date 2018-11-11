@@ -22,19 +22,25 @@ public class LocalizationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String lang = request.getParameter("lang");
-        if (lang != null) {
+        if(request.getCookies() != null) {
+            if (lang != null) {
+                Cookie cookie = new Cookie("locale", lang);
+                cookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(cookie);
+            } else {
+                for (Cookie cookie : request.getCookies()) {
+                    if (cookie.getName().equals("locale")) {
+                        lang = cookie.getValue();
+                    }
+                }
+                if (lang == null) {
+                    lang = "En";
+                }
+            }
+        }else{
             Cookie cookie = new Cookie("locale", lang);
             cookie.setMaxAge(60 * 60 * 24);
             response.addCookie(cookie);
-        } else {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("locale")) {
-                    lang = cookie.getValue();
-                }
-            }
-            if (lang == null) {
-                lang = "En";
-            }
         }
 
         Map<String, String> locale = (Map<String, String>) request.getServletContext().getAttribute("locale" + lang);

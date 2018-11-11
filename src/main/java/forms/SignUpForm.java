@@ -12,12 +12,12 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserForm {
+public class SignUpForm {
     private String firstName;
     private String lastName;
     private String password;
     private String email;
-    private String gender;
+    private Short gender;
     private Date birthday;
 
 }

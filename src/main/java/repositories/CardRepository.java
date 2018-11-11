@@ -24,15 +24,14 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
 
     //language=SQL
     public static final String SQL_SELECT_ALL_CARD_BY_ID =
-            "Select id,bank_user_id,card.type_card, bank_account_id, " +
-               " t.perzent, t.validity_period, card.balance " +
+            "Select id,bank_user_id, " +
+               " card.up_sum, card.up_date, card.balance " +
             "From card " +
-            "JOIN card_type t on card.type_card = t.type_card " +
             "WHERE bank_user_id=?;";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, type_card) " +
-            "VALUES (?, ?) ";
+    public static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, balance, up_date, up_sum) " +
+            "VALUES (?, ?, ?, ?) ";
 
     //language=SQL
     public static final String SQL_DELETE_CARD = "DELETE FROM card WHERE id=?";
@@ -42,6 +41,9 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
 
     //language=SQL
     public static final String SQL_GET_TYPE_CARD = "SELECT type_card FROM card_type";
+
+    //language=SQL
+    public static final String SQL_UPDATE_CARD = "UPDATE card SET balance=?";
 
 
 
@@ -53,13 +55,12 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
 
 
   private org.springframework.jdbc.core.RowMapper<Card> cardRowMapper = ((resultSet, i) -> Card.builder()
-            .cardType(resultSet.getString("type_card"))
-            .perzent(resultSet.getFloat("perzent"))
             .user(User.builder()
                     .id(resultSet.getLong("bank_user_id"))
                     .build())
-            .validityPeriod( resultSet.getString("validity_period"))
             .id(resultSet.getLong("id"))
+            .upSum(resultSet.getFloat("up_sum"))
+            .upDate(resultSet.getDate("up_date"))
             .balance(resultSet.getFloat("balance"))
             .build());
 
@@ -80,7 +81,14 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
                     PreparedStatement preparedStatement =
                             connection.prepareStatement(SQL_INSERT_INTO_CARD, new String[] {"id"});
                     preparedStatement.setLong(1, card.getUser().getId());
-                    preparedStatement.setString(2, card.getCardType());
+                    preparedStatement.setFloat(2, card.getBalance());
+                    if(card.getUpSum()<=0){
+                        preparedStatement.setNull(3, Types.DATE);
+                        preparedStatement.setNull(4, Types.FLOAT);
+                    } else{
+                        preparedStatement.setDate(3, card.getUpDate());
+                        preparedStatement.setFloat(4, card.getUpSum());
+                    }
                     return preparedStatement;
                 }, keyHolder);
 
@@ -109,6 +117,11 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     @Override
     public void deleteAllByUserId(Long id) {
         jdbcTemplate.update(SQL_DELEATE_ALL_BY_USER_ID, id);
+    }
+
+    public void update(Card card){
+        jdbcTemplate.update(SQL_UPDATE_CARD, card.getBalance());
+
     }
 
 

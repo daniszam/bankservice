@@ -84,8 +84,9 @@ public class VkAuth {
 
 
         User user = User.builder()
-                .lastName(jsonUser.getString("last_name").toString())
-                .firstName(jsonUser.getString("first_name").toString())
+                .lastName(jsonUser.getString("last_name"))
+                .firstName(jsonUser.getString("first_name"))
+                .img(jsonUser.getString("photo_big"))
                 .gender(Short.parseShort(jsonUser.get("sex").toString()))
                 .birthday(birthday)
                 .city(jsonUser.getJSONObject("city").getString("title"))

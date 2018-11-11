@@ -2,6 +2,7 @@ package servlets;
 
 import forms.LoginForm;
 import lombok.SneakyThrows;
+import models.User;
 import repositories.BankUserRepository;
 import services.UsersService;
 import services.UsersServiceImpl;
@@ -13,9 +14,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.Optional;
 
 
 @WebServlet("/signIn")
@@ -32,7 +34,7 @@ public class SignInServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/JSP/SignIn.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/JSP/SignInCard.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,8 +46,11 @@ public class SignInServlet extends HttpServlet {
                 .password(password)
                 .build();
 
-        usersService.signIn(loginForm);
-        PrintWriter writer = response.getWriter();
-        writer.print("Hallo " + email);
+        Optional<User> optionalUser = usersService.signIn(loginForm);
+        if(optionalUser.isPresent()){
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("user", optionalUser.get());
+            response.sendRedirect("/createPassword");
+        }
     }
 }

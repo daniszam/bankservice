@@ -5,6 +5,24 @@
          version="3.1">
 
 
+    <welcome-file-list>
+        <welcome-file>welcome</welcome-file>
+        <welcome-file>homePage</welcome-file>
+        <welcome-file>/WEB-INF/JSP/SignUpCard.jsp</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+        <servlet-name>signUp</servlet-name>
+        <servlet-class>servlets.SignUpServlet</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>signUp</servlet-name>
+        <url-pattern>/welcome</url-pattern>
+    </servlet-mapping>
+
+
     <listener>
         <listener-class>context.LocaleListener</listener-class>
     </listener>
@@ -12,21 +30,6 @@
     <listener>
         <listener-class>context.UserServiceListener</listener-class>
     </listener>
-
-    <welcome-file-list>
-        <welcome-file>welcome</welcome-file>
-        <welcome-file>/WEB-INF/JSP/SignUp.jsp</welcome-file>
-    </welcome-file-list>
-    
-    <servlet>
-        <servlet-name>Welcome</servlet-name>
-        <servlet-class>servlets.SignUpServlet</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>Welcome</servlet-name>
-        <url-pattern>/welcome</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>homePage</servlet-name>
@@ -37,5 +40,7 @@
         <servlet-name>homePage</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
+
+
 </web-app>
 

@@ -53,7 +53,7 @@ public class CreditRepository implements Repository<Credit>, AllByIDRepository<C
             .type(resultSet.getString("type_credit"))
             .expirationDate(resultSet.getDate("expiration_date"))
             .user(User.builder().id(resultSet.getLong("bank_user_id")).build())
-            .percent(resultSet.getFloat("perzent"))
+            .percent(resultSet.getFloat("percent"))
             .id(resultSet.getLong("id"))
             .build());
 

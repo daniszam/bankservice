@@ -18,11 +18,11 @@ public class User {
     private Short gender;
     private String phoneNumber;
     private Date birthday;
-    private List<BankAccount> bankAccounts;
     private String email;
     private String hashPassword;
-    private List<Card> cards;
     private List<Credit> credits;
+    private List<Balance> balances;
+    private List<Transaction> transactions;
     private String country;
     private String city;
     private String img;

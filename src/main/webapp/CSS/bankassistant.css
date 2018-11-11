@@ -2,7 +2,12 @@ body {
     background: #99CCFF;
     font-family: 'IBM Plex Sans', sans-serif;
 }
-.title-name {
+.title-name h1{
+    font-family: 'Comfortaa', cursive;
+    color: white;
+}
+
+.title-name h2{
     font-family: 'Comfortaa', cursive;
     color: white;
 }
