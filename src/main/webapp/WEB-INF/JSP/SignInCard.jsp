@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 </head>
 <body>
+<a class="title-name" style="text-decoration: none; position: absolute; z-index: 1; left:1%;" href="/home"><h2>YOUR FINANCE ASSISTANT</h2></a>
 <div class="signUp">
     <div class="signUp card" style="width: 860px; height: 540px; border-radius: 60px">
         <div class="background"></div>
@@ -26,14 +27,14 @@
             <img src="<c:url value="/resources/payway.png"/>" style="width: 100%">
         </div>
         <form id="singUp" method="post" style="width: 100%; height: 100%">
-            <signUp:signForm  email="true">
+            <signUp:signForm  email="true" remember="true">
             </signUp:signForm>
         </form>
 
     </div>
 </div>
 <div class="auth link">
-    <form method="post" style="width: 100%">
+    <form style="width: 100%" action="/vkAuth">
         <button type="submit">
             <input type="hidden" name="vkauth" id="vkauth" value="vkauth">
             <img src="<c:url value="/resources/vk-logo.png"/>" style="width: 100%">

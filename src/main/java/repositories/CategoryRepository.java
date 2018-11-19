@@ -49,5 +49,10 @@ public class CategoryRepository implements Repository<Category>{
         return jdbcTemplate.query(SQL_SELECT_ALL, categoryRowMapper);
     }
 
+    @Override
+    public void update(Category model) {
+
+    }
+
 
 }

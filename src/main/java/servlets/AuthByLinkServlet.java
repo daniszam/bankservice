@@ -45,12 +45,13 @@ public class AuthByLinkServlet extends HttpServlet {
         SignUpForm signUpForm = SignUpForm.builder()
                 .password(request.getParameter("password"))
                 .email(user.getEmail())
-                .birthday(user.getBirthday())
+                .birthday(user.getBirthday().toString())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .gender(user.getGender())
                 .build();
-        usersService.signUp(signUpForm);
+        user.setHashPassword(request.getParameter("password"));
+        usersService.signUp(user);
         response.sendRedirect("/home");
 
     }

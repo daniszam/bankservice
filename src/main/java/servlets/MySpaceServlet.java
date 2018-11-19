@@ -6,6 +6,9 @@ import models.Transaction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import repositories.*;
+import services.TransactionService;
+import services.TransactionServiceImpl;
+import utils.CategoryPercent;
 import utils.Circle;
 
 import javax.servlet.ServletConfig;
@@ -20,6 +23,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @WebServlet("/mySpace")
@@ -35,13 +39,25 @@ public class MySpaceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          httpSession = request.getSession();
-         httpSession.setAttribute("category", categoryRepository.findAll());
+         request.setAttribute("category", categoryRepository.findAll());
          User user = (User) httpSession.getAttribute("user");
          List<Card> cards = cardRepository.findAllByUserId(user.getId());
          List<BankAccount> bankAccounts = bankAccountRepository.findAllByUserId(user.getId());
          circle = new Circle();
+         float sum = 0;
+
+         List<Transaction> transactions = user.getTransactions();
+         CategoryPercent categoryPercent = new CategoryPercent();
+         Map<Category, Float> categoryPercentMap = categoryPercent.getCategoryUtils(transactions);
+         if(transactions.size()>0) {
+             int random = (int)(transactions.size()*Math.random());
+             request.setAttribute("randomCategory", transactions.get(random).getCategory().getName());
+             int randPercent = (categoryPercentMap.get(transactions.get(random).getCategory())).intValue();
+             request.setAttribute("randomPercent", randPercent);
+         }
          int percent = circle.getPercent(cards, bankAccounts);
          httpSession.setAttribute("percent", percent);
+         request.setAttribute("percentMap", categoryPercentMap);
          request.getRequestDispatcher("/WEB-INF/JSP/MySpace.jsp").forward(request,response);
     }
 
@@ -52,51 +68,24 @@ public class MySpaceServlet extends HttpServlet {
              items = new JSONArray(req.getParameter("items"));
         }
         JSONArray types = new JSONArray(req.getParameter("type"));
-        List<Transaction> transactions = new ArrayList<>();
         User user = (User)httpSession.getAttribute("user");
-        List<Balance> balances = new ArrayList<>();
-        int j = 0;
-        for(int i = 0; i<items.length(); i++){
-            if(types.length()<=i){
-                 j=0;
-            }
-            Transaction transaction = Transaction
-                    .builder()
-                    .category(Category
-                            .builder()
-                            .id(items.getJSONObject(i).getLong("id"))
-                            .build())
-                    .price(items.getJSONObject(i).getFloat("value"))
-                    .dateTime(new Date(new java.util.Date().getTime()))
-                    .user(user)
-                    .build();
-            circle.setCountMoney(circle.getCountMoney()-transaction.getPrice());
-            transactionRepository.save(transaction);
-            for(int k =0; k<user.getBalances().size(); k++){
 
-                Balance balance = user.getBalances().get(k);
-                JSONObject jsonObject = types.getJSONObject(j);
-                String[] idStr = jsonObject.getString("id").split("\\.");
-                Long id = Long.parseLong(idStr[1]);
-                if(balance.getClass().getSimpleName()
-                        .equals(jsonObject.getString("type")) &&
-                        balance.getId().equals(id)){
-                    balance.setBalance(balance.getBalance()-transaction.getPrice());
-                    transactionRepository.saveToBalance(transaction.getId(), balance);
-                    Balance jsonBalance = balance;
-                    jsonBalance.setUser(null);
-                    jsonBalance.setName(balance.getClass().getSimpleName());
-                    balances.add(jsonBalance);
-                }
-            }
-            j++;
-            transactions.add(transaction);
+        TransactionService transactionService = new TransactionServiceImpl(user, transactionRepository);
+        transactionService.getUsefulBalances(types);
+        List<Transaction> transactions = transactionService.getTransactions(items);
+        List<Balance> balances = ((TransactionServiceImpl) transactionService).getBalances();
+        for(int i=0; i<transactions.size(); i++){
+            System.out.println(balances.get(0).getBalance());
+            circle.setCountMoney(circle.getCountMoney()-transactions.get(i).getPrice());
         }
         user.getTransactions().addAll(transactions);
         String json = objectMapper.writeValueAsString(balances);
         circle.updatePercent();
+        CategoryPercent categoryPercent = new CategoryPercent();
+        String categoryPercentMap = objectMapper.writeValueAsString(categoryPercent
+                .getCategoryUtilsList(user.getTransactions()));
         String percent = objectMapper.writeValueAsString(circle);
-        String jsons = "["+json+","+percent+"]";
+        String jsons = "["+json+","+percent+","+categoryPercentMap+"]";
         resp.setContentType("application/json");
         resp.getWriter().write(jsons);
 

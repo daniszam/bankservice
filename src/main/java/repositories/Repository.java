@@ -8,4 +8,5 @@ public interface Repository<T> {
     boolean save(T model);
     void delete(Long id);
     List<T> findAll();
+    void update(T model);
 }

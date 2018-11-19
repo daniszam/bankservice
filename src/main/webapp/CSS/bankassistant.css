@@ -75,3 +75,8 @@ body {
 .mdl-layout__drawer{
     max-height: 1000px;
 }
+
+demo-card-square.mdl-card.mdl-shadow--2dp{
+    width: 350px;
+    height: 550px;
+}

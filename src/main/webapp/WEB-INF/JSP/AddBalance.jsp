@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
+
 
     <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
     <link href="<c:url value="/CSS/addBalance.css"/>" rel="stylesheet">
     <link href="<c:url value="/CSS/userPage.css"/>" rel="stylesheet">
     <link href="<c:url value="/CSS/myspace.css"/>" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 
 </head>
 <body>
@@ -34,7 +34,7 @@
     <div class="add card" style="width: 860px; height: 540px; border-radius: 60px">
         <div class="background"></div>
         <div class="title-name">
-            <h2>YOUR FINANCE ASSISTANT</h2>
+            <h3>YOUR FINANCE ASSISTANT</h3>
         </div>
         <form id="singUp" method="post" style="width: 100%; height: 100%">
            <signUp:addBalance/>

@@ -2,6 +2,7 @@ package servlets;
 
 import forms.AddBalanceForm;
 import models.*;
+import repositories.IconRepository;
 import services.BalanceService;
 import services.BalanceServiceImpl;
 
@@ -23,6 +24,9 @@ import java.util.regex.Pattern;
 public class AddBalanceServlet extends HttpServlet {
     private List<Balance> balances= new ArrayList<>();
     private BalanceService balanceService;
+    private IconRepository iconRepository;
+    private List<Icon> icons;
+    private DataSource dataSource;
 
 
     @Override
@@ -30,10 +34,11 @@ public class AddBalanceServlet extends HttpServlet {
         if(balances.size()==0) {
             balances.add(Card.builder().build());
             balances.add(BankAccount.builder().build());
-            balances.add(Cash.builder().build());
+           // balances.add(Cash.builder().build());
         }
         request.setAttribute("types", balances);
-        System.out.println(balances);
+        icons = iconRepository.findAll();
+        request.setAttribute("icons", icons);
         request.getRequestDispatcher("/WEB-INF/JSP/AddBalance.jsp").forward(request, response);
 
     }
@@ -46,21 +51,20 @@ public class AddBalanceServlet extends HttpServlet {
                 .balance(balances.get(Integer.parseInt(request.getParameter("types"))))
                 .date(request.getParameter("upDate"))
                 .sum(sum)
+                .name(request.getParameter("balance_name"))
+                .icon(icons.get(Integer.parseInt(request.getParameter("icon"))))
                 .upSum(upSum)
                 .user((User)request.getSession().getAttribute("user"))
                 .build();
+
         balanceService.add(addBalanceForm);
-        User user =(User) request.getSession().getAttribute("user");
-      //  request.setAttribute("types", balances);
         response.sendRedirect("/mySpace");
-       // request.getRequestDispatcher("/mySpace").forward(request, response);
-
-
     }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
         balanceService = new BalanceServiceImpl((DataSource)(servletContext.getAttribute("dataSource")));
+        iconRepository = new IconRepository((DataSource)(servletContext.getAttribute("dataSource")));
     }
 }

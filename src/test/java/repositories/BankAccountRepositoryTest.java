@@ -1,6 +1,7 @@
 package repositories;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
+import models.BankAccount;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -61,5 +62,10 @@ public class BankAccountRepositoryTest {
 
     @Test
     public void getType() {
+    }
+
+    @Test
+    public void update(){
+        bankAccountRepository.update(BankAccount.builder().balance(8000F).id(13L).build());
     }
 }

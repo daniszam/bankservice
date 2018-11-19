@@ -1,6 +1,7 @@
 package repositories;
 
 import models.Cash;
+import models.Icon;
 import models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,13 +20,16 @@ public class CashRepository implements Repository<Cash> {
 
 
     //language=SQL
-    public static final String SQL_INSERT_CASH = "INSERT INTO cash (user_id, balance) VALUES (?,?)";
+    public static final String SQL_INSERT_CASH = "INSERT INTO cash (user_id, balance, icon_id) VALUES (?,?,?)";
 
     //language=SQL
-    public static final String SQL_SELECT_ALL = "SELECT * FROM cash";
+    public static final String SQL_SELECT_ALL = "SELECT user_id,balance, cash.id,i.path, i.id AS icon_id FROM cash LEFT JOIN icon i on cash.icon_id = i.id";
 
     //language=SQL
-    public static final String SQL_SELECT_BY_ID = "SELECT * FROM cash WHERE cash.id=?";
+    public static final String SQL_SELECT_BY_ID = "SELECT user_id,balance, cash.id,i.path, i.id AS icon_id FROM cash LEFT JOIN icon i on cash.icon_id = i.id WHERE cash.id=?";
+
+    //language=SQL
+    public static final String SQL_UPDATE_CASH = "UPDATE cash SET balance=? WHERE id=?";
 
     public CashRepository(DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -33,6 +37,10 @@ public class CashRepository implements Repository<Cash> {
 
     private RowMapper<Cash> cashRowMapper = ((resultSet, i) -> Cash.builder()
             .balance(resultSet.getFloat("balance"))
+            .icon(Icon.builder()
+                    .id(resultSet.getLong("icon_id"))
+                    .path(resultSet.getString("path"))
+                    .build())
             .user(User.builder().id(resultSet.getLong("user_id")).build())
             .build());
 
@@ -51,6 +59,11 @@ public class CashRepository implements Repository<Cash> {
                             connection.prepareStatement(SQL_INSERT_CASH, new String[] {"id"});
                     preparedStatement.setLong(1, model.getUser().getId());
                     preparedStatement.setFloat(2, model.getBalance());
+                    if(model.getIcon()!=null){
+                        preparedStatement.setLong(3,model.getIcon().getId());
+                    }else {
+                        preparedStatement.setNull(3, Types.BIGINT);
+                    }
                     return preparedStatement;
                 }, keyHolder);
 
@@ -66,5 +79,11 @@ public class CashRepository implements Repository<Cash> {
     @Override
     public List<Cash> findAll() {
         return null;
+    }
+
+    @Override
+    public void update(Cash model) {
+        jdbcTemplate.update(SQL_UPDATE_CASH, model.getBalance(), model.getId());
+
     }
 }

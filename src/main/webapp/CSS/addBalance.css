@@ -24,8 +24,9 @@
 }
 .title-name {
     position: absolute;
-    width: 90%;
-    margin-left: 10%;
+    width: 100%;
+    top: 5%;
+    left: 5%;
 }
 
 .add.item.inputs{
@@ -35,12 +36,11 @@
     justify-content: space-around;
 }
 
-#types{
+select{
     -webkit-border-radius: 40px;
-    width: 20%;
-    height: 6%;
+    width: 30%;
+    height: 12%;
     border-radius: 40px;
-    margin-top: 40%;
     -webkit-appearance: none;
 }
 
@@ -54,11 +54,14 @@
 
 input{
     border-radius: 40px;
-    width: 20%;
-    height: 6%;
-    margin-top: 40%;
+    width: 30%;
+    height: 12%;
 }
 
+input[type=radio]{
+    width: 15%;
+    height: 6%;
+}
 .price_count{
     height: 40%;
 }
@@ -78,4 +81,39 @@ button img{
     width: 40px;
     height: 40px;
     opacity: 0.7;
+}
+
+.icon.box{
+    position: absolute;
+    overflow: scroll;
+    display: flex;
+    width: 10%;
+    height: 90%;
+    right: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+h3{
+    color: white;
+}
+
+.name.box{
+    left: 5%;
+    position: absolute;
+    width: 70%;
+    height: 50%;
+    display: flex;
+    align-items: flex-end;
+    top: 0;
+}
+
+.support.box{
+    left: 5%;
+    position: absolute;
+    width: 70%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    top: 50%;
 }

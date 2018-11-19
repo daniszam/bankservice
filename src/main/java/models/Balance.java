@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public abstract class Balance{
     private Float balance;
     private String name;
-    private String icon;
+    private Icon icon;
     private Long id;
     private User user;
 }

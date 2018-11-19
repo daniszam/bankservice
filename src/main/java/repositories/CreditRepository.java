@@ -95,4 +95,9 @@ public class CreditRepository implements Repository<Credit>, AllByIDRepository<C
        return jdbcTemplate.query(SQL_FIND_ALL, creditRowMapper);
     }
 
+    @Override
+    public void update(Credit model) {
+
+    }
+
 }

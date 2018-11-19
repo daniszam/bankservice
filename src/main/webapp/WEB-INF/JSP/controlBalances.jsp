@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: danis_zam
-  Date: 09/11/2018
-  Time: 12:38
+  Date: 13/11/2018
+  Time: 22:00
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -10,6 +10,7 @@
 <%@ taglib prefix="mySpace" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
+    <title>control</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
@@ -17,12 +18,15 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
+
     <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
     <link href="<c:url value="/CSS/userPage.css"/>" rel="stylesheet">
     <link href="<c:url value="/CSS/myspace.css"/>" rel="stylesheet">
+    <link href="<c:url value="/CSS/controlBalance.css"/>" rel="stylesheet">
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="<c:url value="/JavaScript/postAjax.js" />"></script>
+    <script src="<c:url value="/JavaScript/increaseBalancePost.js" />"></script>
     <title>My Space</title>
 </head>
 <body>
@@ -33,17 +37,13 @@
 <mySpace:leftNavBar/>
 
 <div class="card-list">
-    <mySpace:circleStatistik/>
-        <div class="card-list help">
-            <div class="demo-list-action mdl-list"  >
-                <form id="balance_type">
-            <mySpace:balance checkbox="true"/>
-                </form>
-            </div>
-            <mySpace:item/>
-        </div>
+    <div class="card-list help">
+        <form action="/addBalance" id="update_balance">
+            <mySpace:balance checkbox="false"/>
+        </form>
+    </div>
 </div>
-<button type="submit" value="submit" form="items" id="send" style="width: 60px;
+<button type="submit" value="submit" form="update_balance" id="send" style="width: 60px;
     height: 60px;
     position: absolute;
     right: 5%;

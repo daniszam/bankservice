@@ -6,16 +6,20 @@
 
 <header class="mdl-layout__header mdl-layout__header--transparent">
     <div class="mdl-layout__header-row">
-
+        <c:if test="${not empty user}">
         <span class="mdl-layout-title">Menu</span>
-
         <div class="mdl-layout-spacer"></div>
-
+        </c:if>
         <c:if test="${empty user}">
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Login</a>
-            <a class="mdl-navigation__link" href="">Sign Up</a>
+            <a class="mdl-navigation__link" href="/signIn">Login</a>
+            <a class="mdl-navigation__link" href="/signUp">Sign Up</a>
         </nav>
+        </c:if>
+        <c:if test="${not empty user}">
+            <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="/logout">Log out</a>
+            </nav>
         </c:if>
     </div>
 </header>

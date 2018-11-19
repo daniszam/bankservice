@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-//@WebFilter(urlPatterns = {"/addBalance", "/mySpace"})
+@WebFilter(urlPatterns = {"/addBalance", "/mySpace","/controlBalance"})
 public class AuthContentFilter implements Filter {
 
 
@@ -32,11 +32,11 @@ public class AuthContentFilter implements Filter {
 
         User user =(User) httpSession.getAttribute("user");
         if(user != null){
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
             if(user.getHashPassword() == null){
                 httpServletRequest.getRequestDispatcher("/createPassword").forward(httpServletRequest,httpServletResponse);
                 return;
             }
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         }else{
             httpServletResponse.sendRedirect("/signIn");
         }

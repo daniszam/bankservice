@@ -3,6 +3,7 @@ package forms;
 import lombok.Builder;
 import lombok.Data;
 import models.Balance;
+import models.Icon;
 import models.User;
 
 @Builder
@@ -13,4 +14,6 @@ public class AddBalanceForm {
     private String upSum;
     private Balance balance;
     private User user;
+    private String name;
+    private Icon icon;
 }

@@ -2,12 +2,19 @@ package services;
 
 import forms.LoginForm;
 import forms.SignUpForm;
+import lombok.SneakyThrows;
 import models.Balance;
 import models.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import repositories.BankAccountRepository;
 import repositories.BankUserRepository;
+import repositories.CardRepository;
 
+import javax.sql.DataSource;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -17,22 +24,36 @@ public class UsersServiceImpl implements UsersService {
 
     private BankUserRepository bankUserRepository;
     private PasswordEncoder passwordEncoder;
+    private CardRepository cardRepository;
+    private BankAccountRepository bankAccountRepository;
 
-    public UsersServiceImpl (BankUserRepository bankUserRepository){
-        this.bankUserRepository = bankUserRepository;
+    public UsersServiceImpl (DataSource dataSource){
+        this.bankUserRepository = new BankUserRepository(dataSource);
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.cardRepository = new CardRepository(dataSource);
+        this.bankAccountRepository = new BankAccountRepository(dataSource);
     }
 
     @Override
+    @SneakyThrows
     public boolean signUp(SignUpForm userForm) {
+        Date birthday = null;
+        String birthdayStr = userForm.getBirthday();
+        if(userForm!=null && birthdayStr.length()>8) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            birthday = new Date(simpleDateFormat.parse(birthdayStr).getTime());
+        }
         if(userForm.getPassword().length()>1){
             Pattern emailPat = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
             Matcher matcher = emailPat.matcher(userForm.getEmail());
             if(matcher.find() ){
                 User user = User.builder()
+                        .firstName(userForm.getFirstName())
+                        .lastName(userForm.getLastName())
+                        .gender(userForm.getGender())
                         .email(userForm.getEmail())
                         .hashPassword(passwordEncoder.encode(userForm.getPassword()))
-                        .birthday(userForm.getBirthday())
+                        .birthday(birthday)
                         .build();
                 bankUserRepository.save(user);
                 return true;
@@ -42,16 +63,7 @@ public class UsersServiceImpl implements UsersService {
         }else {
             return false;
         }
-//        short g = 1;
-//        User user = User.builder()
-//                //.firstName(userForm.getFirstName())
-//                //.lastName(userForm.getLastName())
-//                .email(userForm.getEmail())
-//               // .gender(g)
-//                .birthday(userForm.getBirthday())
-//                .hashPassword(passwordEncoder.encode(userForm.getPassword()))
-//                .build();
-//        bankUserRepository.save(user);
+
     }
 
     public boolean signIn(User user){
@@ -59,11 +71,24 @@ public class UsersServiceImpl implements UsersService {
         if(!optionalUser.isPresent()){
             return false;
         }
-
+       // user = optionalUser.get();
+        List<Balance> balances = new ArrayList<>();
+        balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
+        balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
+        user.setBalances(balances);
         user.setId(optionalUser.get().getId());
         user.setHashPassword(optionalUser.get().getHashPassword());
-        user.setBalances(optionalUser.get().getBalances());
         user.setTransactions(optionalUser.get().getTransactions());
+        return true;
+    }
+
+
+    public boolean signUp(User user){
+        user.setHashPassword(passwordEncoder.encode(user.getHashPassword()));
+        bankUserRepository.save(user);
+        user.setBalances(new ArrayList<>());
+        user.setTransactions(new ArrayList<>());
+        user.setCredits(new ArrayList<>());
         return true;
     }
 
@@ -71,18 +96,19 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Optional<User> signIn(LoginForm loginForm) {
-     //   System.out.println(loginForm);
         Optional<User> optionalUser = bankUserRepository.findOneByEmail(loginForm.getEmail());
-      //  System.out.println(optionalUser);
         if(optionalUser.isPresent()){
             User user = optionalUser.get();
+            List<Balance> balances = new ArrayList<>();
+            balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
+            balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
+            user.setBalances(balances);
             if(!passwordEncoder.matches(loginForm.getPassword(), user.getHashPassword())){
-               // throw new IllegalArgumentException("Wrong password or email");
                 return Optional.empty();
             }
             return Optional.of(user);
         }else{
-            throw new IllegalArgumentException("Wrong password or email");
+           return Optional.empty();
         }
     }
 }

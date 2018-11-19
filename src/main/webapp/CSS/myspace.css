@@ -20,5 +20,19 @@ input[type=checkbox]:checked ~ span {
     font-weight: bold;
 }
 
+.category.box{
+    margin-left: 10%;
+    margin-top: 4%;
+}
+
+#category_name_box{
+    border: none;
+    width:180px;
+    height: 180px;
+    overflow: scroll;
+    background: rgba(255,255,255,0.6);
+    border-radius: 40px;
+}
+
 
 

@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 </head>
 <body>
+ <a class="title-name" style="text-decoration: none; position: absolute; z-index: 1; left:1%" href="<c:url value="/home"/>"><h2>YOUR FINANCE ASSISTANT</h2></a>
 <div class="signUp">
     <div class="signUp card" style="width: 860px; height: 540px; border-radius: 60px">
         <div class="background"></div>
@@ -35,7 +36,7 @@
     </div>
 </div>
 <div class="auth link">
-    <form method="post" style="width: 100%">
+    <form style="width: 100%" action="<c:url value="/vkAuth"/>">
         <button type="submit">
             <input type="hidden" name="vkauth" id="vkauth" value="vkauth">
             <img src="<c:url value="/resources/vk-logo.png"/>" style="width: 100%">

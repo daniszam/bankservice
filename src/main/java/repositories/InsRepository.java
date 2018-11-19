@@ -117,6 +117,11 @@ public class InsRepository implements Repository<Insurance>, AllByIDRepository<I
     }
 
     @Override
+    public void update(Insurance model) {
+
+    }
+
+    @Override
     @SneakyThrows
     public List<Insurance> findAllByUserId(Long id) {
         PreparedStatement preparedStatement = connection.prepareStatement(SQL_SEARCH_INSURANCE_BY_USER_ID);

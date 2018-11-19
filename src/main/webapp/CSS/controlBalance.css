@@ -1,0 +1,46 @@
+.card-list{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 0;
+    margin-left: 0;
+    padding: 0;
+}
+
+.card-list.help{
+    width: 50%;
+    height: 700px;
+    overflow: scroll;
+    background: rgba(255,255,255,0.7);
+    margin-top: 10px;
+}
+.mdl-list__item .mdl-list__item-primary-content{
+    justify-content: space-between;
+}
+form{
+    width: 100%;
+}
+
+input[type=number]{
+    border-radius: 40px;
+    width: 60px;
+}
+
+
+input[type=range]:focus{
+    -webkit-appearance: none;
+}
+
+.slider{
+    -webkit-appearance: none;
+    border-radius: 40px;
+}
+input{
+    outline: none;
+}
+
+.mdl-layout__drawer{
+    font-family: "IBM Plex Sans";
+}
+

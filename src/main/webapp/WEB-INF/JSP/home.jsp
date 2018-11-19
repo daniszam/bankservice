@@ -20,7 +20,7 @@
     <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
 
 
-    <title>Money aasistance</title>
+    <title>Money assistance</title>
 
 </head>
 <body>
@@ -32,7 +32,7 @@
 
 
 <nav:navbar/>
-<h6 style="position: absolute;bottom: 5%; right: 5%">
+<h6 style="position: absolute;top: 10%; right: 10%">
     <a href="/home?thema=black">Dark</a>|<a href="/home?thema=standart">Standart</a></a>
 </h6>
 
@@ -50,49 +50,45 @@
     </c:if>
     }
 </style>
-<div class="card-list" style="width: 90%; margin-left: 5%; margin-top:2%;" >
+<div class="card-list" style="width: 90%; margin-left: 5%; margin-top:2%; margin-bottom: 5%" >
     <div class="demo-card-square mdl-card mdl-shadow--2dp">
-        <img src="https://freefrontend.com/assets/img/css-carousels/pure-css-carousel.png">
+        <img style="width: 350px; height: 300px" src="https://freefrontend.com/assets/img/css-carousels/pure-css-carousel.png">
         <div class="mdl-card__title mdl-card--expand">
-            <h2 class="mdl-card__title-text">Update</h2>
+            <h2 class="mdl-card__title-text">Salary</h2>
         </div>
         <div class="mdl-card__supporting-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Aenan convallis.
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                View Updates
-            </a>
+            Add salaries to automatically increase your finances.
         </div>
     </div>
     <div class="demo-card-square mdl-card mdl-shadow--2dp">
-        <img src="https://freefrontend.com/assets/img/css-carousels/pure-css-carousel.png">
+        <img style="width: 350px; height: 300px" src="http://www.financedais.com/wp-content/uploads/2016/04/control-your-finances.jpg">
         <div class="mdl-card__title mdl-card--expand">
-            <h2 class="mdl-card__title-text">Update</h2>
+            <h2 class="mdl-card__title-text">Control</h2>
         </div>
         <div class="mdl-card__supporting-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Aenan convallis.
+            Сontrol your finances
         </div>
         <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                View Updates
+        <c:if test="${empty user}">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/signUp">
+                Sign Up
             </a>
+        </c:if>
         </div>
     </div><div class="demo-card-square mdl-card mdl-shadow--2dp" >
-    <img src="https://freefrontend.com/assets/img/css-carousels/pure-css-carousel.png">
+    <img style="width: 350px; height: 300px" src="<c:url value="/resources/circle.png"/>">
     <div class="mdl-card__title mdl-card--expand">
-        <h2 class="mdl-card__title-text">Update</h2>
+        <h2 class="mdl-card__title-text">Check your statistik</h2>
     </div>
     <div class="mdl-card__supporting-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Aenan convallis.
+        Pie chart clearly shows your expenses.
     </div>
     <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            View Updates
+        <c:if test="${empty user}">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/signUp">
+            Sign Up
         </a>
+        </c:if>
     </div>
 </div>
 

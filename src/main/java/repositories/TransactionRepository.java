@@ -143,5 +143,10 @@ public class TransactionRepository implements Repository<Transaction> {
 return null;
     }
 
+    @Override
+    public void update(Transaction model) {
+
+    }
+
 
 }

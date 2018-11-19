@@ -3,6 +3,7 @@ package repositories;
 import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.Card;
+import models.Icon;
 import models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,26 +25,26 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
 
     //language=SQL
     public static final String SQL_SELECT_ALL_CARD_BY_ID =
-            "Select id,bank_user_id, " +
-               " card.up_sum, card.up_date, card.balance " +
-            "From card " +
+            "Select card.id,bank_user_id, " +
+               " card.up_sum, card.up_date, card.balance, card.name, i.id AS icon_id, i.path, card.id " +
+            "From card LEFT JOIN icon i on card.icon_id = i.id " +
             "WHERE bank_user_id=?;";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, balance, up_date, up_sum) " +
-            "VALUES (?, ?, ?, ?) ";
+    public static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, balance, up_date, up_sum, name, icon_id) " +
+            "VALUES (?, ?, ?, ?, ?,?) ";
 
     //language=SQL
     public static final String SQL_DELETE_CARD = "DELETE FROM card WHERE id=?";
 
     //language=SQL
-    public static final String SQL_FIND_ALL_CARD = "SELECT * FROM card JOIN card_type c2 on card.type_card = c2.type_card";
+    public static final String SQL_FIND_ALL_CARD = "SELECT card.bank_user_id, card.id, i.id AS icon_id, i.path,card.name, card.up_date,card.up_sum,card.balance" +
+            " FROM card LEFT JOIN icon i on card.icon_id = i.id";
 
     //language=SQL
-    public static final String SQL_GET_TYPE_CARD = "SELECT type_card FROM card_type";
+    public static final String SQL_UPDATE_CARD = "UPDATE card SET balance=?, up_date=?, up_sum=? WHERE id=?";
 
-    //language=SQL
-    public static final String SQL_UPDATE_CARD = "UPDATE card SET balance=?";
+    //
 
 
 
@@ -58,7 +59,12 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
             .user(User.builder()
                     .id(resultSet.getLong("bank_user_id"))
                     .build())
+            .icon(Icon.builder()
+                    .id(resultSet.getLong("icon_id"))
+                    .path(resultSet.getString("path"))
+                    .build())
             .id(resultSet.getLong("id"))
+            .name(resultSet.getString("name"))
             .upSum(resultSet.getFloat("up_sum"))
             .upDate(resultSet.getDate("up_date"))
             .balance(resultSet.getFloat("balance"))
@@ -88,6 +94,16 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
                     } else{
                         preparedStatement.setDate(3, card.getUpDate());
                         preparedStatement.setFloat(4, card.getUpSum());
+                    }
+                    if(card.getName()!=null){
+                        preparedStatement.setString(5, card.getName());
+                    }else {
+                        preparedStatement.setNull(5, Types.VARCHAR);
+                    }
+                    if(card.getIcon()!=null){
+                        preparedStatement.setLong(6, card.getIcon().getId());
+                    }else{
+                        preparedStatement.setNull(6, Types.VARCHAR);
                     }
                     return preparedStatement;
                 }, keyHolder);
@@ -120,7 +136,7 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     }
 
     public void update(Card card){
-        jdbcTemplate.update(SQL_UPDATE_CARD, card.getBalance());
+        jdbcTemplate.update(SQL_UPDATE_CARD, card.getBalance(), card.getUpDate(), card.getUpSum(), card.getId());
 
     }
 

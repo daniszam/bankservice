@@ -31,65 +31,47 @@ public class BankUserRepository implements Repository<User>, UserRepository {
     private User theOnlyUser;
 
     //language=SQL
-    public static final String SQL_SELECT_ALL_USER= //"SELECT bank_user.id, bank_user.first_name, bank_user.last_name, " +
-           // "bank_user.birthday, bank_user.gender, bank_user.phone_number, " +
-          //  "acc.balance, tb.name as type_acc, tb.id, acc.code_word, c.type_card, " +
-          //  "c.bank_account_id as card_bank_acc_id, ct.validity_period, ct.percent, credit_type.type_credit, credit.expiration_date, " +
-         //   "FROM bank_user " +
-            "SELECT  *, c.id AS card_id, credit.id AS credit_id, acc.id AS bank_account_id, c.balance AS card_balance, ct.perzent AS card_perzent " +
+    public static final String SQL_SELECT_ALL_USER = "SELECT bank_user.id, bank_user.first_name, bank_user.last_name, " +
+            "bank_user.birthday, bank_user.gender, bank_user.phone_number, bank_user.email, bank_user.hash_password,  " +
+            "acc.balance,acc.id AS bank_account_id,  " +
+            " c.id AS card_id, c.balance AS card_balance, c.up_date, t.id AS transaction_id, " +
+            " t.transfer, t.category_id, t.date_time, c2.name AS category_name, c.name AS card_name, c.up_sum, c.up_date, " +
+            "c.icon_id AS card_icon_id, acc.icon_id AS bank_acc_icon_ic, acc.name AS bank_acc_name, acc.icon_id AS bank_acc_icon_id " +
             "FROM bank_user " +
             "left join bank_account acc on bank_user.id = acc.bank_user_id " +
-            "left join type_bank_account tb on tb.name = acc.type_bank_account " +
             "left join card c ON bank_user.id = c.bank_user_id " +
-            "left join card_type ct ON c.type_card = ct.type_card " +
-            "left join credit ON credit.bank_user_id = bank_user.id " +
-            "left join credit_type ON credit.type_credit = credit_type.type_credit " ;
+            "LEFT JOIN credit ON credit.bank_user_id = bank_user.id " +
+            "LEFT JOIN  transaction t on bank_user.id = t.user_id " +
+            "LEFT JOIN category c2 on t.category_id = c2.id ";
+
     //language=SQL
-    public static final String SQL_SELECT_ALL_INFORMATION_ONLY_USER= "SELECT bank_user.id, bank_user.first_name, bank_user.last_name, " +
+    public static final String SQL_SELECT_ALL_INFORMATION_ONLY_USER = "SELECT bank_user.id, bank_user.first_name, bank_user.last_name, " +
             "bank_user.birthday, bank_user.gender, bank_user.phone_number " +
             "FROM bank_user ";
     //language=SQL
     public static final String SQL_INSERT_INTO_USER = "INSERT INTO bank_user (first_name, last_name, phone_number, birthday, gender, hash_password, email) " +
-    "VALUES (?, ?, ?, ?, ?, ?, ?) ";
+            "VALUES (?, ?, ?, ?, ?, ?, ?) ";
 
     //language=SQL
     public static final String SQL_DELETE_FROM_USER_BY_ID = "DELETE FROM bank_user " +
             "where bank_user.id=?";
 
     //language=SQL
-    public static final String SQL_SELECT_USER_BY_ID = "SELECT bank_user.id, bank_user.first_name, bank_user.last_name, " +
-            "bank_user.birthday, bank_user.gender, bank_user.phone_number, " +
-            "acc.balance, tb.name as type_acc, tb.id, acc.code_word, c.type_card, " +
-            "c.bank_account_id as card_bank_acc_id, ct.validity_period, ct.perzent " +
-            "FROM bank_user " +
-            "left join bank_account acc on bank_user.id = acc.bank_user_id " +
-            "left join type_bank_account tb on tb.name = acc.type_bank_account " +
-            "left join card c ON bank_user.id = c.bank_user_id " +
-            "left join card_type ct ON c.type_card = ct.type_card " +
-            "left join credit ON credit.bank_user_id = bank_user.id WHERE bank_user.id =?";
+    public static final String SQL_SELECT_USER_BY_ID = SQL_SELECT_ALL_USER + "WHERE bank_user.id =?";
+
+
 
     //language=SQL
-    public static final String SQL_SELECT_USER_BY_EMAIL ="SELECT DISTINCT ON(c.id) bank_user.id, bank_user.first_name, bank_user.last_name, " +
-            "bank_user.birthday, bank_user.gender, bank_user.phone_number, bank_user.email, bank_user.hash_password,  " +
-            "acc.balance,acc.id AS bank_account_id,  " +
-            " c.id AS card_id, c.balance AS card_balance, c.up_date, t.id AS transaction_id, " +
-            " t.transfer, t.category_id, t.date_time " +
-            "FROM bank_user " +
-            "left join bank_account acc on bank_user.id = acc.bank_user_id " +
-            "left join card c ON bank_user.id = c.bank_user_id " +
-            "left join credit ON credit.bank_user_id = bank_user.id " +
-            "LEFT JOIN  transaction t on bank_user.id = t.user_id " +
-            "WHERE bank_user.email =?";
+    public static final String SQL_SELECT_USER_BY_EMAIL = SQL_SELECT_ALL_USER + "WHERE bank_user.email =?";
 
 
 
-    public BankUserRepository (DataSource dataSource){
+    public BankUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
-
-    private RowMapper<User> userRowMapper = ((resultSet, i) ->User.builder()
+    private RowMapper<User> userRowMapper = ((resultSet, i) -> User.builder()
             .id(resultSet.getLong("id"))
             .firstName(resultSet.getString("first_name"))
             .lastName(resultSet.getString("last_name"))
@@ -111,14 +93,16 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             }
 
             Card card = Card.builder()
-                   // .cardType(resultSet.getString("type_card"))
-                   // .percent(resultSet.getFloat("card_perzent"))
                     .user(theOnlyUser)
-                   // .upDate(resultSet.getDate("up_date"))
+                    .name(resultSet.getString("card_name"))
+                     .upDate(resultSet.getDate("up_date"))
                     .id(resultSet.getLong("card_id"))
+                    .icon(Icon.builder()
+                            .id(resultSet.getLong("card_icon_id"))
+                            .build())
                     .balance(resultSet.getFloat("card_balance"))
+                    .upSum(resultSet.getFloat("up_sum"))
                     .build();
-
 //            Credit credit = Credit.builder()
 //                    .type(resultSet.getString("type_credit"))
 //                    .expirationDate(resultSet.getUpDate("expiration_date"))
@@ -132,6 +116,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     .dateTime(resultSet.getDate("date_time"))
                     .category(Category.builder()
                             .id(resultSet.getLong("category_id"))
+                            .name(resultSet.getString("category_name"))
                             .build())
                     .id(resultSet.getLong("transaction_id"))
                     .user(theOnlyUser)
@@ -142,26 +127,29 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     .id(resultSet.getLong("bank_account_id"))
                     .bankAccounNumber(resultSet.getLong("bank_account_id"))
                     .balance(resultSet.getFloat("balance"))
-                   // .typeBankAccount(resultSet.getString("type_bank_account"))
+                    .icon(Icon.builder()
+                            .id(resultSet.getLong("bank_acc_icon_id"))
+                            .build())
+                    .name(resultSet.getString("bank_acc_name"))
                     .user(theOnlyUser)
                     .build();
 
 
-            if(bankAccount.getBankAccounNumber() != 0) {
-                if(!userWithBalances.get(theOnlyUser).contains(bankAccount)) {
+            if (bankAccount.getBankAccounNumber() != 0) {
+                if (!userWithBalances.get(theOnlyUser).contains(bankAccount)) {
                     userWithBalances.get(theOnlyUser).add(bankAccount);
                 }
             }
-            if(transaction.getId()!= 0){
-                if(!userWithTransaction.get(theOnlyUser).contains(transaction)) {
+            if (transaction.getId() != 0) {
+                if (!userWithTransaction.get(theOnlyUser).contains(transaction)) {
                     userWithTransaction.get(theOnlyUser).add(transaction);
                 }
             }
 //            if(credit.getId() != 0){
 //                userWithBalances.get(theOnlyUser).add(credit);
 //            }
-            if(card.getId() != 0) {
-                if(!userWithBalances.get(theOnlyUser).contains(card)) {
+            if (card.getId() != 0) {
+                if (!userWithBalances.get(theOnlyUser).contains(card)) {
                     userWithBalances.get(theOnlyUser).add(card);
                 }
             }
@@ -184,25 +172,30 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             }
 
             Card card = Card.builder()
-                   // .cardType(resultSet.getString("type_card"))
-                    //.percent(resultSet.getFloat("card_perzent"))
+                    .name(resultSet.getString("card_name"))
                     .user(userWithIdWithMaps.get(currentUserId))
                     .id(resultSet.getLong("card_id"))
+                    .icon(Icon.builder()
+                            .id(resultSet.getLong("card_icon_id"))
+                            .build())
                     .balance(resultSet.getFloat("card_balance"))
+                    .upDate(resultSet.getDate("up_date"))
+                    .upSum(resultSet.getFloat("up_sum"))
                     .build();
+
 
             models.Transaction transaction = models.Transaction.builder()
                     .price(resultSet.getFloat("transfer"))
                     .dateTime(resultSet.getDate("date_time"))
                     .category(Category.builder()
                             .id(resultSet.getLong("category_id"))
+                            .name(resultSet.getString("category_name"))
                             .build())
                     .user(userWithIdWithMaps.get(currentUserId))
                     .id(resultSet.getLong("transaction_id"))
                     .build();
 
             Credit credit = Credit.builder()
-                    //.type(resultSet.getString("type_credit"))
                     .expirationDate(resultSet.getDate("expiration_date"))
                     .user(userWithIdWithMaps.get(currentUserId))
                     .percent(resultSet.getFloat("percent"))
@@ -214,7 +207,9 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     .id(resultSet.getLong("bank_account_id"))
                     .bankAccounNumber(resultSet.getLong("bank_account_id"))
                     .balance(resultSet.getFloat("balance"))
-                   // .typeBankAccount(resultSet.getString("type_bank_account"))
+                    .name(resultSet.getString("bank_acc_name"))                    .icon(Icon.builder()
+                            .id(resultSet.getLong("bank_acc_icon_id"))
+                            .build())
                     .percent(resultSet.getFloat("percent"))
                     .user(userWithIdWithMaps.get(currentUserId))
                     .build();
@@ -224,17 +219,17 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             List<Transaction> transactions = currentUser.getTransactions();
             List<Credit> credits = currentUser.getCredits();
 
-            if(transaction.getId()!=0){
+            if (transaction.getId() != 0) {
                 transactions.add(transaction);
             }
 
-            if(bankAccount.getBankAccounNumber() !=0) {
+            if (bankAccount.getBankAccounNumber() != 0) {
                 balances.add(bankAccount);
             }
-            if(card.getId() != 0) {
+            if (card.getId() != 0) {
                 balances.add(card);
             }
-            if(credit.getId() !=0) {
+            if (credit.getId() != 0) {
                 credits.add(credit);
             }
             return currentUser;
@@ -243,13 +238,27 @@ public class BankUserRepository implements Repository<User>, UserRepository {
 
     @SneakyThrows
     public Optional<User> findOne(Long id) {
-        userWithBalances =  new HashMap<>();
-        jdbcTemplate.query(SQL_SELECT_USER_BY_ID,userWithOrdersForOneUserRowMapper, id);
-        theOnlyUser.setBalances(userWithBalances.get(theOnlyUser));
+        userWithBalances = new HashMap<>();
+        userWithTransaction = new HashMap<>();
+        jdbcTemplate.query(SQL_SELECT_USER_BY_ID, userWithOrdersForOneUserRowMapper, id);
+
+        if (theOnlyUser == null) {
+            return Optional.empty();
+        }
+
+        List<Transaction> transactions = userWithTransaction.get(theOnlyUser);
+        List<Balance> balances = userWithBalances.get(theOnlyUser);
+
+
+        theOnlyUser.setTransactions(transactions);
+        theOnlyUser.setBalances(balances);
         User result = theOnlyUser;
+
+
         theOnlyUser = null;
-       userWithBalances.clear();
-       return Optional.of(result);
+        userWithBalances.clear();
+        userWithTransaction.clear();
+        return Optional.of(result);
     }
 
 
@@ -259,28 +268,32 @@ public class BankUserRepository implements Repository<User>, UserRepository {
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement preparedStatement =
-                            connection.prepareStatement(SQL_INSERT_INTO_USER, new String[] {"id"});
-                    if(user.getFirstName()!=null) {
+                            connection.prepareStatement(SQL_INSERT_INTO_USER, new String[]{"id"});
+                    if (user.getFirstName() != null) {
                         preparedStatement.setString(1, user.getFirstName());
-                    }else{
+                    } else {
                         preparedStatement.setNull(1, Types.VARCHAR);
                     }
-                    if(user.getLastName()!=null) {
+                    if (user.getLastName() != null) {
                         preparedStatement.setString(2, user.getLastName());
-                    }else{
+                    } else {
                         preparedStatement.setNull(2, Types.VARCHAR);
                     }
 
-                    if(user.getPhoneNumber()!=null) {
+                    if (user.getPhoneNumber() != null) {
                         preparedStatement.setString(3, user.getPhoneNumber());
-                    } else{ preparedStatement.setNull(3, Types.VARCHAR); }
-                    if(user.getBirthday() !=null) {
+                    } else {
+                        preparedStatement.setNull(3, Types.VARCHAR);
+                    }
+                    if (user.getBirthday() != null) {
                         preparedStatement.setDate(4, user.getBirthday());
-                    } else{preparedStatement.setNull(4, Types.DATE); }
+                    } else {
+                        preparedStatement.setNull(4, Types.DATE);
+                    }
 
-                    if(user.getGender()!=null) {
+                    if (user.getGender() != null) {
                         preparedStatement.setShort(5, user.getGender());
-                    }else{
+                    } else {
                         preparedStatement.setNull(5, Types.SMALLINT);
                     }
                     preparedStatement.setString(6, user.getHashPassword());
@@ -288,6 +301,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     return preparedStatement;
                 }, keyHolder);
         user.setId(keyHolder.getKey().longValue());
+        System.out.println(user);
         return true;
     }
 
@@ -304,18 +318,25 @@ public class BankUserRepository implements Repository<User>, UserRepository {
     }
 
     @Override
+    public void update(User model) {
+
+    }
+
+    @Override
     public Object findByName() {
         return null;
     }
 
     @SneakyThrows
-    public Optional<User> findOneByEmail(String email){
-        userWithBalances =  new HashMap<>();
+    public Optional<User> findOneByEmail(String email) {
+        userWithBalances = new HashMap<>();
         userWithTransaction = new HashMap<>();
-        jdbcTemplate.query(SQL_SELECT_USER_BY_EMAIL,userWithOrdersForOneUserRowMapper, email);
+        jdbcTemplate.query(SQL_SELECT_USER_BY_EMAIL, userWithOrdersForOneUserRowMapper, email);
 
-
-        List<Transaction> transactions =userWithTransaction.get(theOnlyUser);
+        if (theOnlyUser == null) {
+            return Optional.empty();
+        }
+        List<Transaction> transactions = userWithTransaction.get(theOnlyUser);
         List<Balance> balances = userWithBalances.get(theOnlyUser);
 
 

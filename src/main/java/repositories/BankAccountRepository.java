@@ -2,6 +2,7 @@ package repositories;
 
 import lombok.SneakyThrows;
 import models.BankAccount;
+import models.Icon;
 import models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,8 +22,8 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
 
     //language=SQL
     public static final String SQL_SELECT_ALL_BANK_ACC_BY_USER_ID =
-            "Select bank_account.id, balance, bank_user_id, bank_account.up_date, bank_account.up_sum " +
-            "From bank_account " +
+            "Select bank_account.id, balance, bank_user_id,name, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
+            "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id " +
             "WHERE bank_user_id=?; ";
 
     //language=SQL
@@ -30,21 +31,23 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
 
 
     //language=SQL
-    public static final String SQL_FIND_ALL_BANK_ACCOUNT = "SELECT * FROM bank_account ";
+    public static final String SQL_FIND_ALL_BANK_ACCOUNT =  "Select bank_account.id, balance, name, bank_user_id, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
+            "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id ";
 
     //language=SQL
     public static final String SQL_DELETE_BANK_ACCOUNT_BY_ID = "DELETE FROM bank_account WHERE id=? ";
 
     //language=SQL
-    public static final String SQL_SAVE_BANK_ACCOUNT = "INSERT INTO bank_account (balance, bank_user_id, up_sum, up_date) " +
-            " VALUES (?,?,?,?)";
+    public static final String SQL_SAVE_BANK_ACCOUNT = "INSERT INTO bank_account (balance, bank_user_id, up_sum, up_date, icon_id, name) " +
+            " VALUES (?,?,?,?,?,?)";
 
     //language=SQL
-    public static final String SQL_SELECT_BY_ID = "SELECT * FROM bank_account WHERE bank_account.id=?";
+    public static final String SQL_SELECT_BY_ID =  "Select bank_account.id,name, balance, bank_user_id, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
+            "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id WHERE bank_account.id=?";
 
 
     //language=SQL
-    public static final String SQL_GET_TYPE_BANK_ACCOUNT = "SELECT name FROM type_bank_account";
+    public static final String SQL_UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET balance=?, up_date=?, up_sum=? WHERE id=?";
 
     public BankAccountRepository(DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -56,6 +59,11 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
         BankAccount bankAccount = BankAccount.builder()
                 .bankAccounNumber(resultSet.getLong("id"))
                 .id(resultSet.getLong("id"))
+                .name(resultSet.getString("name"))
+                .icon(Icon.builder()
+                        .path(resultSet.getString("path"))
+                        .id(resultSet.getLong("icon_id"))
+                        .build())
                 .balance(resultSet.getFloat("balance"))
                 .user(User.builder().id(resultSet.getLong("bank_user_id")).build())
                 .upDate(resultSet.getDate("up_date"))
@@ -87,6 +95,16 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
                         preparedStatement.setDate(4, bankAccount.getUpDate());
                         preparedStatement.setFloat(3, bankAccount.getUpSum());
                     }
+                    if(bankAccount.getIcon()!=null){
+                        preparedStatement.setLong(5, bankAccount.getIcon().getId());
+                    }else {
+                        preparedStatement.setNull(5, Types.VARCHAR);
+                    }
+                    if(bankAccount.getName()!=null){
+                        preparedStatement.setString(6, bankAccount.getName());
+                    }else{
+                        preparedStatement.setNull(6, Types.VARCHAR);
+                    }
                     return preparedStatement;
                 }, keyHolder);
 
@@ -104,6 +122,12 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
     @SneakyThrows
     public List<BankAccount> findAll(){
         return jdbcTemplate.query(SQL_FIND_ALL_BANK_ACCOUNT, bankAccountRowMapper);
+
+    }
+
+    @Override
+    public void update(BankAccount model) {
+        jdbcTemplate.update(SQL_UPDATE_BANK_ACCOUNT, model.getBalance(), model.getUpDate(), model.getUpSum(), model.getId());
 
     }
 

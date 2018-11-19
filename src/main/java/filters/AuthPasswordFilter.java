@@ -33,11 +33,9 @@ public class AuthPasswordFilter implements Filter {
         User user =(User) httpSession.getAttribute("user");
         if(user == null){
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-            //httpServletRequest.getRequestDispatcher("/signUp").forward(httpServletRequest,httpServletResponse);
             return;
         }else{
             if(usersService.signIn(user)){
-                //httpServletRequest.getRequestDispatcher("/home").forward(httpServletRequest,httpServletResponse);
                 httpServletResponse.sendRedirect("/home");
                 return;
             }

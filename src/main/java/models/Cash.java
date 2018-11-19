@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class Cash extends Balance {
 
     @Builder
-    public Cash(String name, String icon, Float balance, Long id, User user){
+    public Cash(String name, Icon icon, Float balance, Long id, User user){
         super(balance, name, icon,id, user);
     }
 }

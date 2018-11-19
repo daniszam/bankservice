@@ -24,7 +24,7 @@ public class VkAuth {
 
     private static final String clientId = "6743597";
     private static final String secretKey = "E9fa4jAIm6UxNjes4BU4";
-    private static final String redirectUri ="http://localhost:8080";
+    private static final String redirectUri ="http://localhost:8080/vkAuth";
 
     private ObjectMapper objectMapper;
 
@@ -89,10 +89,17 @@ public class VkAuth {
                 .img(jsonUser.getString("photo_big"))
                 .gender(Short.parseShort(jsonUser.get("sex").toString()))
                 .birthday(birthday)
-                .city(jsonUser.getJSONObject("city").getString("title"))
-                .country(jsonUser.getJSONObject("country").getString("title"))
+                //.city(jsonUser.getJSONObject("city").getString("title"))
+                //.country(jsonUser.getJSONObject("country").getString("title"))
                 .email(vkAuthUser.getEmail())
                 .build();
+
+        if(jsonUser.keySet().contains("city")){
+            user.setCity(jsonUser.getJSONObject("city").getString("title"));
+        }
+        if(jsonUser.keySet().contains("country")){
+            user.setCountry(jsonUser.getJSONObject("country").getString("title"));
+        }
 
         return user;
     }

@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface UsersService {
     boolean signUp(SignUpForm userForm);
     boolean signIn(User user);
+    boolean signUp(User user);
     Optional<User> signIn(LoginForm loginForm);
 }

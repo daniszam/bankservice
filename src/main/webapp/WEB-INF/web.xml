@@ -6,9 +6,9 @@
 
 
     <welcome-file-list>
+        <welcome-file>home</welcome-file>
         <welcome-file>welcome</welcome-file>
-        <welcome-file>homePage</welcome-file>
-        <welcome-file>/WEB-INF/JSP/SignUpCard.jsp</welcome-file>
+        <welcome-file>/WEB-INF/JSP/home.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet>

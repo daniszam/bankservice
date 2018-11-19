@@ -22,7 +22,6 @@ public class Circle {
 
     public int getPercent(List<Card> cards, List<BankAccount> bankAccounts){
         if(cards.size()==0 && bankAccounts.size()==0){
-            System.out.println("123");
             return 0;
         }else {
             this.cards = cards;
@@ -35,20 +34,34 @@ public class Circle {
                 sum += bankAccounts.get(i).getUpSum();
                 countMoney += bankAccounts.get(i).getBalance();
             }
-            float a = Math.abs((sum-(sum - Math.abs(countMoney))) / sum);
+            if(sum==0){
+                if(countMoney<0){
+                    percent = -100;
+                    return percent;
+                }
+                if(countMoney>0){
+                    percent = 100;
+                    return percent;
+                }
+            }
+            float a = ((sum-(sum - Math.abs(countMoney))) / sum);
             float percent = a * 100;
             this.percent = (int) percent;
-            System.out.println(percent);
+            System.out.println(sum+"   kkkk");
             return this.percent;
         }
     }
 
     public void updatePercent(){
+        if(sum==0){
+            return;
+        }
         if(cards.size()==0 && bankAccounts.size()==0){
             return;
         }else {
-            float a = Math.abs((sum-(sum - Math.abs(countMoney))) / sum);
+            float a =((sum-(sum - Math.abs(countMoney))) / sum);
             float percent = a * 100;
+            System.out.println(sum + " " + percent);
             this.percent = (int) percent;
         }
     }

@@ -15,9 +15,10 @@ public class BankAccount extends Balance{
     private Float upSum;
 
     @Builder
-    public BankAccount(String name, String icon, Float balance,
+    public BankAccount(String name, Icon icon, Float balance,
                 Long bankAccounNumber, Float percent, User user, Long id, Date upDate, Float upSum ){
-        super(balance, icon, name, id, user);
+        super(balance,name, icon, id, user);
+        this.setName(name);
         this.bankAccounNumber = bankAccounNumber;
         this.percent = percent;
         this.upDate = upDate;
