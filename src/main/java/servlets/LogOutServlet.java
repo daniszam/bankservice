@@ -16,14 +16,14 @@ public class LogOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        for (Cookie cookie : req.getCookies()){
-            if(cookie.getName().equals("remember")){
+        for (Cookie cookie : req.getCookies()) {
+            if (cookie.getName().equals("remember")) {
                 Cookie remember = cookie;
                 remember.setValue(null);
                 remember.setMaxAge(0);
                 resp.addCookie(remember);
             }
         }
-        req.getRequestDispatcher("/WEB-INF/JSP/home.jsp").forward(req,resp);
+        req.getRequestDispatcher("/WEB-INF/JSP/home.jsp").forward(req, resp);
     }
 }

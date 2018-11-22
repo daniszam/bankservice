@@ -22,7 +22,7 @@ public class LocalizationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String lang = request.getParameter("lang");
-        if(request.getCookies() != null) {
+        if (request.getCookies() != null) {
             if (lang != null) {
                 Cookie cookie = new Cookie("locale", lang);
                 cookie.setMaxAge(60 * 60 * 24);
@@ -37,7 +37,7 @@ public class LocalizationFilter implements Filter {
                     lang = "En";
                 }
             }
-        }else{
+        } else {
             Cookie cookie = new Cookie("locale", lang);
             cookie.setMaxAge(60 * 60 * 24);
             response.addCookie(cookie);
@@ -47,7 +47,6 @@ public class LocalizationFilter implements Filter {
         request.setAttribute("locale", locale);
         filterChain.doFilter(request, response);
     }
-
 
 
     @Override

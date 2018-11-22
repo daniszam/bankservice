@@ -36,35 +36,32 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            request.getRequestDispatcher("/WEB-INF/JSP/SignUpCard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/JSP/SignUpCard.jsp").forward(request, response);
 
     }
 
     @Override
     @SneakyThrows
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String birthday = request.getParameter("birthday");
-            SignUpForm userForm = SignUpForm.builder()
-                    .email(email)
-                    .password(password)
-                    .birthday(birthday)
-                    .build();
-            if(usersService.signUp(userForm)){
-                response.sendRedirect("/signIn");
-            } else {
-                PrintWriter printWriter = response.getWriter();
-                printWriter.println("<script type=\"text/javascript\">");
-                printWriter.println("alert('User or password incorrect');");
-                printWriter.println("location='/signUp';");
-                printWriter.println("</script>");
-         //   }
-            }
-
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String birthday = request.getParameter("birthday");
+        SignUpForm userForm = SignUpForm.builder()
+                .email(email)
+                .password(password)
+                .birthday(birthday)
+                .build();
+        if (usersService.signUp(userForm)) {
+            response.sendRedirect("/signIn");
+        } else {
+            PrintWriter printWriter = response.getWriter();
+            printWriter.println("<script type=\"text/javascript\">");
+            printWriter.println("alert('User or password incorrect');");
+            printWriter.println("location='/signUp';");
+            printWriter.println("</script>");
         }
 
-
+    }
 
 
 }

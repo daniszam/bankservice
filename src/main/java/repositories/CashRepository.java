@@ -31,23 +31,23 @@ public class CashRepository implements Repository<Cash> {
     //language=SQL
     public static final String SQL_UPDATE_CASH = "UPDATE cash SET balance=? WHERE id=?";
 
-    public CashRepository(DataSource dataSource){
+    public CashRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     private RowMapper<Cash> cashRowMapper = ((resultSet, i) -> Cash.builder()
-            .balance(resultSet.getFloat("balance"))
-            .icon(Icon.builder()
-                    .id(resultSet.getLong("icon_id"))
-                    .path(resultSet.getString("path"))
-                    .build())
-            .user(User.builder().id(resultSet.getLong("user_id")).build())
+//            .balance(resultSet.getFloat("balance"))
+//            .icon(Icon.builder()
+//                    .id(resultSet.getLong("icon_id"))
+//                    .path(resultSet.getString("path"))
+//                    .build())
+//            .user(User.builder().id(resultSet.getLong("user_id")).build())
             .build());
 
 
     @Override
     public Optional<Cash> findOne(Long id) {
-        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID,cashRowMapper, id));
+        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, cashRowMapper, id));
     }
 
     @Override
@@ -56,12 +56,12 @@ public class CashRepository implements Repository<Cash> {
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement preparedStatement =
-                            connection.prepareStatement(SQL_INSERT_CASH, new String[] {"id"});
+                            connection.prepareStatement(SQL_INSERT_CASH, new String[]{"id"});
                     preparedStatement.setLong(1, model.getUser().getId());
                     preparedStatement.setFloat(2, model.getBalance());
-                    if(model.getIcon()!=null){
-                        preparedStatement.setLong(3,model.getIcon().getId());
-                    }else {
+                    if (model.getIcon() != null) {
+                        preparedStatement.setLong(3, model.getIcon().getId());
+                    } else {
                         preparedStatement.setNull(3, Types.BIGINT);
                     }
                     return preparedStatement;

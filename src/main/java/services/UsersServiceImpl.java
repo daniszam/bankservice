@@ -27,7 +27,7 @@ public class UsersServiceImpl implements UsersService {
     private CardRepository cardRepository;
     private BankAccountRepository bankAccountRepository;
 
-    public UsersServiceImpl (DataSource dataSource){
+    public UsersServiceImpl(DataSource dataSource) {
         this.bankUserRepository = new BankUserRepository(dataSource);
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.cardRepository = new CardRepository(dataSource);
@@ -39,14 +39,14 @@ public class UsersServiceImpl implements UsersService {
     public boolean signUp(SignUpForm userForm) {
         Date birthday = null;
         String birthdayStr = userForm.getBirthday();
-        if(userForm!=null && birthdayStr.length()>8) {
+        if (userForm != null && birthdayStr.length() > 8) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             birthday = new Date(simpleDateFormat.parse(birthdayStr).getTime());
         }
-        if(userForm.getPassword().length()>1){
+        if (userForm.getPassword().length() > 1) {
             Pattern emailPat = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
             Matcher matcher = emailPat.matcher(userForm.getEmail());
-            if(matcher.find() ){
+            if (matcher.find()) {
                 User user = User.builder()
                         .firstName(userForm.getFirstName())
                         .lastName(userForm.getLastName())
@@ -57,21 +57,21 @@ public class UsersServiceImpl implements UsersService {
                         .build();
                 bankUserRepository.save(user);
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }else {
+        } else {
             return false;
         }
 
     }
 
-    public boolean signIn(User user){
+    public boolean signIn(User user) {
         Optional<User> optionalUser = bankUserRepository.findOneByEmail(user.getEmail());
-        if(!optionalUser.isPresent()){
+        if (!optionalUser.isPresent()) {
             return false;
         }
-       // user = optionalUser.get();
+        // user = optionalUser.get();
         List<Balance> balances = new ArrayList<>();
         balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
         balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
@@ -83,7 +83,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    public boolean signUp(User user){
+    public boolean signUp(User user) {
         user.setHashPassword(passwordEncoder.encode(user.getHashPassword()));
         bankUserRepository.save(user);
         user.setBalances(new ArrayList<>());
@@ -93,22 +93,21 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-
     @Override
     public Optional<User> signIn(LoginForm loginForm) {
         Optional<User> optionalUser = bankUserRepository.findOneByEmail(loginForm.getEmail());
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             List<Balance> balances = new ArrayList<>();
             balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
             balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
             user.setBalances(balances);
-            if(!passwordEncoder.matches(loginForm.getPassword(), user.getHashPassword())){
+            if (!passwordEncoder.matches(loginForm.getPassword(), user.getHashPassword())) {
                 return Optional.empty();
             }
             return Optional.of(user);
-        }else{
-           return Optional.empty();
+        } else {
+            return Optional.empty();
         }
     }
 }

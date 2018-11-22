@@ -30,17 +30,17 @@ public class AuthPasswordFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         HttpSession httpSession = httpServletRequest.getSession();
 
-        User user =(User) httpSession.getAttribute("user");
-        if(user == null){
+        User user = (User) httpSession.getAttribute("user");
+        if (user == null) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
-        }else{
-            if(usersService.signIn(user)){
+        } else {
+            if (usersService.signIn(user)) {
                 httpServletResponse.sendRedirect("/home");
                 return;
             }
-            if(user.getHashPassword() == null){
-                httpServletRequest.getRequestDispatcher("/createPassword").forward(httpServletRequest,httpServletResponse);
+            if (user.getHashPassword() == null) {
+                httpServletRequest.getRequestDispatcher("/createPassword").forward(httpServletRequest, httpServletResponse);
                 return;
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);

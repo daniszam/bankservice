@@ -60,10 +60,8 @@ public class BankUserRepository implements Repository<User>, UserRepository {
     public static final String SQL_SELECT_USER_BY_ID = SQL_SELECT_ALL_USER + "WHERE bank_user.id =?";
 
 
-
     //language=SQL
     public static final String SQL_SELECT_USER_BY_EMAIL = SQL_SELECT_ALL_USER + "WHERE bank_user.email =?";
-
 
 
     public BankUserRepository(DataSource dataSource) {
@@ -95,7 +93,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             Card card = Card.builder()
                     .user(theOnlyUser)
                     .name(resultSet.getString("card_name"))
-                     .upDate(resultSet.getDate("up_date"))
+                    .upDate(resultSet.getDate("up_date"))
                     .id(resultSet.getLong("card_id"))
                     .icon(Icon.builder()
                             .id(resultSet.getLong("card_icon_id"))
@@ -207,7 +205,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     .id(resultSet.getLong("bank_account_id"))
                     .bankAccounNumber(resultSet.getLong("bank_account_id"))
                     .balance(resultSet.getFloat("balance"))
-                    .name(resultSet.getString("bank_acc_name"))                    .icon(Icon.builder()
+                    .name(resultSet.getString("bank_acc_name")).icon(Icon.builder()
                             .id(resultSet.getLong("bank_acc_icon_id"))
                             .build())
                     .percent(resultSet.getFloat("percent"))

@@ -19,11 +19,10 @@ public class Circle {
     private float countMoney = 0;
 
 
-
-    public int getPercent(List<Card> cards, List<BankAccount> bankAccounts){
-        if(cards.size()==0 && bankAccounts.size()==0){
+    public int getPercent(List<Card> cards, List<BankAccount> bankAccounts) {
+        if (cards.size() == 0 && bankAccounts.size() == 0) {
             return 0;
-        }else {
+        } else {
             this.cards = cards;
             this.bankAccounts = bankAccounts;
             for (int i = 0; i < cards.size(); i++) {
@@ -34,32 +33,32 @@ public class Circle {
                 sum += bankAccounts.get(i).getUpSum();
                 countMoney += bankAccounts.get(i).getBalance();
             }
-            if(sum==0){
-                if(countMoney<0){
+            if (sum == 0) {
+                if (countMoney < 0) {
                     percent = -100;
                     return percent;
                 }
-                if(countMoney>0){
+                if (countMoney > 0) {
                     percent = 100;
                     return percent;
                 }
             }
-            float a = ((sum-(sum - Math.abs(countMoney))) / sum);
+            float a = ((sum - (sum - Math.abs(countMoney))) / sum);
             float percent = a * 100;
             this.percent = (int) percent;
-            System.out.println(sum+"   kkkk");
+            System.out.println(sum + "   kkkk");
             return this.percent;
         }
     }
 
-    public void updatePercent(){
-        if(sum==0){
+    public void updatePercent() {
+        if (sum == 0) {
             return;
         }
-        if(cards.size()==0 && bankAccounts.size()==0){
+        if (cards.size() == 0 && bankAccounts.size() == 0) {
             return;
-        }else {
-            float a =((sum-(sum - Math.abs(countMoney))) / sum);
+        } else {
+            float a = ((sum - (sum - Math.abs(countMoney))) / sum);
             float percent = a * 100;
             System.out.println(sum + " " + percent);
             this.percent = (int) percent;

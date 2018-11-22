@@ -24,14 +24,13 @@ public class VkAuth {
 
     private static final String clientId = "6743597";
     private static final String secretKey = "E9fa4jAIm6UxNjes4BU4";
-    private static final String redirectUri ="http://localhost:8080/vkAuth";
+    private static final String redirectUri = "http://localhost:8080/vkAuth";
 
     private ObjectMapper objectMapper;
 
 
-
     @SneakyThrows
-    public VkAuthUser getUserToken(String code){
+    public VkAuthUser getUserToken(String code) {
 
         HttpClient httpClient = HttpClients.createDefault();
         URIBuilder uriBuilder = new URIBuilder("https://oauth.vk.com/access_token");
@@ -44,7 +43,7 @@ public class VkAuth {
         HttpResponse response = httpClient.execute(httpGet);
 
         objectMapper = new ObjectMapper();
-        String token =IOUtils.toString(response.getEntity().getContent());
+        String token = IOUtils.toString(response.getEntity().getContent());
         JSONObject array = new JSONObject(token);
 
         VkAuthUser vkAuthUser = VkAuthUser.builder()
@@ -59,23 +58,23 @@ public class VkAuth {
     }
 
     @SneakyThrows
-    public User getUser(VkAuthUser vkAuthUser){
+    public User getUser(VkAuthUser vkAuthUser) {
 
         HttpClient httpClient = HttpClients.createDefault();
 
         URIBuilder uriBuilder = new URIBuilder("https://api.vk.com/method/users.get");
         uriBuilder
-                .setParameter("uids",String.valueOf(vkAuthUser.getUserId()))
+                .setParameter("uids", String.valueOf(vkAuthUser.getUserId()))
                 .setParameter("fields", "uid,first_name,last_name,screen_name,sex,bdate,photo_big,city,country,")
                 .setParameter("access_token", vkAuthUser.getAccessToken())
-                .setParameter("v","5.87")
+                .setParameter("v", "5.87")
                 .build();
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         HttpResponse response = httpClient.execute(httpGet);
         objectMapper = new ObjectMapper();
-        String responseStr =IOUtils.toString(response.getEntity().getContent());
+        String responseStr = IOUtils.toString(response.getEntity().getContent());
         JSONArray responseJson = new JSONArray(new JSONObject(responseStr).get("response").toString());
-        String userStr = responseJson.toString().substring(1, responseJson.toString().length()-1);
+        String userStr = responseJson.toString().substring(1, responseJson.toString().length() - 1);
 
         JSONObject jsonUser = new JSONObject(userStr);
 
@@ -89,15 +88,13 @@ public class VkAuth {
                 .img(jsonUser.getString("photo_big"))
                 .gender(Short.parseShort(jsonUser.get("sex").toString()))
                 .birthday(birthday)
-                //.city(jsonUser.getJSONObject("city").getString("title"))
-                //.country(jsonUser.getJSONObject("country").getString("title"))
                 .email(vkAuthUser.getEmail())
                 .build();
 
-        if(jsonUser.keySet().contains("city")){
+        if (jsonUser.keySet().contains("city")) {
             user.setCity(jsonUser.getJSONObject("city").getString("title"));
         }
-        if(jsonUser.keySet().contains("country")){
+        if (jsonUser.keySet().contains("country")) {
             user.setCountry(jsonUser.getJSONObject("country").getString("title"));
         }
 

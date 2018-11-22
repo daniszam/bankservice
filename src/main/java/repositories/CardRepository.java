@@ -26,9 +26,9 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     //language=SQL
     public static final String SQL_SELECT_ALL_CARD_BY_ID =
             "Select card.id,bank_user_id, " +
-               " card.up_sum, card.up_date, card.balance, card.name, i.id AS icon_id, i.path, card.id " +
-            "From card LEFT JOIN icon i on card.icon_id = i.id " +
-            "WHERE bank_user_id=?;";
+                    " card.up_sum, card.up_date, card.balance, card.name, i.id AS icon_id, i.path, card.id " +
+                    "From card LEFT JOIN icon i on card.icon_id = i.id " +
+                    "WHERE bank_user_id=?;";
 
     //language=SQL
     public static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, balance, up_date, up_sum, name, icon_id) " +
@@ -47,15 +47,15 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     //
 
 
-
     //language=SQL
     public static final String SQL_DELEATE_ALL_BY_USER_ID = "DELETE FROM card WHERE bank_user_id=?";
-    public CardRepository(DataSource dataSource){
+
+    public CardRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
-  private org.springframework.jdbc.core.RowMapper<Card> cardRowMapper = ((resultSet, i) -> Card.builder()
+    private org.springframework.jdbc.core.RowMapper<Card> cardRowMapper = ((resultSet, i) -> Card.builder()
             .user(User.builder()
                     .id(resultSet.getLong("bank_user_id"))
                     .build())
@@ -71,8 +71,6 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
             .build());
 
 
-
-
     @Override
     public Optional<Card> findOne(Long id) {
         return null;
@@ -85,24 +83,24 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement preparedStatement =
-                            connection.prepareStatement(SQL_INSERT_INTO_CARD, new String[] {"id"});
+                            connection.prepareStatement(SQL_INSERT_INTO_CARD, new String[]{"id"});
                     preparedStatement.setLong(1, card.getUser().getId());
                     preparedStatement.setFloat(2, card.getBalance());
-                    if(card.getUpSum()<=0){
+                    if (card.getUpSum() <= 0) {
                         preparedStatement.setNull(3, Types.DATE);
                         preparedStatement.setNull(4, Types.FLOAT);
-                    } else{
+                    } else {
                         preparedStatement.setDate(3, card.getUpDate());
                         preparedStatement.setFloat(4, card.getUpSum());
                     }
-                    if(card.getName()!=null){
+                    if (card.getName() != null) {
                         preparedStatement.setString(5, card.getName());
-                    }else {
+                    } else {
                         preparedStatement.setNull(5, Types.VARCHAR);
                     }
-                    if(card.getIcon()!=null){
+                    if (card.getIcon() != null) {
                         preparedStatement.setLong(6, card.getIcon().getId());
-                    }else{
+                    } else {
                         preparedStatement.setNull(6, Types.VARCHAR);
                     }
                     return preparedStatement;
@@ -125,7 +123,7 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     }
 
     @SneakyThrows
-    public List<Card> findAllByUserId(Long id){
+    public List<Card> findAllByUserId(Long id) {
         return jdbcTemplate.query(SQL_SELECT_ALL_CARD_BY_ID, cardRowMapper, id);
     }
 
@@ -135,7 +133,7 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
         jdbcTemplate.update(SQL_DELEATE_ALL_BY_USER_ID, id);
     }
 
-    public void update(Card card){
+    public void update(Card card) {
         jdbcTemplate.update(SQL_UPDATE_CARD, card.getBalance(), card.getUpDate(), card.getUpSum(), card.getId());
 
     }

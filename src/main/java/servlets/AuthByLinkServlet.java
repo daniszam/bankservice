@@ -31,11 +31,11 @@ public class AuthByLinkServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         httpSession = request.getSession();
-        user =(User) httpSession.getAttribute("user");
-        if(user!=null) {
+        user = (User) httpSession.getAttribute("user");
+        if (user != null) {
             request.setAttribute("email", user.getEmail());
             request.getRequestDispatcher("/WEB-INF/JSP/CreatePassword.jsp").forward(request, response);
-        }else {
+        } else {
             response.sendRedirect("/signUp");
         }
     }

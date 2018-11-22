@@ -35,7 +35,7 @@ body {
 .mdl-layout__drawer{
     margin-top: 10px;
     margin-left: 10px;
-    height: 95%;
+    height: 700px;
     border-radius: 20px;
 }
 .mdl-layout__drawer-button{
@@ -51,8 +51,8 @@ body {
 }
 
 .mdl-layout__container{
-    position: fixed;
-
+    width: 100%;
+    height: auto;
 }
 
 .mdl-layout__content{
@@ -76,7 +76,4 @@ body {
     max-height: 1000px;
 }
 
-demo-card-square.mdl-card.mdl-shadow--2dp{
-    width: 350px;
-    height: 550px;
-}
+

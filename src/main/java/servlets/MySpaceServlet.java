@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,45 +36,45 @@ public class MySpaceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         httpSession = request.getSession();
-         request.setAttribute("category", categoryRepository.findAll());
-         User user = (User) httpSession.getAttribute("user");
-         List<Card> cards = cardRepository.findAllByUserId(user.getId());
-         List<BankAccount> bankAccounts = bankAccountRepository.findAllByUserId(user.getId());
-         circle = new Circle();
-         float sum = 0;
+        httpSession = request.getSession();
+        request.setAttribute("category", categoryRepository.findAll());
+        User user = (User) httpSession.getAttribute("user");
+        List<Card> cards = cardRepository.findAllByUserId(user.getId());
+        List<BankAccount> bankAccounts = bankAccountRepository.findAllByUserId(user.getId());
+        circle = new Circle();
 
-         List<Transaction> transactions = user.getTransactions();
-         CategoryPercent categoryPercent = new CategoryPercent();
-         Map<Category, Float> categoryPercentMap = categoryPercent.getCategoryUtils(transactions);
-         if(transactions.size()>0) {
-             int random = (int)(transactions.size()*Math.random());
-             request.setAttribute("randomCategory", transactions.get(random).getCategory().getName());
-             int randPercent = (categoryPercentMap.get(transactions.get(random).getCategory())).intValue();
-             request.setAttribute("randomPercent", randPercent);
-         }
-         int percent = circle.getPercent(cards, bankAccounts);
-         httpSession.setAttribute("percent", percent);
-         request.setAttribute("percentMap", categoryPercentMap);
-         request.getRequestDispatcher("/WEB-INF/JSP/MySpace.jsp").forward(request,response);
+
+        List<Transaction> transactions = user.getTransactions();
+        CategoryPercent categoryPercent = new CategoryPercent();
+        Map<Category, Float> categoryPercentMap = categoryPercent.getCategoryUtils(transactions);
+        if (transactions.size() > 0) {
+            int random = (int) (transactions.size() * Math.random());
+            request.setAttribute("randomCategory", transactions.get(random).getCategory().getName());
+            int randPercent = (categoryPercentMap.get(transactions.get(random).getCategory())).intValue();
+            request.setAttribute("randomPercent", randPercent);
+        }
+        int percent = circle.getPercent(cards, bankAccounts);
+        httpSession.setAttribute("percent", percent);
+        request.setAttribute("percentMap", categoryPercentMap);
+        request.getRequestDispatcher("/WEB-INF/JSP/MySpace.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JSONArray items = new JSONArray();
-        if(req.getParameter("items")!=null) {
-             items = new JSONArray(req.getParameter("items"));
+        if (req.getParameter("items") != null) {
+            items = new JSONArray(req.getParameter("items"));
         }
         JSONArray types = new JSONArray(req.getParameter("type"));
-        User user = (User)httpSession.getAttribute("user");
+        User user = (User) httpSession.getAttribute("user");
 
         TransactionService transactionService = new TransactionServiceImpl(user, transactionRepository);
         transactionService.getUsefulBalances(types);
         List<Transaction> transactions = transactionService.getTransactions(items);
         List<Balance> balances = ((TransactionServiceImpl) transactionService).getBalances();
-        for(int i=0; i<transactions.size(); i++){
+        for (int i = 0; i < transactions.size(); i++) {
             System.out.println(balances.get(0).getBalance());
-            circle.setCountMoney(circle.getCountMoney()-transactions.get(i).getPrice());
+            circle.setCountMoney(circle.getCountMoney() - transactions.get(i).getPrice());
         }
         user.getTransactions().addAll(transactions);
         String json = objectMapper.writeValueAsString(balances);
@@ -85,7 +83,7 @@ public class MySpaceServlet extends HttpServlet {
         String categoryPercentMap = objectMapper.writeValueAsString(categoryPercent
                 .getCategoryUtilsList(user.getTransactions()));
         String percent = objectMapper.writeValueAsString(circle);
-        String jsons = "["+json+","+percent+","+categoryPercentMap+"]";
+        String jsons = "[" + json + "," + percent + "," + categoryPercentMap + "]";
         resp.setContentType("application/json");
         resp.getWriter().write(jsons);
 

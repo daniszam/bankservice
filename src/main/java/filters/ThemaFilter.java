@@ -22,7 +22,7 @@ public class ThemaFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String thema = request.getParameter("thema");
-        if(request.getCookies() != null) {
+        if (request.getCookies() != null) {
             if (thema != null) {
                 Cookie cookie = new Cookie("thema", thema);
                 cookie.setMaxAge(60 * 60 * 24);
@@ -37,7 +37,7 @@ public class ThemaFilter implements Filter {
                     thema = "standart";
                 }
             }
-        }else{
+        } else {
             Cookie cookie = new Cookie("thema", thema);
             cookie.setMaxAge(60 * 60 * 24);
             response.addCookie(cookie);

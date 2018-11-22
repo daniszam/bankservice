@@ -37,16 +37,16 @@ public class RememberFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        HttpServletRequest httpServletRequest  = (HttpServletRequest) servletRequest;
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpSession httpSession = httpServletRequest.getSession();
-        if(httpServletRequest.getCookies().length ==0){
+        if (httpServletRequest.getCookies().length == 0) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
 
-        User user =(User) httpSession.getAttribute("user");
-        if(user==null){
+        User user = (User) httpSession.getAttribute("user");
+        if (user == null) {
             String userKey = null;
-            if(httpServletRequest.getCookies().length>0) {
+            if (httpServletRequest.getCookies().length > 0) {
                 for (Cookie cookie : httpServletRequest.getCookies()) {
                     if (cookie.getName().equals("remember")) {
                         userKey = cookie.getValue();
@@ -64,8 +64,8 @@ public class RememberFilter implements Filter {
 
                 }
             }
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
-        }else {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        } else {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
     }

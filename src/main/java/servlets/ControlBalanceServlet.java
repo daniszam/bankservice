@@ -27,7 +27,7 @@ public class ControlBalanceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("WEB-INF/JSP/controlBalances.jsp").forward(request,response);
+        request.getRequestDispatcher("WEB-INF/JSP/controlBalances.jsp").forward(request, response);
     }
 
     @Override
@@ -35,13 +35,13 @@ public class ControlBalanceServlet extends HttpServlet {
         List<Balance> balances = new ArrayList<>();
         User user = (User) request.getSession().getAttribute("user");
         JSONArray types = new JSONArray(request.getParameter("items"));
-        for(int i=0; i<types.length(); i++){
+        for (int i = 0; i < types.length(); i++) {
             JSONObject type = types.getJSONObject(i);
-            Balance balance =user.getBalances().get(type.getInt("id"));
-            balance.setBalance(balance.getBalance()+type.getInt("sum"));
+            Balance balance = user.getBalances().get(type.getInt("id"));
+            balance.setBalance(balance.getBalance() + type.getInt("sum"));
             balanceService.increaseBalance(balance);
             balance.setUser(null);
-            if(balance.getName()==null) {
+            if (balance.getName() == null) {
                 balance.setName(balance.getClass().getSimpleName());
             }
             balances.add(balance);

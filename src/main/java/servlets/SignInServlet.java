@@ -28,10 +28,10 @@ public class SignInServlet extends HttpServlet {
     private UUIDRepository uuidRepository;
 
     @SneakyThrows
-    public void init(ServletConfig servletConfig)  {
+    public void init(ServletConfig servletConfig) {
         ServletContext servletContext = servletConfig.getServletContext();
         usersService = (UsersService) servletContext.getAttribute("usersService");
-        uuidRepository =(UUIDRepository)servletContext.getAttribute("uuidRepository");
+        uuidRepository = (UUIDRepository) servletContext.getAttribute("uuidRepository");
     }
 
 
@@ -40,30 +40,30 @@ public class SignInServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
-            LoginForm loginForm = LoginForm.builder()
-                    .email(email)
-                    .password(password)
-                    .build();
+        LoginForm loginForm = LoginForm.builder()
+                .email(email)
+                .password(password)
+                .build();
 
-            Optional<User> optionalUser = usersService.signIn(loginForm);
-            if (optionalUser.isPresent()) {
-                HttpSession httpSession = request.getSession();
-                httpSession.setAttribute("user", optionalUser.get());
-                if (request.getParameter("save_me")!=null) {
-                    String cookieValue = UUID.randomUUID().toString();
-                    Cookie userKey = new Cookie("remember", cookieValue);
-                    userKey.setMaxAge(60 * 60 * 3000);
-                    uuidRepository.save(UUIDUser.builder().user(optionalUser.get()).uuid(cookieValue).build());
-                    response.addCookie(userKey);
-                }
-                response.sendRedirect("/home");
-            }else {
-                response.sendRedirect("/signIn");
+        Optional<User> optionalUser = usersService.signIn(loginForm);
+        if (optionalUser.isPresent()) {
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("user", optionalUser.get());
+            if (request.getParameter("save_me") != null) {
+                String cookieValue = UUID.randomUUID().toString();
+                Cookie userKey = new Cookie("remember", cookieValue);
+                userKey.setMaxAge(60 * 60 * 3000);
+                uuidRepository.save(UUIDUser.builder().user(optionalUser.get()).uuid(cookieValue).build());
+                response.addCookie(userKey);
             }
-
+            response.sendRedirect("/home");
+        } else {
+            response.sendRedirect("/signIn");
         }
+
+    }
 
 }

@@ -44,7 +44,7 @@ public class CreditRepository implements Repository<Credit>, AllByIDRepository<C
     //language=SQL
     public static final String SQL_GET_TYPE_CREDIT = "SELECT type_credit FROM credit_type";
 
-    public CreditRepository (DataSource dataSource){
+    public CreditRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -92,7 +92,7 @@ public class CreditRepository implements Repository<Credit>, AllByIDRepository<C
     @Override
     @SneakyThrows
     public List<Credit> findAll() {
-       return jdbcTemplate.query(SQL_FIND_ALL, creditRowMapper);
+        return jdbcTemplate.query(SQL_FIND_ALL, creditRowMapper);
     }
 
     @Override

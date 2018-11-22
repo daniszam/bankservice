@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-public class CategoryRepository implements Repository<Category>{
+public class CategoryRepository implements Repository<Category> {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -17,7 +17,7 @@ public class CategoryRepository implements Repository<Category>{
     public static final String SQL_SELECT_ALL = "SELECT * FROM category";
 
 
-    public CategoryRepository(DataSource dataSource){
+    public CategoryRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

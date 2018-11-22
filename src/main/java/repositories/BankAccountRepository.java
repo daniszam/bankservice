@@ -21,38 +21,37 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
     private JdbcTemplate jdbcTemplate;
 
     //language=SQL
-    public static final String SQL_SELECT_ALL_BANK_ACC_BY_USER_ID =
+    private static final String SQL_SELECT_ALL_BANK_ACC_BY_USER_ID =
             "Select bank_account.id, balance, bank_user_id,name, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
-            "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id " +
-            "WHERE bank_user_id=?; ";
+                    "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id " +
+                    "WHERE bank_user_id=?; ";
 
     //language=SQL
-    public static final String SQL_DELETE_ALL_BY_USER_ID = "DELETE FROM bank_account WHERE bank_user_id=?";
+    private static final String SQL_DELETE_ALL_BY_USER_ID = "DELETE FROM bank_account WHERE bank_user_id=?";
 
 
     //language=SQL
-    public static final String SQL_FIND_ALL_BANK_ACCOUNT =  "Select bank_account.id, balance, name, bank_user_id, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
+    private static final String SQL_FIND_ALL_BANK_ACCOUNT = "Select bank_account.id, balance, name, bank_user_id, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
             "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id ";
 
     //language=SQL
-    public static final String SQL_DELETE_BANK_ACCOUNT_BY_ID = "DELETE FROM bank_account WHERE id=? ";
+    private static final String SQL_DELETE_BANK_ACCOUNT_BY_ID = "DELETE FROM bank_account WHERE id=? ";
 
     //language=SQL
-    public static final String SQL_SAVE_BANK_ACCOUNT = "INSERT INTO bank_account (balance, bank_user_id, up_sum, up_date, icon_id, name) " +
+    private static final String SQL_SAVE_BANK_ACCOUNT = "INSERT INTO bank_account (balance, bank_user_id, up_sum, up_date, icon_id, name) " +
             " VALUES (?,?,?,?,?,?)";
 
     //language=SQL
-    public static final String SQL_SELECT_BY_ID =  "Select bank_account.id,name, balance, bank_user_id, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
+    private static final String SQL_SELECT_BY_ID = "Select bank_account.id,name, balance, bank_user_id, bank_account.up_date, bank_account.up_sum, i.path, icon_id " +
             "From bank_account LEFT JOIN icon i on bank_account.icon_id = i.id WHERE bank_account.id=?";
 
 
     //language=SQL
-    public static final String SQL_UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET balance=?, up_date=?, up_sum=? WHERE id=?";
+    private static final String SQL_UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET balance=?, up_date=?, up_sum=? WHERE id=?";
 
-    public BankAccountRepository(DataSource dataSource){
+    public BankAccountRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-
 
 
     private org.springframework.jdbc.core.RowMapper<BankAccount> bankAccountRowMapper = (resultSet, i) -> {
@@ -75,7 +74,7 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
     @Override
     @SneakyThrows
     public Optional<BankAccount> findOne(Long id) {
-        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID,bankAccountRowMapper, id));
+        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, bankAccountRowMapper, id));
     }
 
     @Override
@@ -85,24 +84,24 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement preparedStatement =
-                            connection.prepareStatement(SQL_SAVE_BANK_ACCOUNT, new String[] {"id"});
+                            connection.prepareStatement(SQL_SAVE_BANK_ACCOUNT, new String[]{"id"});
                     preparedStatement.setDouble(1, bankAccount.getBalance());
                     preparedStatement.setLong(2, bankAccount.getUser().getId());
-                    if(bankAccount.getUpSum()<=0 ) {
+                    if (bankAccount.getUpSum() <= 0) {
                         preparedStatement.setNull(4, Types.DATE);
                         preparedStatement.setNull(3, Types.FLOAT);
-                    }else{
+                    } else {
                         preparedStatement.setDate(4, bankAccount.getUpDate());
                         preparedStatement.setFloat(3, bankAccount.getUpSum());
                     }
-                    if(bankAccount.getIcon()!=null){
+                    if (bankAccount.getIcon() != null) {
                         preparedStatement.setLong(5, bankAccount.getIcon().getId());
-                    }else {
+                    } else {
                         preparedStatement.setNull(5, Types.VARCHAR);
                     }
-                    if(bankAccount.getName()!=null){
+                    if (bankAccount.getName() != null) {
                         preparedStatement.setString(6, bankAccount.getName());
-                    }else{
+                    } else {
                         preparedStatement.setNull(6, Types.VARCHAR);
                     }
                     return preparedStatement;
@@ -120,7 +119,7 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
 
     @Override
     @SneakyThrows
-    public List<BankAccount> findAll(){
+    public List<BankAccount> findAll() {
         return jdbcTemplate.query(SQL_FIND_ALL_BANK_ACCOUNT, bankAccountRowMapper);
 
     }
@@ -132,8 +131,8 @@ public class BankAccountRepository implements Repository<BankAccount>, AllByIDRe
     }
 
     @SneakyThrows
-    public List<BankAccount> findAllByUserId(Long id){
-        return  jdbcTemplate.query(SQL_SELECT_ALL_BANK_ACC_BY_USER_ID, bankAccountRowMapper, id);
+    public List<BankAccount> findAllByUserId(Long id) {
+        return jdbcTemplate.query(SQL_SELECT_ALL_BANK_ACC_BY_USER_ID, bankAccountRowMapper, id);
     }
 
     @SneakyThrows

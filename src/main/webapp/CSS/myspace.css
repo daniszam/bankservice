@@ -34,5 +34,12 @@ input[type=checkbox]:checked ~ span {
     border-radius: 40px;
 }
 
+.mdl-layout{
+    height: auto;
+    width: auto;
+    overflow-x: inherit;
+    overflow-y: inherit;
+}
+
 
 

@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 @WebServlet("/addBalance")
 public class AddBalanceServlet extends HttpServlet {
-    private List<Balance> balances= new ArrayList<>();
+    private List<Balance> balances = new ArrayList<>();
     private BalanceService balanceService;
     private IconRepository iconRepository;
     private List<Icon> icons;
@@ -31,10 +31,9 @@ public class AddBalanceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(balances.size()==0) {
+        if (balances.size() == 0) {
             balances.add(Card.builder().build());
             balances.add(BankAccount.builder().build());
-           // balances.add(Cash.builder().build());
         }
         request.setAttribute("types", balances);
         icons = iconRepository.findAll();
@@ -54,7 +53,7 @@ public class AddBalanceServlet extends HttpServlet {
                 .name(request.getParameter("balance_name"))
                 .icon(icons.get(Integer.parseInt(request.getParameter("icon"))))
                 .upSum(upSum)
-                .user((User)request.getSession().getAttribute("user"))
+                .user((User) request.getSession().getAttribute("user"))
                 .build();
 
         balanceService.add(addBalanceForm);
@@ -64,7 +63,7 @@ public class AddBalanceServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
-        balanceService = new BalanceServiceImpl((DataSource)(servletContext.getAttribute("dataSource")));
-        iconRepository = new IconRepository((DataSource)(servletContext.getAttribute("dataSource")));
+        balanceService = new BalanceServiceImpl((DataSource) (servletContext.getAttribute("dataSource")));
+        iconRepository = new IconRepository((DataSource) (servletContext.getAttribute("dataSource")));
     }
 }
