@@ -44,7 +44,6 @@ public class CashRepository implements Repository<Cash> {
             .user(User.builder().id(resultSet.getLong("user_id")).build())
             .build());
 
-
     @Override
     public Optional<Cash> findOne(Long id) {
         return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, cashRowMapper, id));
