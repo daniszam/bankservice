@@ -36,12 +36,12 @@ public class CashRepository implements Repository<Cash> {
     }
 
     private RowMapper<Cash> cashRowMapper = ((resultSet, i) -> Cash.builder()
-//            .balance(resultSet.getFloat("balance"))
-//            .icon(Icon.builder()
-//                    .id(resultSet.getLong("icon_id"))
-//                    .path(resultSet.getString("path"))
-//                    .build())
-//            .user(User.builder().id(resultSet.getLong("user_id")).build())
+            .balance(resultSet.getFloat("balance"))
+            .icon(Icon.builder()
+                    .id(resultSet.getLong("icon_id"))
+                    .path(resultSet.getString("path"))
+                    .build())
+            .user(User.builder().id(resultSet.getLong("user_id")).build())
             .build());
 
 
