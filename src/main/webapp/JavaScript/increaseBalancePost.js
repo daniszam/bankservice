@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
             $('form')[0].reset();
             $.each(data, function (i) {
                 var span = data[i].balance;
-                $('#span'+data[i].id).html(span);
+                $('#span'+data[i].name+data[i].id).html(span);
             });
         }).fail(function (t, tetx, er) {
             console.log(t);

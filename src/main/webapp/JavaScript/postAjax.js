@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
             $('#text_salary').html(percent.percent+'%');
             $.each(data, function (i) {
                 var span = data[i].balance;
-                $('#span'+data[i].id).html(span);
+                $('#span'+data[i].name+data[i].id).html(span);
             });
             var offset=0;
             $.each(map, function (i) {

@@ -77,3 +77,19 @@ body {
 }
 
 
+@media (min-width: 1000px){
+    #login_button{
+        display: none;
+    }
+
+}
+
+.mdl-layout__container{
+    height: -webkit-fill-available;
+}
+
+mdl-navigation__link{
+    font-family: 'Comfortaa', cursive;
+    color: white;
+}
+

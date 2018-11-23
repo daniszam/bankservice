@@ -5,6 +5,7 @@ import mappers.RowMapper;
 import models.Card;
 import models.Icon;
 import models.User;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -124,7 +125,11 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
 
     @SneakyThrows
     public List<Card> findAllByUserId(Long id) {
-        return jdbcTemplate.query(SQL_SELECT_ALL_CARD_BY_ID, cardRowMapper, id);
+        try {
+            return jdbcTemplate.query(SQL_SELECT_ALL_CARD_BY_ID, cardRowMapper, id);
+        }catch (IncorrectResultSizeDataAccessException e){
+            return new ArrayList<>();
+        }
     }
 
     @SneakyThrows
@@ -134,7 +139,11 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     }
 
     public void update(Card card) {
-        jdbcTemplate.update(SQL_UPDATE_CARD, card.getBalance(), card.getUpDate(), card.getUpSum(), card.getId());
+        try {
+            jdbcTemplate.update(SQL_UPDATE_CARD, card.getBalance(), card.getUpDate(), card.getUpSum(), card.getId());
+        }catch (IllegalArgumentException e){
+            throw new IllegalArgumentException();
+        }
 
     }
 

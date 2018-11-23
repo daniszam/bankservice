@@ -36,6 +36,7 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().removeAttribute("puted");
         request.getRequestDispatcher("/WEB-INF/JSP/SignUpCard.jsp").forward(request, response);
 
     }
@@ -51,14 +52,18 @@ public class SignUpServlet extends HttpServlet {
                 .password(password)
                 .birthday(birthday)
                 .build();
-        if (usersService.signUp(userForm)) {
-            response.sendRedirect("/signIn");
-        } else {
-            PrintWriter printWriter = response.getWriter();
-            printWriter.println("<script type=\"text/javascript\">");
-            printWriter.println("alert('User or password incorrect');");
-            printWriter.println("location='/signUp';");
-            printWriter.println("</script>");
+
+        if(request.getSession().getAttribute("puted")==null) {
+            if (usersService.signUp(userForm)) {
+                response.sendRedirect("/signIn");
+            } else {
+                PrintWriter printWriter = response.getWriter();
+                printWriter.println("<script type=\"text/javascript\">");
+                printWriter.println("alert('User or password incorrect');");
+                printWriter.println("location='/signUp';");
+                printWriter.println("</script>");
+            }
+            request.getSession().setAttribute("puted", "true");
         }
 
     }

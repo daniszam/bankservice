@@ -28,6 +28,7 @@ public class LocationServiceImpl implements LocationService {
                 return locationUsers;
             }
         }
+
         return locationUsers;
     }
 

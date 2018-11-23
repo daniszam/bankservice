@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-@Builder
 public class Cash extends Balance {
 
     @Builder

@@ -32,7 +32,7 @@
             <span id="span${item.getClass().simpleName}${item.id}">${item.balance}</span>
         </c:if>
         <c:if test="${not empty item.name}">
-            <span id="span${item.id}">${item.balance}</span>
+            <span id="span${item.name}${item.id}">${item.balance}</span>
         </c:if>
         </a>
     </div>

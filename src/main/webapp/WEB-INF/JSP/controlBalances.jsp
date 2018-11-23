@@ -31,14 +31,11 @@
 </head>
 <body>
 
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header"/>
-<div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button"></div>
-
 <mySpace:leftNavBar/>
 
-<div class="card-list">
-    <div class="card-list help">
-        <form action="/addBalance" id="update_balance">
+<div class="card-list" style="z-index: 999">
+    <div class="card-list help" style="z-index: 999">
+        <form action="/addBalance" id="update_balance" style="z-index: 999">
             <mySpace:balance checkbox="false"/>
         </form>
     </div>

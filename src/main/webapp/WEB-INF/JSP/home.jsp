@@ -35,7 +35,7 @@
 
 
 <nav:navbar/>
-<h6 style="position: absolute;top: 10%; right: 10%">
+<h6 style="position: absolute;top: 80px; right: 10%">
     <a href="/home?thema=black">Dark</a>|<a href="/home?thema=standart">Standart</a></a>
 </h6>
 
@@ -53,6 +53,16 @@
     </c:if>
     }
 </style>
+<%--<div id="login_button" aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button"></div>--%>
+
+<%--<div class="demo-drawer mdl-layout__drawer" aria-hidden="false">--%>
+    <%--<nav class="demo-navigation mdl-navigation">--%>
+        <%--<a class="mdl-navigation__link" href="/signIn">Log in</a>--%>
+        <%--<a class="mdl-navigation__link" href="/signUp">Sign Up</a>--%>
+        <%--<div class="mdl-layout-spacer"></div>--%>
+    <%--</nav>--%>
+<%--</div>--%>
+
 
 <div class="main">
     <div>

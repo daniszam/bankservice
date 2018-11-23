@@ -55,8 +55,12 @@ public class UsersServiceImpl implements UsersService {
                         .hashPassword(passwordEncoder.encode(userForm.getPassword()))
                         .birthday(birthday)
                         .build();
-                bankUserRepository.save(user);
-                return true;
+                Optional<User> optionalUser = bankUserRepository.findOneByEmail(user.getEmail());
+                if(!optionalUser.isPresent()) {
+                    bankUserRepository.save(user);
+                    return true;
+                }
+                return false;
             } else {
                 return false;
             }

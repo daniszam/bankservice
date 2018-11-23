@@ -3,6 +3,12 @@
 
 
 <c:set var="user" value="${user}"/>
+<div class="mdl-layout__container" style="top: 0;">
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header" style="height: -webkit-fill-available">
+    <header class="demo-header mdl-layout__header" style="box-shadow: none; background: none">
+        <div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button"><i class="material-icons" style="margin-top: 10px;"></i></div>
+    </header>
+
 <div class="demo-drawer mdl-layout__drawer" aria-hidden="false">
     <header class="demo-drawer-header">
         <img src="${user.img}" class="demo-avatar">
@@ -24,14 +30,10 @@
     <nav class="demo-navigation mdl-navigation">
         <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>home</a>
         <a class="mdl-navigation__link" href="/mySpace"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>my space</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Spam</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">forum</i>Chat</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>Updates</a>
         <a class="mdl-navigation__link" href="/controlBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>balances</a>
         <a class="mdl-navigation__link" href="/addBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>add balance</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Friends</a>
         <div class="mdl-layout-spacer"></div>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
     </nav>
+</div>
+</div>
 </div>

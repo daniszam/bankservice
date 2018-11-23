@@ -27,8 +27,6 @@
 </head>
 <body>
 
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header"/>
-<div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button"></div>
 
 <mySpace:leftNavBar/>
 

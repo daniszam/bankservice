@@ -5,7 +5,7 @@
 <c:forEach var="category" items="category"/>
 
 <c:set var="dashoffset" value="${0}"/>
-<div id="category_name_box">
+<div id="category_name_box" style="z-index: 999">
     <c:forEach items="${percentMap}" var="percentMap">
         <div class="category box">
             <span>${percentMap.key.name}</span>

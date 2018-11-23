@@ -1,7 +1,7 @@
 .card-list{
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
     margin-top: 0;
     margin-left: 0;
@@ -44,3 +44,14 @@ input{
     font-family: "IBM Plex Sans";
 }
 
+.card-list{
+    height: 100%;
+}
+
+.card-list.help{
+    height: 80%;
+}
+
+form{
+    height: 95%;
+}
