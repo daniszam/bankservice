@@ -1,5 +1,6 @@
 package servlets;
 
+import context.Contexts;
 import forms.SignUpForm;
 import models.User;
 import services.UsersService;
@@ -25,7 +26,8 @@ public class AuthByLinkServlet extends HttpServlet {
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
         ServletContext servletContext = servletConfig.getServletContext();
-        usersService = (UsersService) servletContext.getAttribute("usersService");
+        usersService = Contexts.primitive().getComponent(UsersService.class);
+       // usersService = (UsersService) servletContext.getAttribute("usersService");
     }
 
     @Override

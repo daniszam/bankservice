@@ -1,5 +1,6 @@
 package servlets;
 
+import context.Contexts;
 import models.User;
 import models.VkAuthUser;
 import services.UsersService;
@@ -44,8 +45,7 @@ public class VkAuthServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ServletContext servletContext = config.getServletContext();
-        usersService = (UsersService) servletContext.getAttribute("usersService");
+        usersService = Contexts.primitive().getComponent(UsersService.class);
 
     }
 }

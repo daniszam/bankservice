@@ -1,6 +1,7 @@
 package servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import context.Contexts;
 import models.LocationUser;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,9 +62,8 @@ public class EditServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ServletContext servletContext = config.getServletContext();
-        DataSource dataSource =(DataSource) servletContext.getAttribute("dataSource");
-        locationService = new LocationServiceImpl(new LocationRepository(dataSource));
-        locationRepository = new LocationRepository(dataSource);
+
+        locationService = Contexts.primitive().getComponent(LocationService.class);
+        locationRepository = Contexts.primitive().getComponent(LocationRepository.class);
     }
 }

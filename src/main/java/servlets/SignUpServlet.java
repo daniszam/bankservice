@@ -1,5 +1,6 @@
 package servlets;
 
+import context.Contexts;
 import forms.SignUpForm;
 import lombok.SneakyThrows;
 import models.User;
@@ -30,8 +31,7 @@ public class SignUpServlet extends HttpServlet {
     @Override
     @SneakyThrows
     public void init(ServletConfig servletConfig) {
-        ServletContext servletContext = servletConfig.getServletContext();
-        usersService = (UsersService) servletContext.getAttribute("usersService");
+        usersService = Contexts.primitive().getComponent(UsersService.class);
     }
 
     @Override

@@ -16,6 +16,9 @@ public class CategoryRepository implements Repository<Category> {
     //language=SQL
     public static final String SQL_SELECT_ALL = "SELECT * FROM category";
 
+    //language=SQL
+    private static final String SQL_INSERT_CATEGORY = "INSERT INTO category(name) VALUES (?)";
+
 
     public CategoryRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -36,7 +39,8 @@ public class CategoryRepository implements Repository<Category> {
 
     @Override
     public boolean save(Category model) {
-        return false;
+        jdbcTemplate.update(SQL_INSERT_CATEGORY, model.getName());
+        return true;
     }
 
     @Override

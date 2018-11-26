@@ -1,5 +1,6 @@
 package servlets;
 
+import context.Contexts;
 import forms.LoginForm;
 import lombok.SneakyThrows;
 import models.UUIDUser;
@@ -29,9 +30,8 @@ public class SignInServlet extends HttpServlet {
 
     @SneakyThrows
     public void init(ServletConfig servletConfig) {
-        ServletContext servletContext = servletConfig.getServletContext();
-        usersService = (UsersService) servletContext.getAttribute("usersService");
-        uuidRepository = (UUIDRepository) servletContext.getAttribute("uuidRepository");
+        usersService = Contexts.primitive().getComponent(UsersService.class);
+        uuidRepository = Contexts.primitive().getComponent(UUIDRepository.class);
     }
 
 

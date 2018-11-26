@@ -1,6 +1,8 @@
 package servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import context.ApplicationContext;
+import context.Contexts;
 import models.*;
 import models.Transaction;
 import org.json.JSONArray;
@@ -92,11 +94,11 @@ public class MySpaceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ServletContext servletContext = config.getServletContext();
-        categoryRepository = (CategoryRepository) servletContext.getAttribute("categoryRep");
-        transactionRepository = (TransactionRepository) servletContext.getAttribute("transactionRepository");
-        bankAccountRepository = (BankAccountRepository) servletContext.getAttribute("bankAccountRepository");
-        cardRepository = (CardRepository) servletContext.getAttribute("cardRepository");
+        ApplicationContext applicationContext = Contexts.primitive();
+        categoryRepository = applicationContext.getComponent(CategoryRepository.class);
+        transactionRepository = applicationContext.getComponent(TransactionRepository.class);
+        bankAccountRepository = applicationContext.getComponent(BankAccountRepository.class);
+        cardRepository = applicationContext.getComponent(CardRepository.class);
 
     }
 }

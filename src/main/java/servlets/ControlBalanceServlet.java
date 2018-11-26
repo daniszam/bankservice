@@ -2,6 +2,7 @@ package servlets;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import context.Contexts;
 import models.Balance;
 import models.User;
 import org.json.JSONArray;
@@ -54,7 +55,8 @@ public class ControlBalanceServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
-        balanceService = (BalanceService) servletContext.getAttribute("balanceService");
+        balanceService = Contexts.primitive().getComponent(BalanceService.class);
+       // balanceService = (BalanceService) servletContext.getAttribute("balanceService");
         objectMapper = new ObjectMapper();
     }
 }

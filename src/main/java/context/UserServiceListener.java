@@ -13,6 +13,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserServiceListener implements ServletContextListener {
 
@@ -54,6 +56,11 @@ public class UserServiceListener implements ServletContextListener {
         servletContext.setAttribute("dataSource", dataSource);
         servletContext.setAttribute("balanceService",balanceService);
         servletContext.setAttribute("uuidRepository",uuidRepository);
+        List<String> packages = new ArrayList<>();
+        packages.add("repositories");
+        packages.add("services");
+        ApplicationContext ap = Contexts.primitive();
+        ap.setComponents(packages);
     }
 
     @Override

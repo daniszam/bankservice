@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.Data;
 import lombok.SneakyThrows;
 import models.BankAccount;
 import models.Icon;

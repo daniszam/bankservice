@@ -1,6 +1,7 @@
 package services;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import models.Balance;
 import models.Category;
 import models.Transaction;

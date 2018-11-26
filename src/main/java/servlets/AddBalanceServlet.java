@@ -1,5 +1,7 @@
 package servlets;
 
+import context.ApplicationContext;
+import context.Contexts;
 import forms.AddBalanceForm;
 import models.*;
 import repositories.IconRepository;
@@ -26,7 +28,6 @@ public class AddBalanceServlet extends HttpServlet {
     private BalanceService balanceService;
     private IconRepository iconRepository;
     private List<Icon> icons;
-    private DataSource dataSource;
 
 
     @Override
@@ -62,8 +63,8 @@ public class AddBalanceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ServletContext servletContext = config.getServletContext();
-        balanceService = new BalanceServiceImpl((DataSource) (servletContext.getAttribute("dataSource")));
-        iconRepository = new IconRepository((DataSource) (servletContext.getAttribute("dataSource")));
+        ApplicationContext applicationContext = Contexts.primitive();
+        iconRepository = applicationContext.getComponent(IconRepository.class);
+        balanceService = applicationContext.getComponent(BalanceServiceImpl.class);
     }
 }
