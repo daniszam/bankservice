@@ -1,12 +1,11 @@
 package servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import context.ApplicationContext;
+import context.ApplicationDiContext;
 import context.Contexts;
 import models.*;
 import models.Transaction;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import repositories.*;
 import services.TransactionService;
 import services.TransactionServiceImpl;
@@ -14,7 +13,6 @@ import utils.CategoryPercent;
 import utils.Circle;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -94,7 +92,7 @@ public class MySpaceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ApplicationContext applicationContext = Contexts.primitive();
+        ApplicationDiContext applicationContext = Contexts.primitive();
         categoryRepository = applicationContext.getComponent(CategoryRepository.class);
         transactionRepository = applicationContext.getComponent(TransactionRepository.class);
         bankAccountRepository = applicationContext.getComponent(BankAccountRepository.class);

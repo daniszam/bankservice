@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import models.UUIDUser;
 import models.User;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -12,19 +13,19 @@ import javax.swing.text.html.Option;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class UUIDRepository implements Repository<UUIDUser> {
     private JdbcTemplate jdbcTemplate;
 
 
     //language=SQL
-    public static final String SQL_INSERT_UUID = "INSERT INTO uuid_user_cookie (user_id, uuid) VALUES (?,?)";
+    private static final String SQL_INSERT_UUID = "INSERT INTO uuid_user_cookie (user_id, uuid) VALUES (?,?)";
 
     //language=SQL
-    public static final String SQL_SELECT_ALL_BY_USER_ID= "SELECT * FROM uuid_user_cookie WHERE user_id=?";
+    private static final String SQL_SELECT_ALL_BY_USER_ID= "SELECT * FROM uuid_user_cookie WHERE user_id=?";
 
     //language=SQL
-    public static final String SQL_SELECT_ALL_BY_USER_UUID= "SELECT * FROM uuid_user_cookie WHERE uuid=?";
+    private static final String SQL_SELECT_ALL_BY_USER_UUID= "SELECT * FROM uuid_user_cookie WHERE uuid=?";
 
     public UUIDRepository(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);

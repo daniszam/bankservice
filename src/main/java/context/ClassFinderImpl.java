@@ -2,8 +2,10 @@ package context;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class ClassFinderImpl implements ClassFinder {
 
@@ -16,14 +18,14 @@ public class ClassFinderImpl implements ClassFinder {
     private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Are you sure the package '%s' exists?";
 
     @Override
-    public List<Class<?>> getClasses(String packageName) {
+    public Queue<Class<?>> getClasses(String packageName) {
         String scannedPath = packageName.replace(PKG_SEPARATOR, DIR_SEPARATOR);
         URL scannedUrl = Thread.currentThread().getContextClassLoader().getResource(scannedPath);
         if (scannedUrl == null) {
             throw new IllegalArgumentException(String.format(BAD_PACKAGE_ERROR, scannedPath, packageName));
         }
         File scannedDir = new File(scannedUrl.getFile());
-        List<Class<?>> classes = new ArrayList<>();
+        Queue<Class<?>> classes = new ArrayDeque<>();
         for (File file : scannedDir.listFiles()) {
             classes.addAll(find(file, packageName));
         }

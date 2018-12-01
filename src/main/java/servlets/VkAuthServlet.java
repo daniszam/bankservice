@@ -36,7 +36,7 @@ public class VkAuthServlet extends HttpServlet {
             usersService.signIn(user);
             HttpSession httpSession = request.getSession();
             httpSession.setAttribute("user", user);
-            response.sendRedirect("/createPassword");
+            response.sendRedirect(request.getContextPath()+"/createPassword");
 
 
         }

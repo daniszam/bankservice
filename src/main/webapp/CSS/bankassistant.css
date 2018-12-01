@@ -1,5 +1,5 @@
 body {
-    background: #99CCFF;
+    background: var(--back_color);
     font-family: 'IBM Plex Sans', sans-serif;
 }
 .title-name h1{
@@ -21,7 +21,7 @@ body {
     margin-top: 10px;
 }
 .mdl-layout__header--transparent.mdl-layout__header--transparent {
-    background: #99CCFF;
+    background: inherit !important;
     margin-left: 0.5%;
     margin-right: 5px;
     margin-top: 8px;
@@ -88,8 +88,27 @@ body {
     height: -webkit-fill-available;
 }
 
+.dark{
+    background-color: #333333;
+}
+
 mdl-navigation__link{
     font-family: 'Comfortaa', cursive;
     color: white;
 }
 
+:root {
+    --back_color: #99CCFF;
+}
+
+.mdl-layout__obfuscator{
+  background: none;
+}
+
+.mdl-layout__obfuscator.is-visible{
+    background: none;
+}
+
+.mdl-layout__drawer.is-visible{
+    z-index: 1000;
+}

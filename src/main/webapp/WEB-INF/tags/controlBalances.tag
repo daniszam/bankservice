@@ -1,7 +1,7 @@
 <%@tag description="Navbar Tag" pageEncoding="UTF-8" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<div class="demo-list-action mdl-list"  >
+<div class="demo-list-action mdl-list">
     <form id="balance_type">
         <c:forEach var="item" items="${user.balances}" varStatus="loop">
             <div class="mdl-list__item">
@@ -12,7 +12,7 @@
     </span>
                 <a class="mdl-list__item-secondary-action" href="#">
                     <c:if test="${empty item.name}">
-                    <span id="span${item.getClass().simpleName}${item.id}">${item.balance}</span>
+                        <span id="span${item.getClass().simpleName}${item.id}">${item.balance}</span>
                     </c:if>
                     <c:if test="${not empty item.name}">
                         <span id="span${item.name}${item.id}">${item.balance}</span>
@@ -22,7 +22,7 @@
                        name="balance_slider" min="0" max="100" value="0" tabindex="0"
                        oninput="this.form.amountInput.value=this.value">
                 <input type="number" name="amountInput" min="0" max="20" value="0"
-                       oninput="this.form.balance_slider.value=this.value" />
+                       oninput="this.form.balance_slider.value=this.value"/>
             </div>
         </c:forEach>
     </form>

@@ -23,10 +23,7 @@ import java.text.SimpleDateFormat;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
-
-
     private UsersService usersService;
-    private boolean vk;
 
     @Override
     @SneakyThrows

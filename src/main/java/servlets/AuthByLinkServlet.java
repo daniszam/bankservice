@@ -6,7 +6,6 @@ import models.User;
 import services.UsersService;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,9 +24,7 @@ public class AuthByLinkServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
-        ServletContext servletContext = servletConfig.getServletContext();
         usersService = Contexts.primitive().getComponent(UsersService.class);
-       // usersService = (UsersService) servletContext.getAttribute("usersService");
     }
 
     @Override

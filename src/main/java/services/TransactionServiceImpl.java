@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@NoArgsConstructor
 @Data
 public class TransactionServiceImpl implements TransactionService {
     private User user;

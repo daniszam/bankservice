@@ -59,8 +59,7 @@ public class UserServiceListener implements ServletContextListener {
         List<String> packages = new ArrayList<>();
         packages.add("repositories");
         packages.add("services");
-        ApplicationContext ap = Contexts.primitive();
-        ap.setComponents(packages);
+
     }
 
     @Override

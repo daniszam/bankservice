@@ -1,7 +1,7 @@
 package context;
 
-import java.util.List;
+import java.util.Queue;
 
 public interface ClassFinder {
-    List<Class<?>> getClasses(String packageName);
+    Queue<Class<?>> getClasses(String packageName);
 }

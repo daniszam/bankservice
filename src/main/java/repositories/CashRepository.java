@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import models.Cash;
 import models.Icon;
 import models.User;
@@ -13,23 +14,23 @@ import java.sql.PreparedStatement;
 import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class CashRepository implements Repository<Cash> {
 
     private JdbcTemplate jdbcTemplate;
 
 
     //language=SQL
-    public static final String SQL_INSERT_CASH = "INSERT INTO cash (user_id, balance, icon_id) VALUES (?,?,?)";
+    private static final String SQL_INSERT_CASH = "INSERT INTO cash (user_id, balance, icon_id) VALUES (?,?,?)";
 
     //language=SQL
-    public static final String SQL_SELECT_ALL = "SELECT user_id,balance, cash.id,i.path, i.id AS icon_id FROM cash LEFT JOIN icon i on cash.icon_id = i.id";
+    private static final String SQL_SELECT_ALL = "SELECT user_id,balance, cash.id,i.path, i.id AS icon_id FROM cash LEFT JOIN icon i on cash.icon_id = i.id";
 
     //language=SQL
-    public static final String SQL_SELECT_BY_ID = "SELECT user_id,balance, cash.id,i.path, i.id AS icon_id FROM cash LEFT JOIN icon i on cash.icon_id = i.id WHERE cash.id=?";
+    private static final String SQL_SELECT_BY_ID = "SELECT user_id,balance, cash.id,i.path, i.id AS icon_id FROM cash LEFT JOIN icon i on cash.icon_id = i.id WHERE cash.id=?";
 
     //language=SQL
-    public static final String SQL_UPDATE_CASH = "UPDATE cash SET balance=? WHERE id=?";
+    private static final String SQL_UPDATE_CASH = "UPDATE cash SET balance=? WHERE id=?";
 
     public CashRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);

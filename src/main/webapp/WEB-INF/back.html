@@ -11,88 +11,97 @@
 
 
 
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            font-family:sans-serif;
+        }
+
+        section{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100vh;
+            box-sizing:border-box;
+            padding:100px;
+            transition:0.5s;
+        }
+
+        section.dark{
+            background:#262626;
+            color:#fff;
+        }
+
+        ul{
+            position:absolute;
+            top:20px;
+            right:20px;
+            margin:0;
+            padding:0;
+            width:100px;
+            height:30px;
+            z-index:1;
+            border:1px solid #000;
+            border-radius:4px;
+            cursor:pointer;
+            overflow:hidden;
+        }
+
+        ul.active{
+            border-color:#fff;
+        }
+
+        ul li{
+            list-style:none;
+            width:100%;
+            height:60px;
+            text-align:center;
+            text-transform:uppercase;
+            transition:0.5s;
+        }
+
+        ul.active li{
+            transform:translateY(-30px);
+        }
+
+        ul li span{
+            display:block;
+            width:100%;
+            height:30px;
+            line-height:30px;
+            color:#262626;
+            background:#fff;
+        }
+
+        ul li span:nth-child(1){
+            background:#262626;
+            color:#fff;
+        };
+    </style>
 </head>
 <body>
-<div id="gradient"/>
-
-
-<form>
-<div class="mdl-list__item">
-    <span class="mdl-list__item-primary-content">
-        <label for="yy}" class="balance"></label>
-         <input type="checkbox" name="${item.getClass().simpleName}" id="yy}" class="balance">
-            <span name="${item.getClass().simpleName}" id="${item.getClass().simpleName}-${item.id}" class="balance"/>
-         <span>${item.getClass().simpleName}</span>
-    </span>
-    <a class="mdl-list__item-secondary-action" href="#">
-        <span id="span${item.getClass().simpleName}${item.id}">${item.balance}</span>
-    </a>
-    <div>
-        <input class="slider" type="range"
-               name="balance_slider" min="0" max="10000" value="0" tabindex="0"
-               oninput="this.form.amountInput.value=this.value">
-        <input type="number" name="amountInput" min="0" max="10000" value="0"
-               id="{loop.index}" oninput="this.form.balance_slider.value=this.value" />
-    </div>
-</div>
-</form>
-
-<div class="main">
-    <div>    <h2>аккордеон вкладки (табы) на  <strong>"jQuery"</strong></h2>
-        <div class="panel">
-            <div class="panel-heading">
-                <a href="#"><i class="fa fa-shopping-cart"></i>Lorem ipsum dolor</a>
-            </div>
-            <div class="panel-collapse">
-                <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi architecto consequatur culpa cupiditate debitis delectus ex fugiat in ipsum iure, nemo, neque nobis placeat provident quas quidem ratione reiciendis repellat reprehenderit repudiandae rerum sequi ullam velit voluptatum? Neque, quos!?</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate doloribus dolorum ea maxime minima optio perspiciatis quaerat repellendus rerum ullam?</p>
-                    <h5>Lorem ipsum dolor sit <strong>«amet»: </strong> </h5>
-                    <div class="wrapper-ul">
-                        <ul>
-                            <li>Lorem ipsum:</li>
-                            <li><a href="#">Velit voluptatum</a></li>
-                            <li><a href="#">Cupiditate debitis</a></li>
-                            <li><a href="#">Debitis delectus</a></li>
-                            <li><a href="#">Paceat provident</a></li>
-                        </ul>
-                    </div>
-                    <div class="button"><a href="#">Extended equipment</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <a href="#"><i class="fa fa-trophy"></i>Full functional set of CMS</a>
-            </div>
-            <div class="panel-collapse">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur delectus dolorum eius eos impedit ipsa ipsum labore minus, molestiae nemo nesciunt nulla, optio praesentium quod reprehenderit sit sunt tenetur voluptas:</p>
-                <div class="wrapper-ul df">
-                    <ul>
-                        <li>Lorem ipsumdolor:</li>
-                        <li><a href="#">Lorem ipsum</a></li>
-                        <li><a href="#">Repellat reprehenderit</a></li>
-                        <li><a href="#">Quidem ratione</a></li>
-                        <li><a href="#">Velit voluptatum</a></li>
-                        <li><a href="#">Debitis delectus</a></li>
-                    </ul>
-                </div>
-                <div class="button"><a href="#">Additional modules</a></div>
-
-            </div>
-        </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <a href="#"><i class="fa fa-server"></i>Several basic advantages</a>
-            </div>
-            <div class="panel-collapse">
-                <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab amet cum, debitis fugiat molestiae nisi, placeat provident quos ratione sunt tempore totam ullam velit. Consequuntur ex incidunt labore quae quos tempora, voluptatibus? Autem culpa dicta dolorum eaque error eveniet nam odio suscipit tenetur, voluptates! Ad atque maiores officiis quasi sequi!</p>
-                    <div class="button"><a href="#">Подробнее о преимуществах</a></div>
-
-                </div>
-            </div>
-        </div></div>
-</div>
+<section>
+    <h1>What is Lorem ipsum ?</h1>
+    <p>"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p>
+    <p>"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p>
+    <p>"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p>
+</section>
+<ul>
+    <li>
+        <span>Dark</span>
+        <span>Light</span>
+    </li>
+</ul>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('ul').click(function(){
+            $('ul').toggleClass('active')
+            $('section').toggleClass('dark')
+        })
+    })
+</script>
 </body>
 </html>

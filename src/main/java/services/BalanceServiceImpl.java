@@ -1,6 +1,7 @@
 package services;
 
 import forms.AddBalanceForm;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.*;
 import repositories.BankAccountRepository;
@@ -12,7 +13,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@NoArgsConstructor
 public class BalanceServiceImpl implements BalanceService {
     private DataSource dataSource;
 

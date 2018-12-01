@@ -8,7 +8,6 @@ import models.User;
 import repositories.BankUserRepository;
 import repositories.UUIDRepository;
 import services.UsersService;
-import services.UsersServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -59,9 +58,9 @@ public class SignInServlet extends HttpServlet {
                 uuidRepository.save(UUIDUser.builder().user(optionalUser.get()).uuid(cookieValue).build());
                 response.addCookie(userKey);
             }
-            response.sendRedirect("/home");
+            response.sendRedirect(request.getContextPath()+"/home");
         } else {
-            response.sendRedirect("/signIn");
+            response.sendRedirect(request.getContextPath()+"/signIn");
         }
 
     }

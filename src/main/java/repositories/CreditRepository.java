@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.Credit;
@@ -14,30 +15,30 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class CreditRepository implements Repository<Credit>, AllByIDRepository<Credit> {
 
     private JdbcTemplate jdbcTemplate;
 
 
     //language=SQL
-    public static final String SQL_SEARCH_CREDIT_BY_USER_ID = "SELECT * FROM credit JOIN credit_type c2 on credit.type_credit = c2.type_credit" +
+    private static final String SQL_SEARCH_CREDIT_BY_USER_ID = "SELECT * FROM credit JOIN credit_type c2 on credit.type_credit = c2.type_credit" +
             " WHERE credit.bank_user_id = ?";
 
     //language=SQL
-    public static final String SQL_DELETE_ALL_BY_USER_ID = "DELETE FROM credit WHERE bank_user_id=?";
+    private static final String SQL_DELETE_ALL_BY_USER_ID = "DELETE FROM credit WHERE bank_user_id=?";
 
     //language=SQL
-    public static final String SQL_FIND_ALL = "SELECT * FROM credit JOIN credit_type c2 on credit.type_credit = c2.type_credit";
+    private static final String SQL_FIND_ALL = "SELECT * FROM credit JOIN credit_type c2 on credit.type_credit = c2.type_credit";
 
     //language=SQL
-    public static final String SQL_FIND_BY_ID = "SELECT * FROM credit JOIN credit_type c2 on credit.type_credit = c2.type_credit WHERE id=?";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM credit JOIN credit_type c2 on credit.type_credit = c2.type_credit WHERE id=?";
 
     //language=SQL
-    public static final String SQL_DELETE_BY_ID_FROM_CREDIT = "DELETE FROM credit WHERE id=? ";
+    private static final String SQL_DELETE_BY_ID_FROM_CREDIT = "DELETE FROM credit WHERE id=? ";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_CREDIT = "INSERT INTO credit (bank_user_id, type_credit, expiration_date) " +
+    private static final String SQL_INSERT_INTO_CREDIT = "INSERT INTO credit (bank_user_id, type_credit, expiration_date) " +
             " VALUES (?,?,?)";
 
 

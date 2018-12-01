@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.Card;
@@ -18,32 +19,32 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class CardRepository implements Repository<Card>, AllByIDRepository<Card> {
 
 
     private JdbcTemplate jdbcTemplate;
 
     //language=SQL
-    public static final String SQL_SELECT_ALL_CARD_BY_ID =
+    private static final String SQL_SELECT_ALL_CARD_BY_ID =
             "Select card.id,bank_user_id, " +
                     " card.up_sum, card.up_date, card.balance, card.name, i.id AS icon_id, i.path, card.id " +
                     "From card LEFT JOIN icon i on card.icon_id = i.id " +
                     "WHERE bank_user_id=?;";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, balance, up_date, up_sum, name, icon_id) " +
+    private static final String SQL_INSERT_INTO_CARD = "INSERT INTO card (bank_user_id, balance, up_date, up_sum, name, icon_id) " +
             "VALUES (?, ?, ?, ?, ?,?) ";
 
     //language=SQL
-    public static final String SQL_DELETE_CARD = "DELETE FROM card WHERE id=?";
+    private static final String SQL_DELETE_CARD = "DELETE FROM card WHERE id=?";
 
     //language=SQL
-    public static final String SQL_FIND_ALL_CARD = "SELECT card.bank_user_id, card.id, i.id AS icon_id, i.path,card.name, card.up_date,card.up_sum,card.balance" +
+    private static final String SQL_FIND_ALL_CARD = "SELECT card.bank_user_id, card.id, i.id AS icon_id, i.path,card.name, card.up_date,card.up_sum,card.balance" +
             " FROM card LEFT JOIN icon i on card.icon_id = i.id";
 
     //language=SQL
-    public static final String SQL_UPDATE_CARD = "UPDATE card SET balance=?, up_date=?, up_sum=? WHERE id=?";
+    private static final String SQL_UPDATE_CARD = "UPDATE card SET balance=?, up_date=?, up_sum=? WHERE id=?";
 
     //
 

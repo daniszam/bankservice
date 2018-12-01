@@ -13,8 +13,11 @@
 <head>
     <title>Sign Up</title>
 
-    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+    <script src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"/>"></script>
+
     <link href="<c:url value="/CSS/signCard.css"/>" rel="stylesheet">
+    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+    <script src="<c:url value="/JavaScript/chandgeColor.js"/> " rel="stylesheet"></script>
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 </head>
 <body>

@@ -14,9 +14,10 @@
     <head>
         <title>Sign Up</title>
 
-        <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
         <link href="<c:url value="/CSS/signCard.css"/>" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+        <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+        <script src="<c:url value="/JavaScript/chandgeColor.js"/> " rel="stylesheet"></script>
 
         <style>
             #password {

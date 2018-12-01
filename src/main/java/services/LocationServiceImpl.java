@@ -1,12 +1,13 @@
 package services;
 
+import lombok.NoArgsConstructor;
 import models.LocationUser;
 import repositories.Location;
 import repositories.LocationRepository;
 
 import java.util.Collections;
 import java.util.List;
-
+@NoArgsConstructor
 public class LocationServiceImpl implements LocationService {
 
     private LocationRepository locationRepository;

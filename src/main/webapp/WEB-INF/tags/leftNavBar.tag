@@ -28,10 +28,10 @@
         </div>
     </header>
     <nav class="demo-navigation mdl-navigation">
-        <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>home</a>
-        <a class="mdl-navigation__link" href="/mySpace"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>my space</a>
-        <a class="mdl-navigation__link" href="/controlBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>balances</a>
-        <a class="mdl-navigation__link" href="/addBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>add balance</a>
+        <a class="mdl-navigation__link" href="<c:url value="/home"/>"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>home</a>
+        <a class="mdl-navigation__link" href="<c:url value="/mySpace"/>"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>my space</a>
+        <a class="mdl-navigation__link" href="<c:url value="/controlBalance"/>"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>balances</a>
+        <a class="mdl-navigation__link" href="<c:url value="/addBalance"/>"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>add balance</a>
         <div class="mdl-layout-spacer"></div>
     </nav>
 </div>

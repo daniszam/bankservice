@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.Insurance;
@@ -13,7 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class InsRepository implements Repository<Insurance>, AllByIDRepository<Insurance> {
     private Connection connection;
     private JdbcTemplate jdbcTemplate;
@@ -21,23 +22,23 @@ public class InsRepository implements Repository<Insurance>, AllByIDRepository<I
 
 
     //language=SQL
-    public static final String SQL_SEARCH_INSURANCE_BY_USER_ID = "SELECT * FROM insurance JOIN insured_person ip on insurance.id = ip.id " +
+    private static final String SQL_SEARCH_INSURANCE_BY_USER_ID = "SELECT * FROM insurance JOIN insured_person ip on insurance.id = ip.id " +
             "WHERE ip.bank_user_id = ?";
 
     //language=SQL
-    public static final String SQL_DELETE_ALL_BY_USER_ID = "DELETE FROM insured_person WHERE bank_user_id=?";
+    private static final String SQL_DELETE_ALL_BY_USER_ID = "DELETE FROM insured_person WHERE bank_user_id=?";
 
     //language=SQL
-    public static final String SQL_FIND_ALL = "SELECT * FROM insurance JOIN insured_person ip on insurance.type_insurance = ip.insured_type";
+    private static final String SQL_FIND_ALL = "SELECT * FROM insurance JOIN insured_person ip on insurance.type_insurance = ip.insured_type";
 
     //language=SQL
-    public static final String SQL_FIND_BY_ID = "SELECT * FROM insurance JOIN insured_person ip on insurance.id = ip.insurance_id WHERE id=?";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM insurance JOIN insured_person ip on insurance.id = ip.insurance_id WHERE id=?";
 
     //language=SQL
-    public static final String SQL_DELETE_BY_ID_FROM_INS = "DELETE FROM insured_person WHERE id=? ";
+    private static final String SQL_DELETE_BY_ID_FROM_INS = "DELETE FROM insured_person WHERE id=? ";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_INSURED_PERS = "INSERT INTO insured_person (bank_user_id, insured_type, start_date, final_date) " +
+    private static final String SQL_INSERT_INTO_INSURED_PERS = "INSERT INTO insured_person (bank_user_id, insured_type, start_date, final_date) " +
             " VALUES (?,?,?,?)";
 
 

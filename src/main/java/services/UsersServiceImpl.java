@@ -2,6 +2,8 @@ package services;
 
 import forms.LoginForm;
 import forms.SignUpForm;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.Balance;
 import models.User;
@@ -19,7 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@NoArgsConstructor
+@Data
 public class UsersServiceImpl implements UsersService {
 
     private BankUserRepository bankUserRepository;

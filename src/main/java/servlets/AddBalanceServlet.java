@@ -1,6 +1,6 @@
 package servlets;
 
-import context.ApplicationContext;
+import context.ApplicationDiContext;
 import context.Contexts;
 import forms.AddBalanceForm;
 import models.*;
@@ -9,18 +9,15 @@ import services.BalanceService;
 import services.BalanceServiceImpl;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @WebServlet("/addBalance")
 public class AddBalanceServlet extends HttpServlet {
@@ -63,7 +60,7 @@ public class AddBalanceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ApplicationContext applicationContext = Contexts.primitive();
+        ApplicationDiContext applicationContext = Contexts.primitive();
         iconRepository = applicationContext.getComponent(IconRepository.class);
         balanceService = applicationContext.getComponent(BalanceServiceImpl.class);
     }

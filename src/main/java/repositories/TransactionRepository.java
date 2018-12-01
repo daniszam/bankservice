@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.*;
@@ -15,52 +16,52 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class TransactionRepository implements Repository<Transaction> {
 
 
     private JdbcTemplate jdbcTemplate;
 
     //language=SQL
-    public static final String SQL_SEARCH_ACCOUNT_BALANCE = "SELECT balance FROM bank_account WHERE id=?";
+    private static final String SQL_SEARCH_ACCOUNT_BALANCE = "SELECT balance FROM bank_account WHERE id=?";
 
     //language=SQL
-    public static final String SQL_TRANSFER_FROM_ACCOUNT = "UPDATE bank_account SET balance=balance - ? WHERE id=?";
+    private static final String SQL_TRANSFER_FROM_ACCOUNT = "UPDATE bank_account SET balance=balance - ? WHERE id=?";
 
     //language=SQL
-    public static final String SQL_TRANSFER_TO_ACCOUNT = "UPDATE bank_account SET balance=balance + ? WHERE id=?";
+    private static final String SQL_TRANSFER_TO_ACCOUNT = "UPDATE bank_account SET balance=balance + ? WHERE id=?";
 
     //language=SQL
-    public static final String SQL_INSERT_TRANSACTION = "INSERT INTO transaction (date_time, user_id, transfer, category_id) " +
+    private static final String SQL_INSERT_TRANSACTION = "INSERT INTO transaction (date_time, user_id, transfer, category_id) " +
             "VALUES (?,?,?,?) " ;
 
 
     //language=SQL
-    public static final String SQL_DELETE_TRANSACTION = "DELETE FROM transaction Where id = ?";
+    private static final String SQL_DELETE_TRANSACTION = "DELETE FROM transaction Where id = ?";
 
     //language=SQL
-    public static final String SQL_ALL_TRANSACTION = "SELECT * FROM transaction" ;
+    private static final String SQL_ALL_TRANSACTION = "SELECT * FROM transaction" ;
 
     //language=SQL
-    public static final String SQL_DELETE_BY_ACCOUNT_ID = "DELETE FROM transaction WHERE type_id=? OR user_id=?";
+    private static final String SQL_DELETE_BY_ACCOUNT_ID = "DELETE FROM transaction WHERE type_id=? OR user_id=?";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_TRANSACTION_BY_CARD = "INSERT INTO transaction_by_card (transaction_id, card_id) VALUES (?,?)";
+    private static final String SQL_INSERT_INTO_TRANSACTION_BY_CARD = "INSERT INTO transaction_by_card (transaction_id, card_id) VALUES (?,?)";
 
     //language=SQL
-    public static final String SQL_UPDATE_CARD = "UPDATE card SET balance=? WHERE id=?";
+    private static final String SQL_UPDATE_CARD = "UPDATE card SET balance=? WHERE id=?";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_TRANSACTION_BY_BANK_ACCOUNT = "INSERT INTO transaction_by_bank_account (transaction_id, bank_account_id) VALUES (?,?)";
+    private static final String SQL_INSERT_INTO_TRANSACTION_BY_BANK_ACCOUNT = "INSERT INTO transaction_by_bank_account (transaction_id, bank_account_id) VALUES (?,?)";
 
     //language=SQL
-    public static final String SQL_UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET balance=? WHERE id=?";
+    private static final String SQL_UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET balance=? WHERE id=?";
 
     //language=SQL
-    public static final String SQL_INSERT_INTO_TRANSACTION_BY_CASH = "INSERT INTO transaction_by_cash (transaction_id, cash_id) VALUES (?,?)";
+    private static final String SQL_INSERT_INTO_TRANSACTION_BY_CASH = "INSERT INTO transaction_by_cash (transaction_id, cash_id) VALUES (?,?)";
 
     //language=SQL
-    public static final String SQL_UPDATE_CASH = "UPDATE cash SET balance=? WHERE id=?";
+    private static final String SQL_UPDATE_CASH = "UPDATE cash SET balance=? WHERE id=?";
 
 
 
@@ -115,10 +116,6 @@ public class TransactionRepository implements Repository<Transaction> {
     @SneakyThrows
     @Override
     public void delete(Long id) {
-
-    }
-    @SneakyThrows
-    public void deleteByAccount(Long id){
 
     }
 

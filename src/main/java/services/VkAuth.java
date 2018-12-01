@@ -1,6 +1,7 @@
 package services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.User;
 import models.VkAuthUser;
@@ -19,7 +20,7 @@ import org.json.JSONObject;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-
+@NoArgsConstructor
 public class VkAuth {
 
     private static final String clientId = "6743597";

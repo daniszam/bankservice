@@ -23,12 +23,11 @@
     <script src="<c:url value="/JavaScript/accordion.js"/> "></script>
 
 
+    <script src="<c:url value="/JavaScript/chandgeColor.js"/> " rel="stylesheet"></script>
     <title>Money assistance</title>
 
 </head>
 <body>
-
-
 
 
 <div class="demo-layout-transparent mdl-layout mdl-js-layout"/>
@@ -36,7 +35,7 @@
 
 <nav:navbar/>
 <h6 style="position: absolute;top: 80px; right: 10%">
-    <a href="/home?thema=black">Dark</a>|<a href="/home?thema=standart">Standart</a></a>
+    <a href="/home?thema=black" onclick="chandgeColor()">Dark</a>|<a href="/home?thema=standart">Standart</a></a>
 </h6>
 
 <style>

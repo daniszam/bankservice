@@ -6,6 +6,7 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.LocationUser;
 import repositories.Location;
@@ -16,7 +17,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+@NoArgsConstructor
 public class CheckIpAddressImpl implements CheckIpAddress {
 
     private static final String DB_MMDB = "/Users/danis_zam/IdeaProjects/bankservice/src/main/webapp/resources/DBLocation/GeoLite2-City.mmdb";

@@ -11,9 +11,12 @@
 <html>
 <head>
     <title>Sign In</title>
-    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+
+    <script src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"/>"></script>
     <link href="<c:url value="/CSS/signCard.css"/>" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+    <script src="<c:url value="/JavaScript/chandgeColor.js"/> " rel="stylesheet"></script>
+    <link href="<c:url value="https://fonts.googleapis.com/css?family=Comfortaa"/>" rel="stylesheet">
 </head>
 <body>
 <a class="title-name" style="text-decoration: none; position: absolute; z-index: 1; left:1%;" href="/home"><h2>YOUR FINANCE ASSISTANT</h2></a>

@@ -54,9 +54,7 @@ public class ControlBalanceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ServletContext servletContext = config.getServletContext();
         balanceService = Contexts.primitive().getComponent(BalanceService.class);
-       // balanceService = (BalanceService) servletContext.getAttribute("balanceService");
         objectMapper = new ObjectMapper();
     }
 }

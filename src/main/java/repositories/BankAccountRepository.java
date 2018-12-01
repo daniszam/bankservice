@@ -1,6 +1,7 @@
 package repositories;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.BankAccount;
 import models.Icon;
@@ -10,12 +11,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
+@Data
 public class BankAccountRepository implements Repository<BankAccount>, AllByIDRepository<BankAccount> {
 
 

@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import models.Category;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -7,14 +8,14 @@ import org.springframework.jdbc.core.RowMapper;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
-
+@NoArgsConstructor
 public class CategoryRepository implements Repository<Category> {
 
     private JdbcTemplate jdbcTemplate;
 
 
     //language=SQL
-    public static final String SQL_SELECT_ALL = "SELECT * FROM category";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM category";
 
     //language=SQL
     private static final String SQL_INSERT_CATEGORY = "INSERT INTO category(name) VALUES (?)";

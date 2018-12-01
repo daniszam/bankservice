@@ -17,12 +17,15 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+
     <link href="<c:url value="/CSS/userPage.css"/>" rel="stylesheet">
     <link href="<c:url value="/CSS/myspace.css"/>" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="<c:url value="/JavaScript/postAjax.js" />"></script>
+
+    <link href="<c:url value="/CSS/bankassistant.css"/>" rel="stylesheet">
+    <script src="<c:url value="/JavaScript/chandgeColor.js"/> " rel="stylesheet"></script>
     <title>My Space</title>
 </head>
 <body>

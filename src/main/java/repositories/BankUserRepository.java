@@ -1,5 +1,6 @@
 package repositories;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.*;
 import models.Transaction;
@@ -15,7 +16,7 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
-
+@NoArgsConstructor
 public class BankUserRepository implements Repository<User>, UserRepository {
 
     private JdbcTemplate jdbcTemplate;
@@ -49,19 +50,19 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             "bank_user.birthday, bank_user.gender, bank_user.phone_number " +
             "FROM bank_user ";
     //language=SQL
-    public static final String SQL_INSERT_INTO_USER = "INSERT INTO bank_user (first_name, last_name, phone_number, birthday, gender, hash_password, email) " +
+    private static final String SQL_INSERT_INTO_USER = "INSERT INTO bank_user (first_name, last_name, phone_number, birthday, gender, hash_password, email) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?) ";
 
     //language=SQL
-    public static final String SQL_DELETE_FROM_USER_BY_ID = "DELETE FROM bank_user " +
+    private static final String SQL_DELETE_FROM_USER_BY_ID = "DELETE FROM bank_user " +
             "where bank_user.id=?";
 
     //language=SQL
-    public static final String SQL_SELECT_USER_BY_ID = SQL_SELECT_ALL_USER + "WHERE bank_user.id =?";
+    private static final String SQL_SELECT_USER_BY_ID = SQL_SELECT_ALL_USER + "WHERE bank_user.id =?";
 
 
     //language=SQL
-    public static final String SQL_SELECT_USER_BY_EMAIL = SQL_SELECT_ALL_USER + "WHERE bank_user.email =?";
+    private static final String SQL_SELECT_USER_BY_EMAIL = SQL_SELECT_ALL_USER + "WHERE bank_user.email =?";
 
 
     public BankUserRepository(DataSource dataSource) {
@@ -74,7 +75,6 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             .firstName(resultSet.getString("first_name"))
             .lastName(resultSet.getString("last_name"))
             .birthday(resultSet.getDate("birthday"))
-            //.gender(resultSet.getString("gender").charAt(0))
             .email(resultSet.getString("email"))
             .hashPassword(resultSet.getString("hash_password"))
             .phoneNumber(resultSet.getString("phone_number"))
