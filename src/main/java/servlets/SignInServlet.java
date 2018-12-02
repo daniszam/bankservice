@@ -35,7 +35,7 @@ public class SignInServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/JSP/SignInCard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/ftl/signInCard.ftl").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

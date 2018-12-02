@@ -22,6 +22,6 @@ public class LogOutServlet extends HttpServlet {
                 resp.addCookie(remember);
             }
         }
-        req.getRequestDispatcher("/WEB-INF/JSP/home.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/ftl/home.ftl").forward(req, resp);
     }
 }

@@ -33,7 +33,7 @@ public class AuthByLinkServlet extends HttpServlet {
         user = (User) httpSession.getAttribute("user");
         if (user != null) {
             request.setAttribute("email", user.getEmail());
-            request.getRequestDispatcher("/WEB-INF/JSP/CreatePassword.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/ftl/createPassword.ftl").forward(request, response);
         } else {
             response.sendRedirect("/signUp");
         }

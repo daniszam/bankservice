@@ -1,7 +1,3 @@
-<%@tag description="Navbar Tag" pageEncoding="UTF-8" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-
 <c:set var="user" value="${user}"/>
 
 <header class="mdl-layout__header mdl-layout__header--transparent">

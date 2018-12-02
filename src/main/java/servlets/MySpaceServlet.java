@@ -3,6 +3,10 @@ package servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import context.ApplicationDiContext;
 import context.Contexts;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import lombok.SneakyThrows;
 import models.*;
 import models.Transaction;
 import org.json.JSONArray;
@@ -20,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +41,7 @@ public class MySpaceServlet extends HttpServlet {
     private Circle circle;
 
     @Override
+    @SneakyThrows
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         httpSession = request.getSession();
         request.setAttribute("category", categoryRepository.findAll());
@@ -46,17 +53,18 @@ public class MySpaceServlet extends HttpServlet {
 
         List<Transaction> transactions = user.getTransactions();
         CategoryPercent categoryPercent = new CategoryPercent();
-        Map<Category, Float> categoryPercentMap = categoryPercent.getCategoryUtils(transactions);
+        List<Category> categories = categoryPercent.getCategoryUtils(transactions);
         if (transactions.size() > 0) {
-            int random = (int) (transactions.size() * Math.random());
+            int random = (int) (categories.size() * Math.random());
             request.setAttribute("randomCategory", transactions.get(random).getCategory().getName());
-            int randPercent = (categoryPercentMap.get(transactions.get(random).getCategory())).intValue();
+            int randPercent = (categories.get(random)).getPercent().intValue();
             request.setAttribute("randomPercent", randPercent);
         }
         int percent = circle.getPercent(cards, bankAccounts);
         httpSession.setAttribute("percent", percent);
-        request.setAttribute("percentMap", categoryPercentMap);
-        request.getRequestDispatcher("/WEB-INF/JSP/MySpace.jsp").forward(request, response);
+
+        request.setAttribute("categories",categories);
+        request.getRequestDispatcher("/WEB-INF/ftl/mySpace.ftl").forward(request, response);
     }
 
     @Override

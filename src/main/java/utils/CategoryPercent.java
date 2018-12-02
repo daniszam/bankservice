@@ -3,6 +3,7 @@ package utils;
 import models.Category;
 import models.Transaction;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +19,11 @@ public class CategoryPercent {
         sum = 0F;
     }
 
-    public Map<Category, Float> getCategoryUtils(List<Transaction> transactions) {
+    public List<Category> getCategoryUtils(List<Transaction> transactions) {
         for (int i = 0; i < transactions.size(); i++) {
             Category category = transactions.get(i).getCategory();
+            category.setColor
+                    (new Color((int)(1+Math.random()*255),(int)(1+Math.random()*255),(int)(1+Math.random()*255)));
             if (!this.categoryPercentMap.containsKey(category)) {
                 categoryPercentMap.put(category, transactions.get(i).getPrice());
             } else {
@@ -28,15 +31,17 @@ public class CategoryPercent {
             }
             sum += transactions.get(i).getPrice();
         }
-
+        List<Category> categories = new ArrayList<>();
         for (Map.Entry entry : categoryPercentMap.entrySet()) {
             float percent = (Float) entry.getValue() / sum;
+            categoryPercentMap.put((Category)entry.getKey(), percent);
             percent = percent * 100;
-
-            categoryPercentMap.put((Category) entry.getKey(), percent);
+            Category category= (Category) entry.getKey();
+            category.setPercent(percent);
+            categories.add(category);
         }
 
-        return categoryPercentMap;
+        return categories;
 
     }
 

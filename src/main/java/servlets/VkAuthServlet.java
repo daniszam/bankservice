@@ -4,11 +4,9 @@ import context.Contexts;
 import models.User;
 import models.VkAuthUser;
 import services.UsersService;
-import services.UsersServiceImpl;
 import services.VkAuth;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

@@ -34,7 +34,7 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().removeAttribute("puted");
-        request.getRequestDispatcher("/WEB-INF/JSP/SignUpCard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/ftl/signUpCard.ftl").forward(request, response);
 
     }
 
