@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="username" value="postgres"/>
+        <property name="password" value="dREAM1cACAO"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/bank_service"/>
+    </bean>
+
+
+    <bean id="bankAccountRepository" class="repositories.BankAccountRepository">
+       <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="bankUserRepository" class="repositories.BankUserRepository">
+        <constructor-arg name="dataSource"  ref="dataSource"/>
+    </bean>
+    <bean id="cardRepository" class="repositories.CardRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="cashRepository" class="repositories.CashRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="categoryRepository" class="repositories.CategoryRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="credotRepository" class="repositories.CreditRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="iconRepository" class="repositories.IconRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="insRepository" class="repositories.InsRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="locationRepository" class="repositories.LocationRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="transactionRepository" class="repositories.TransactionRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="uuidRepository" class="repositories.UUIDRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="balanceService" class="services.BalanceServiceImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="checkIpAddressService" class="services.CheckIpAddressImpl"/>
+    <bean id="locationService" class="services.LocationServiceImpl">
+        <constructor-arg name="locationRepository" ref="locationRepository"/>
+    </bean>
+    <bean id="transactionServiceImpl" class="services.TransactionServiceImpl">
+        <constructor-arg name="transactionRepository" ref="transactionRepository"/>
+    </bean>
+    <bean id="userServiceImpl" class="services.UsersServiceImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="vkAuth" class="services.VkAuth"/>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+</beans>

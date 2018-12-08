@@ -31,7 +31,7 @@ public class RememberFilter implements Filter {
         ServletContext servletContext = filterConfig.getServletContext();
         uuidRepository = (UUIDRepository) servletContext.getAttribute("uuidRepository");
         bankUserRepository = (BankUserRepository) servletContext.getAttribute("bankUserRepository");
-        usersService = new UsersServiceImpl((DataSource) servletContext.getAttribute("dataSource"));
+        usersService = (UsersServiceImpl)servletContext.getAttribute("userServiceImpl");
     }
 
     @Override
@@ -39,13 +39,13 @@ public class RememberFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpSession httpSession = httpServletRequest.getSession();
-        if (httpServletRequest.getCookies().length == 0) {
+        if (httpServletRequest.getCookies() == null) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
 
         User user = (User) httpSession.getAttribute("user");
         if (user == null) {
-            String userKey = null;
+            String userKey;
             if (httpServletRequest.getCookies().length > 0) {
                 for (Cookie cookie : httpServletRequest.getCookies()) {
                     if (cookie.getName().equals("remember")) {

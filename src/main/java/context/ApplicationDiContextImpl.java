@@ -2,7 +2,6 @@ package context;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import repositories.BankAccountRepository;
 
 import javax.sql.DataSource;
 import java.io.FileNotFoundException;

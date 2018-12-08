@@ -22,9 +22,8 @@ public class TransactionServiceImpl implements TransactionService {
     private List<Balance> balances;
     private TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(User user, TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
-        this.user = user;
         this.balances = new ArrayList<>();
     }
 

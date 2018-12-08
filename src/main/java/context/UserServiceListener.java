@@ -1,12 +1,11 @@
 package context;
 
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import repositories.*;
-import services.BalanceService;
-import services.BalanceServiceImpl;
-import services.UsersService;
-import services.UsersServiceImpl;
+import services.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -18,47 +17,30 @@ import java.util.List;
 
 public class UserServiceListener implements ServletContextListener {
 
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "dREAM1cACAO";
-    private static final String URL = "jdbc:postgresql://localhost:5432/bank_service";
-
-
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        Class.forName("org.postgresql.Driver");
-        Connection connection =
-                DriverManager.getConnection(URL, USERNAME, PASSWORD);
-
-        DriverManagerDataSource dataSource =
-                new DriverManagerDataSource();
-
-        dataSource.setUrl(URL);
-        dataSource.setUsername(USERNAME);
-        dataSource.setPassword(PASSWORD);
-
-        BankUserRepository bankUserRepository = new BankUserRepository(dataSource);
-        UsersService usersService = new UsersServiceImpl(dataSource);
-        CategoryRepository categoryRepository = new CategoryRepository(dataSource);
-        TransactionRepository transactionRepository = new TransactionRepository(dataSource);
-        BankAccountRepository bankAccountRepository = new BankAccountRepository(dataSource);
-        CardRepository cardRepository = new CardRepository(dataSource);
-        BalanceService balanceService = new BalanceServiceImpl(dataSource);
-        UUIDRepository uuidRepository = new UUIDRepository(dataSource);
+        ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+        BankUserRepository bankUserRepository = context.getBean(BankUserRepository.class);
+        UsersService usersService = context.getBean(UsersServiceImpl.class);
+        CategoryRepository categoryRepository = context.getBean(CategoryRepository.class);
+        TransactionRepository transactionRepository = context.getBean(TransactionRepository.class);
+        BankAccountRepository bankAccountRepository = context.getBean(BankAccountRepository.class);
+        CardRepository cardRepository = context.getBean(CardRepository.class);
+        BalanceService balanceService = context.getBean(BalanceServiceImpl.class);
+        UUIDRepository uuidRepository = context.getBean(UUIDRepository.class);
+        TransactionService transactionService = context.getBean(TransactionServiceImpl.class);
 
         ServletContext servletContext = servletContextEvent.getServletContext();
         servletContext.setAttribute("bankUserRepository", bankUserRepository);
         servletContext.setAttribute("usersService", usersService);
         servletContext.setAttribute("cardRepository" , cardRepository);
         servletContext.setAttribute("bankAccountRepository" , bankAccountRepository);
-        servletContext.setAttribute("categoryRep", categoryRepository);
+        servletContext.setAttribute("categoryRepository", categoryRepository);
         servletContext.setAttribute("transactionRepository", transactionRepository);
-        servletContext.setAttribute("dataSource", dataSource);
         servletContext.setAttribute("balanceService",balanceService);
         servletContext.setAttribute("uuidRepository",uuidRepository);
-        List<String> packages = new ArrayList<>();
-        packages.add("repositories");
-        packages.add("services");
+        servletContext.setAttribute("transactionService", transactionService);
 
     }
 

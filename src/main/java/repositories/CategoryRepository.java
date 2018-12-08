@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
@@ -31,6 +32,7 @@ public class CategoryRepository implements Repository<Category> {
             .name(resultSet.getString("name"))
             .id(resultSet.getLong("id"))
             .img(resultSet.getString("icon"))
+            .color(new Color(resultSet.getInt("color")))
             .build());
 
     @Override

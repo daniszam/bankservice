@@ -3,9 +3,6 @@ package servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import context.ApplicationDiContext;
 import context.Contexts;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import lombok.SneakyThrows;
 import models.*;
 import models.Transaction;
@@ -24,16 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @WebServlet("/mySpace")
 public class MySpaceServlet extends HttpServlet {
     private CategoryRepository categoryRepository;
-    private TransactionRepository transactionRepository;
+    private TransactionServiceImpl transactionService;
     private CardRepository cardRepository;
     private BankAccountRepository bankAccountRepository;
     private HttpSession httpSession;
@@ -76,10 +70,10 @@ public class MySpaceServlet extends HttpServlet {
         JSONArray types = new JSONArray(req.getParameter("type"));
         User user = (User) httpSession.getAttribute("user");
 
-        TransactionService transactionService = new TransactionServiceImpl(user, transactionRepository);
+        transactionService.setUser(user);
         transactionService.getUsefulBalances(types);
         List<Transaction> transactions = transactionService.getTransactions(items);
-        List<Balance> balances = ((TransactionServiceImpl) transactionService).getBalances();
+        List<Balance> balances =  transactionService.getBalances();
         for (int i = 0; i < transactions.size(); i++) {
             System.out.println(balances.get(0).getBalance());
             circle.setCountMoney(circle.getCountMoney() - transactions.get(i).getPrice());
@@ -102,8 +96,9 @@ public class MySpaceServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         ApplicationDiContext applicationContext = Contexts.primitive();
         categoryRepository = applicationContext.getComponent(CategoryRepository.class);
-        transactionRepository = applicationContext.getComponent(TransactionRepository.class);
+        categoryRepository =(CategoryRepository) config.getServletContext().getAttribute("categoryRepository");
         bankAccountRepository = applicationContext.getComponent(BankAccountRepository.class);
+        transactionService = (TransactionServiceImpl) config.getServletContext().getAttribute("transactionService");
         cardRepository = applicationContext.getComponent(CardRepository.class);
 
     }

@@ -76,9 +76,6 @@ public class TransactionRepository implements Repository<Transaction> {
         @Override
         @SneakyThrows
         public Transaction rowMap(ResultSet resultSet) {
-            BankAccountRepository bankAccountRepository = new BankAccountRepository(jdbcTemplate.getDataSource());
-            Optional<BankAccount> fromBankAcoount = bankAccountRepository.findOne(resultSet.getLong("from_account"));
-            Optional<BankAccount> toBankAccount = bankAccountRepository.findOne(resultSet.getLong("to_account"));
             Transaction transaction = Transaction.builder()
                     .dateTime(resultSet.getDate("date_time"))
                     .price(resultSet.getFloat("transfer"))

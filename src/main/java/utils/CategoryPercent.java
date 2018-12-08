@@ -22,8 +22,6 @@ public class CategoryPercent {
     public List<Category> getCategoryUtils(List<Transaction> transactions) {
         for (int i = 0; i < transactions.size(); i++) {
             Category category = transactions.get(i).getCategory();
-            category.setColor
-                    (new Color((int)(1+Math.random()*255),(int)(1+Math.random()*255),(int)(1+Math.random()*255)));
             if (!this.categoryPercentMap.containsKey(category)) {
                 categoryPercentMap.put(category, transactions.get(i).getPrice());
             } else {
@@ -34,13 +32,15 @@ public class CategoryPercent {
         List<Category> categories = new ArrayList<>();
         for (Map.Entry entry : categoryPercentMap.entrySet()) {
             float percent = (Float) entry.getValue() / sum;
-            categoryPercentMap.put((Category)entry.getKey(), percent);
             percent = percent * 100;
-            Category category= (Category) entry.getKey();
-            category.setPercent(percent);
-            categories.add(category);
+            Category category = (Category) entry.getKey();
+            categoryPercentMap.put(category, percent);
         }
-
+        for (Map.Entry entry : categoryPercentMap.entrySet()) {
+            Category category = (Category) entry.getKey();
+            category.setPercent((Float)entry.getValue());
+        }
+        categories.addAll(categoryPercentMap.keySet());
         return categories;
 
     }

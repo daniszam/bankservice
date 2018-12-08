@@ -11,10 +11,12 @@ import org.springframework.jdbc.support.KeyHolder;
 
 
 import javax.sql.DataSource;
+import java.awt.*;
 import java.sql.*;
 
 import java.sql.Date;
 import java.util.*;
+import java.util.List;
 
 @NoArgsConstructor
 public class BankUserRepository implements Repository<User>, UserRepository {
@@ -37,7 +39,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             "acc.balance,acc.id AS bank_account_id,  " +
             " c.id AS card_id, c.balance AS card_balance, c.up_date, t.id AS transaction_id, " +
             " t.transfer, t.category_id, t.date_time, c2.name AS category_name, c.name AS card_name, c.up_sum, c.up_date, " +
-            "c.icon_id AS card_icon_id, acc.icon_id AS bank_acc_icon_ic, acc.name AS bank_acc_name, acc.icon_id AS bank_acc_icon_id " +
+            "c.icon_id AS card_icon_id, acc.icon_id AS bank_acc_icon_ic, acc.name AS bank_acc_name, acc.icon_id AS bank_acc_icon_id, c2.color " +
             "FROM bank_user " +
             "left join bank_account acc on bank_user.id = acc.bank_user_id " +
             "left join card c ON bank_user.id = c.bank_user_id " +
@@ -114,6 +116,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     .dateTime(resultSet.getDate("date_time"))
                     .category(Category.builder()
                             .id(resultSet.getLong("category_id"))
+                            .color(new Color(resultSet.getInt("color")))
                             .name(resultSet.getString("category_name"))
                             .build())
                     .id(resultSet.getLong("transaction_id"))
@@ -186,6 +189,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     .price(resultSet.getFloat("transfer"))
                     .dateTime(resultSet.getDate("date_time"))
                     .category(Category.builder()
+                            .color(new Color(resultSet.getInt("color")))
                             .id(resultSet.getLong("category_id"))
                             .name(resultSet.getString("category_name"))
                             .build())

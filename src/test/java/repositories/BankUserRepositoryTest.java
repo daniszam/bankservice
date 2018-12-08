@@ -1,10 +1,12 @@
 package repositories;
 
+import models.Category;
 import models.User;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import utils.CategoryPercent;
 
 import java.util.List;
 
@@ -58,7 +60,9 @@ public class BankUserRepositoryTest {
     @Ignore
     public void findOneByEmail() {
       User user =  bankUserRepository.findOneByEmail("danis.zamaliev2011@yandex.ru").get();
-        //System.out.println(user.getHashPassword());
+        CategoryPercent categoryPercent = new CategoryPercent();
+        List<Category> categories = categoryPercent.getCategoryUtils(user.getTransactions());
+        System.out.println(categories);
 
     }
 }

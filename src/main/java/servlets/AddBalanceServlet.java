@@ -36,7 +36,7 @@ public class AddBalanceServlet extends HttpServlet {
         request.setAttribute("types", balances);
         icons = iconRepository.findAll();
         request.setAttribute("icons", icons);
-        request.getRequestDispatcher("/WEB-INF/JSP/AddBalance.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/ftl/addBalance.ftl").forward(request, response);
 
     }
 
