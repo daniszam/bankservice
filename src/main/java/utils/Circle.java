@@ -46,7 +46,6 @@ public class Circle {
             float a = ((sum - (sum - Math.abs(countMoney))) / sum);
             float percent = a * 100;
             this.percent = (int) percent;
-            System.out.println(sum + "   kkkk");
             return this.percent;
         }
     }

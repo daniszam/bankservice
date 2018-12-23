@@ -54,9 +54,13 @@
     </bean>
     <bean id="transactionServiceImpl" class="services.TransactionServiceImpl">
         <constructor-arg name="transactionRepository" ref="transactionRepository"/>
+        <constructor-arg name="categoryRepository" ref="categoryRepository"/>
     </bean>
     <bean id="userServiceImpl" class="services.UsersServiceImpl">
-        <constructor-arg name="dataSource" ref="dataSource"/>
+        <property name="bankAccountRepository" ref="bankAccountRepository"/>
+        <property name="bankUserRepository" ref="bankUserRepository"/>
+        <property name="cardRepository" ref="cardRepository"/>
+        <property name="transactionRepository" ref="transactionRepository"/>
     </bean>
     <bean id="vkAuth" class="services.VkAuth"/>
 

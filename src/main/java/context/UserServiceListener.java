@@ -1,7 +1,9 @@
 package context;
 
+import config.AppConfig;
 import lombok.SneakyThrows;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import repositories.*;
@@ -10,6 +12,7 @@ import services.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -20,16 +23,26 @@ public class UserServiceListener implements ServletContextListener {
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
-        BankUserRepository bankUserRepository = context.getBean(BankUserRepository.class);
-        UsersService usersService = context.getBean(UsersServiceImpl.class);
-        CategoryRepository categoryRepository = context.getBean(CategoryRepository.class);
-        TransactionRepository transactionRepository = context.getBean(TransactionRepository.class);
-        BankAccountRepository bankAccountRepository = context.getBean(BankAccountRepository.class);
-        CardRepository cardRepository = context.getBean(CardRepository.class);
-        BalanceService balanceService = context.getBean(BalanceServiceImpl.class);
-        UUIDRepository uuidRepository = context.getBean(UUIDRepository.class);
-        TransactionService transactionService = context.getBean(TransactionServiceImpl.class);
+
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
+        //beans from XML beans config
+//        BankUserRepository bankUserRepository = context.getBean(BankUserRepository.class);
+//        UsersService usersService = context.getBean(UsersServiceImpl.class);
+//        CategoryRepository categoryRepository = context.getBean(CategoryRepository.class);
+//        TransactionRepository transactionRepository = context.getBean(TransactionRepository.class);
+
+       // ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        //beans from AppConfig
+        BankAccountRepository bankAccountRepository = applicationContext.getBean(BankAccountRepository.class);
+        CardRepository cardRepository = applicationContext.getBean(CardRepository.class);
+        BalanceService balanceService = applicationContext.getBean(BalanceServiceImpl.class);
+        UUIDRepository uuidRepository = applicationContext.getBean(UUIDRepository.class);
+        TransactionService transactionService = applicationContext.getBean(TransactionServiceImpl.class);
+
+        BankUserRepository bankUserRepository = applicationContext.getBean(BankUserRepository.class);
+        UsersService usersService = applicationContext.getBean(UsersServiceImpl.class);
+        CategoryRepository categoryRepository = applicationContext.getBean(CategoryRepository.class);
+        TransactionRepository transactionRepository = applicationContext.getBean(TransactionRepository.class);
 
         ServletContext servletContext = servletContextEvent.getServletContext();
         servletContext.setAttribute("bankUserRepository", bankUserRepository);

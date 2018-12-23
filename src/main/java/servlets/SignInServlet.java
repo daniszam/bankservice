@@ -58,6 +58,7 @@ public class SignInServlet extends HttpServlet {
                 uuidRepository.save(UUIDUser.builder().user(optionalUser.get()).uuid(cookieValue).build());
                 response.addCookie(userKey);
             }
+            response.setStatus(HttpServletResponse.SC_OK);
             response.sendRedirect(request.getContextPath()+"/home");
         } else {
             response.sendRedirect(request.getContextPath()+"/signIn");

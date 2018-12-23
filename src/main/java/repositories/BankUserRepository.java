@@ -34,7 +34,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
     private User theOnlyUser;
 
     //language=SQL
-    public static final String SQL_SELECT_ALL_USER = "SELECT bank_user.id, bank_user.first_name, bank_user.last_name, " +
+    public static final String SQL_SELECT_ALL_USER = "SELECT bank_user.id,bank_user.img, bank_user.first_name, bank_user.last_name, " +
             "bank_user.birthday, bank_user.gender, bank_user.phone_number, bank_user.email, bank_user.hash_password,  " +
             "acc.balance,acc.id AS bank_account_id,  " +
             " c.id AS card_id, c.balance AS card_balance, c.up_date, t.id AS transaction_id, " +
@@ -54,6 +54,9 @@ public class BankUserRepository implements Repository<User>, UserRepository {
     //language=SQL
     private static final String SQL_INSERT_INTO_USER = "INSERT INTO bank_user (first_name, last_name, phone_number, birthday, gender, hash_password, email) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?) ";
+
+    //language=SQL
+    public static final String SQL_SELECT_USER_WITHOUT_BALANCE = "SELECT * FROM bank_user WHERE bank_user.email = ?";
 
     //language=SQL
     private static final String SQL_DELETE_FROM_USER_BY_ID = "DELETE FROM bank_user " +
@@ -80,6 +83,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             .email(resultSet.getString("email"))
             .hashPassword(resultSet.getString("hash_password"))
             .phoneNumber(resultSet.getString("phone_number"))
+            .img(resultSet.getString("img"))
             .build());
 
     private RowMapper<User> userWithOrdersForOneUserRowMapper = new RowMapper<User>() {
@@ -146,9 +150,6 @@ public class BankUserRepository implements Repository<User>, UserRepository {
                     userWithTransaction.get(theOnlyUser).add(transaction);
                 }
             }
-//            if(credit.getId() != 0){
-//                userWithBalances.get(theOnlyUser).add(credit);
-//            }
             if (card.getId() != 0) {
                 if (!userWithBalances.get(theOnlyUser).contains(card)) {
                     userWithBalances.get(theOnlyUser).add(card);
@@ -307,6 +308,10 @@ public class BankUserRepository implements Repository<User>, UserRepository {
         return true;
     }
 
+    public Optional<User> fingOnlyUser(User user){
+        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_USER_WITHOUT_BALANCE,
+                userRowMapper, user.getEmail()));
+    }
 
     @SneakyThrows
     public void delete(Long id) {

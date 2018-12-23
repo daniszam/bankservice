@@ -8,6 +8,7 @@ import java.sql.Date;
 @Setter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 public class BankAccount extends Balance{
     private Long bankAccounNumber;
     private Float percent;

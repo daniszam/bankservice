@@ -2,12 +2,15 @@ package servlets;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import context.ApplicationDiContext;
 import context.Contexts;
 import models.Balance;
 import models.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import services.BalanceService;
+import services.UsersService;
+import services.UsersServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -25,9 +28,12 @@ public class ControlBalanceServlet extends HttpServlet {
 
     private BalanceService balanceService;
     private ObjectMapper objectMapper;
+    private UsersService usersService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        usersService.getUserBalances(user);
         request.getRequestDispatcher("WEB-INF/ftl/controlBalances.ftl").forward(request, response);
     }
 
@@ -38,7 +44,7 @@ public class ControlBalanceServlet extends HttpServlet {
         JSONArray types = new JSONArray(request.getParameter("items"));
         for (int i = 0; i < types.length(); i++) {
             JSONObject type = types.getJSONObject(i);
-            Balance balance = user.getBalances().get(type.getInt("id"));
+            Balance balance = usersService.getUserBalances(user).get(type.getInt("id"));
             balance.setBalance(balance.getBalance() + type.getInt("sum"));
             balanceService.increaseBalance(balance);
             balance.setUser(null);
@@ -54,7 +60,10 @@ public class ControlBalanceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        balanceService = Contexts.primitive().getComponent(BalanceService.class);
+        ApplicationDiContext applicationContext = Contexts.primitive();
+
+        balanceService = applicationContext.getComponent(BalanceService.class);
+        usersService = applicationContext.getComponent(UsersServiceImpl.class);
         objectMapper = new ObjectMapper();
     }
 }

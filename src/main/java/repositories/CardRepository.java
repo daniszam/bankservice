@@ -46,7 +46,6 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     //language=SQL
     private static final String SQL_UPDATE_CARD = "UPDATE card SET balance=?, up_date=?, up_sum=? WHERE id=?";
 
-    //
 
 
     //language=SQL

@@ -12,14 +12,14 @@
     <svg class="circle-chart" id="circle_box" viewbox="0 0 32 32" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
         <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16" cy="16" r="15" />
         <#list categories as category>
-            <circle class="circle-chart__circle" stroke="rgb(${category.color.red},${category.color.green},${category.color.blue}" stroke-width="2"
+            <circle class="circle-chart__circle" stroke="rgb(${category.color.red},${category.color.green},${category.color.blue})" stroke-width="2"
                     stroke-dasharray="${category.percent},100" stroke-dashoffset="-${dashoffset}"
                     id="${category.name}circle" stroke-linecap="round" fill="none" cx="16" cy="16" r="15" />
             <#assign dashoffset=dashoffset+category.percent>
         </#list>
         <g class="circle-chart__info">
             <text class="circle-chart__percent" x="15" y="14" alignment-baseline="central" text-anchor="middle" font-size="8">${randomPercent}%</text>
-            <text class="circle-chart__subline" x="15" y="18.5" alignment-baseline="central" text-anchor="middle" font-size="2">You spent to ${randomCategory}</text>
+            <text class="circle-chart__subline" x="15" y="18.5" alignment-baseline="central" text-anchor="middle" font-size="2">You spent to ${randomCategory.name}</text>
         </g>
     </svg>
 </section>

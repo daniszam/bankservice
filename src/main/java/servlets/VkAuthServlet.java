@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
 
 @WebServlet("/vkAuth")
@@ -31,7 +32,10 @@ public class VkAuthServlet extends HttpServlet {
             VkAuth vkAuth = new VkAuth();
             VkAuthUser vkAuthUser = vkAuth.getUserToken(code);
             User user = vkAuth.getUser(vkAuthUser);
-            usersService.signIn(user);
+            Optional<User> optionalUser = usersService.signIn(user);
+            if(optionalUser.isPresent()){
+                user = optionalUser.get();
+            }
             HttpSession httpSession = request.getSession();
             httpSession.setAttribute("user", user);
             response.sendRedirect(request.getContextPath()+"/createPassword");

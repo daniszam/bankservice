@@ -20,8 +20,10 @@ public class CategoryPercent {
     }
 
     public List<Category> getCategoryUtils(List<Transaction> transactions) {
+        this.categoryPercentMap = new HashMap<>();
         for (int i = 0; i < transactions.size(); i++) {
             Category category = transactions.get(i).getCategory();
+            category.setPercent(null);
             if (!this.categoryPercentMap.containsKey(category)) {
                 categoryPercentMap.put(category, transactions.get(i).getPrice());
             } else {
@@ -29,6 +31,7 @@ public class CategoryPercent {
             }
             sum += transactions.get(i).getPrice();
         }
+
         List<Category> categories = new ArrayList<>();
         for (Map.Entry entry : categoryPercentMap.entrySet()) {
             float percent = (Float) entry.getValue() / sum;
@@ -36,11 +39,13 @@ public class CategoryPercent {
             Category category = (Category) entry.getKey();
             categoryPercentMap.put(category, percent);
         }
-        for (Map.Entry entry : categoryPercentMap.entrySet()) {
+        Map<Category, Float> categoryFloatMap = new HashMap<>();
+        categoryFloatMap.putAll(categoryPercentMap);
+        for (Map.Entry entry : categoryFloatMap.entrySet()) {
             Category category = (Category) entry.getKey();
-            category.setPercent((Float)entry.getValue());
+            category.setPercent((Float) entry.getValue());
         }
-        categories.addAll(categoryPercentMap.keySet());
+        categories.addAll(categoryFloatMap.keySet());
         return categories;
 
     }
@@ -56,5 +61,13 @@ public class CategoryPercent {
 
         }
         return categoryUtilList;
+    }
+
+    public static Category getRandomPercent(List<Category> categories, List<Transaction> transactions) {
+        int random = (int) (categories.size() * Math.random());
+        float randPercent = (categories.get(random)).getPercent().intValue();
+        Category category = transactions.get(random).getCategory();
+        category.setPercent(randPercent);
+        return category;
     }
 }

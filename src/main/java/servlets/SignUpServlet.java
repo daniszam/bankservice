@@ -53,12 +53,6 @@ public class SignUpServlet extends HttpServlet {
         if(request.getSession().getAttribute("puted")==null) {
             if (usersService.signUp(userForm)) {
                 response.sendRedirect("/signIn");
-            } else {
-                PrintWriter printWriter = response.getWriter();
-                printWriter.println("<script type=\"text/javascript\">");
-                printWriter.println("alert('User or password incorrect');");
-                printWriter.println("location='/signUp';");
-                printWriter.println("</script>");
             }
             request.getSession().setAttribute("puted", "true");
         }

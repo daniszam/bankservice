@@ -41,14 +41,14 @@ public class AuthByLinkServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SignUpForm signUpForm = SignUpForm.builder()
-                .password(request.getParameter("password"))
-                .email(user.getEmail())
-                .birthday(user.getBirthday().toString())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .gender(user.getGender())
-                .build();
+//        SignUpForm signUpForm = SignUpForm.builder()
+//                .password(request.getParameter("password"))
+//                .email(user.getEmail())
+//                .birthday(user.getBirthday().toString())
+//                .firstName(user.getFirstName())
+//                .lastName(user.getLastName())
+//                .gender(user.getGender())
+//                .build();
         user.setHashPassword(request.getParameter("password"));
         usersService.signUp(user);
         response.sendRedirect("/home");

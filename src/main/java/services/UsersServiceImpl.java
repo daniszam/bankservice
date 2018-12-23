@@ -2,39 +2,50 @@ package services;
 
 import forms.LoginForm;
 import forms.SignUpForm;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import models.Balance;
-import models.User;
+import models.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import repositories.BankAccountRepository;
 import repositories.BankUserRepository;
 import repositories.CardRepository;
+import repositories.TransactionRepository;
+import utils.Circle;
 
+import javax.jws.soap.SOAPBinding;
 import javax.sql.DataSource;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 @NoArgsConstructor
 @Data
+@Builder
 public class UsersServiceImpl implements UsersService {
 
     private BankUserRepository bankUserRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private CardRepository cardRepository;
     private BankAccountRepository bankAccountRepository;
+    private TransactionRepository transactionRepository;
 
-    public UsersServiceImpl(DataSource dataSource) {
-        this.bankUserRepository = new BankUserRepository(dataSource);
-        this.passwordEncoder = new BCryptPasswordEncoder();
-        this.cardRepository = new CardRepository(dataSource);
-        this.bankAccountRepository = new BankAccountRepository(dataSource);
+    public UsersServiceImpl(BankUserRepository bankUserRepository,
+                            CardRepository cardRepository,
+                            BankAccountRepository bankAccountRepository,
+                            TransactionRepository transactionRepository) {
+
+        this.bankUserRepository = bankUserRepository;
+        this.cardRepository = cardRepository;
+        this.bankAccountRepository = bankAccountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -59,7 +70,7 @@ public class UsersServiceImpl implements UsersService {
                         .birthday(birthday)
                         .build();
                 Optional<User> optionalUser = bankUserRepository.findOneByEmail(user.getEmail());
-                if(!optionalUser.isPresent()) {
+                if (!optionalUser.isPresent()) {
                     bankUserRepository.save(user);
                     return true;
                 }
@@ -73,20 +84,19 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
-    public boolean signIn(User user) {
-        Optional<User> optionalUser = bankUserRepository.findOneByEmail(user.getEmail());
+    public Optional<User> signIn(User user) {
+        Optional<User> optionalUser = bankUserRepository.fingOnlyUser(user);
         if (!optionalUser.isPresent()) {
-            return false;
+            return Optional.empty();
         }
-        // user = optionalUser.get();
-        List<Balance> balances = new ArrayList<>();
-        balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
-        balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
-        user.setBalances(balances);
-        user.setId(optionalUser.get().getId());
-        user.setHashPassword(optionalUser.get().getHashPassword());
-        user.setTransactions(optionalUser.get().getTransactions());
-        return true;
+//        List<Balance> balances = new ArrayList<>();
+//        balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
+//        balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
+//        user.setBalances(balances);
+//        user.setId(optionalUser.get().getId());
+//        user.setHashPassword(optionalUser.get().getHashPassword());
+//        user.setTransactions(optionalUser.get().getTransactions());
+        return optionalUser;
     }
 
 
@@ -117,4 +127,41 @@ public class UsersServiceImpl implements UsersService {
             return Optional.empty();
         }
     }
+
+    @Override
+    public List<Card> getUserCard(User user) {
+        return cardRepository.findAllByUserId(user.getId());
+    }
+
+    public List<Balance> getUserBalances(User user){
+        if (user.getBalances() == null || user.getBalances().size() ==0 ) {
+            List<Card> cards = getUserCard(user);
+            List<BankAccount> bankAccounts = getBankAccount(user);
+            List<Balance> balances = new ArrayList<>();
+            balances.addAll(cards);
+            balances.addAll(bankAccounts);
+            user.setBalances(balances);
+        }
+        return user.getBalances();
+    }
+
+    @Override
+    public int getPercentFromSalary(List<Card> cards, List<BankAccount> bankAccounts) {
+        Circle circle = new Circle();
+        return circle.getPercent(cards, bankAccounts);
+    }
+
+
+    @Override
+    public List<BankAccount> getBankAccount(User user) {
+        return bankAccountRepository.findAllByUserId(user.getId());
+    }
+
+    public List<Transaction> getUserTransaction(User user){
+        if (user.getTransactions() == null){
+            user.setTransactions(transactionRepository.findAllByUserId(user));
+        }
+        return user.getTransactions();
+    }
+
 }

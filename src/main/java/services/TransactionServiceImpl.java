@@ -8,8 +8,11 @@ import models.Transaction;
 import models.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import repositories.CategoryRepository;
 import repositories.TransactionRepository;
+import utils.CategoryPercent;
 
+import java.awt.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +24,11 @@ public class TransactionServiceImpl implements TransactionService {
     private User user;
     private List<Balance> balances;
     private TransactionRepository transactionRepository;
+    private CategoryRepository categoryRepository;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
         this.transactionRepository = transactionRepository;
+        this.categoryRepository = categoryRepository;
         this.balances = new ArrayList<>();
     }
 
@@ -64,6 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
                             .builder()
                             .id(items.getJSONObject(i).getLong("id"))
                             .name(items.getJSONObject(i).getString("name"))
+                            .color(new Color((int)Math.random()*10000))
                             .build())
                     .price(price)
                     .dateTime(new Date(new java.util.Date().getTime()))
@@ -79,5 +85,16 @@ public class TransactionServiceImpl implements TransactionService {
             j++;
         }
         return transactions;
+    }
+
+    @Override
+    public List<Category> getCategorys() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> getPercentCategory(List<Transaction> transactions) {
+        CategoryPercent categoryPercent = new CategoryPercent();
+        return categoryPercent.getCategoryUtils(transactions);
     }
 }

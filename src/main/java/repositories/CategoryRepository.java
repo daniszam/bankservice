@@ -4,9 +4,11 @@ import lombok.NoArgsConstructor;
 import models.Category;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
@@ -20,6 +22,9 @@ public class CategoryRepository implements Repository<Category> {
 
     //language=SQL
     private static final String SQL_INSERT_CATEGORY = "INSERT INTO category(name) VALUES (?)";
+
+    //language=SQL
+    public static final String SQL_SELECT_ALL_LIKE = "SELECT * FROM category WHERE name LIKE (?)";
 
 
     public CategoryRepository(DataSource dataSource) {
@@ -61,5 +66,8 @@ public class CategoryRepository implements Repository<Category> {
 
     }
 
+    public List<Category> findByName(Category category){
+        return jdbcTemplate.query(SQL_SELECT_ALL_LIKE, categoryRowMapper, "%"+category.getName()+"%");
+    }
 
 }

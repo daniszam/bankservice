@@ -35,7 +35,7 @@ public class AuthPasswordFilter implements Filter {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         } else {
-            if (usersService.signIn(user)) {
+            if (user.getHashPassword()!=null) {
                 httpServletResponse.sendRedirect("/home");
                 return;
             }

@@ -35,7 +35,7 @@ body {
 .mdl-layout__drawer{
     margin-top: 10px;
     margin-left: 10px;
-    height: 700px;
+    height: auto;
     border-radius: 20px;
 }
 .mdl-layout__drawer-button{
@@ -89,7 +89,16 @@ body {
 }
 
 .dark{
-    background-color: #333333;
+    background-color: #000000;
+    color: white; !important;
+}
+
+.dark span{
+    color: white; !important;
+}
+
+.dark text{
+    color: white; !important;
 }
 
 mdl-navigation__link{

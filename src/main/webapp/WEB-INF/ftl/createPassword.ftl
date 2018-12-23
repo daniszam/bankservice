@@ -5,8 +5,8 @@
     <head>
         <title>Sign Up</title>
 
-        <link href=/CSS/signCard.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+        <link href="/CSS/signCard.css" rel="stylesheet">
         <link href="/CSS/bankassistant.css" rel="stylesheet">
         <script src="/JavaScript/chandgeColor.js" rel="stylesheet"></script>
         <style>
