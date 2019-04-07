@@ -16,7 +16,7 @@ import java.awt.*;
 public class Category {
     private String name;
     private Long id;
-    private String img;
+    private String icon;
     private Color color;
     private Float percent;
 }

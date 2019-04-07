@@ -3,6 +3,7 @@ package repositories;
 import lombok.NoArgsConstructor;
 import models.UUIDUser;
 import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
+@org.springframework.stereotype.Repository
 public class UUIDRepository implements Repository<UUIDUser> {
     private JdbcTemplate jdbcTemplate;
 
@@ -27,6 +29,7 @@ public class UUIDRepository implements Repository<UUIDUser> {
     //language=SQL
     private static final String SQL_SELECT_ALL_BY_USER_UUID= "SELECT * FROM uuid_user_cookie WHERE uuid=?";
 
+    @Autowired
     public UUIDRepository(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }

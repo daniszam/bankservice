@@ -2,16 +2,16 @@ package repositories;
 
 import lombok.NoArgsConstructor;
 import models.Category;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
+@org.springframework.stereotype.Repository
 public class CategoryRepository implements Repository<Category> {
 
     private JdbcTemplate jdbcTemplate;
@@ -27,6 +27,7 @@ public class CategoryRepository implements Repository<Category> {
     public static final String SQL_SELECT_ALL_LIKE = "SELECT * FROM category WHERE name LIKE (?)";
 
 
+    @Autowired
     public CategoryRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -36,7 +37,7 @@ public class CategoryRepository implements Repository<Category> {
             .builder()
             .name(resultSet.getString("name"))
             .id(resultSet.getLong("id"))
-            .img(resultSet.getString("icon"))
+            .icon(resultSet.getString("icon"))
             .color(new Color(resultSet.getInt("color")))
             .build());
 

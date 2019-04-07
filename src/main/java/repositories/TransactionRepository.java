@@ -5,20 +5,20 @@ import lombok.SneakyThrows;
 import mappers.RowMapper;
 import models.*;
 import models.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.awt.*;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @NoArgsConstructor
+@org.springframework.stereotype.Repository
 public class TransactionRepository implements Repository<Transaction> {
 
 
@@ -71,7 +71,7 @@ public class TransactionRepository implements Repository<Transaction> {
 
 
 
-
+    @Autowired
     public TransactionRepository (DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

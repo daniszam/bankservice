@@ -5,6 +5,8 @@ import forms.SignUpForm;
 import lombok.SneakyThrows;
 import models.User;
 import models.VkAuthUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import services.UsersService;
 import services.VkAuth;
 
@@ -23,12 +25,14 @@ import java.text.SimpleDateFormat;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
+
     private UsersService usersService;
 
     @Override
     @SneakyThrows
     public void init(ServletConfig servletConfig) {
-        usersService = Contexts.primitive().getComponent(UsersService.class);
+//        usersService = Contexts.primitive().getComponent(UsersService.class);
+        usersService =(UsersService) servletConfig.getServletContext().getAttribute("usersService");
     }
 
     @Override

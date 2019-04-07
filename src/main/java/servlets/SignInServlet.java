@@ -5,6 +5,8 @@ import forms.LoginForm;
 import lombok.SneakyThrows;
 import models.UUIDUser;
 import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import repositories.BankUserRepository;
 import repositories.UUIDRepository;
 import services.UsersService;
@@ -23,14 +25,12 @@ import java.util.UUID;
 @WebServlet("/signIn")
 public class SignInServlet extends HttpServlet {
 
-
     private UsersService usersService;
-    private UUIDRepository uuidRepository;
 
     @SneakyThrows
     public void init(ServletConfig servletConfig) {
-        usersService = Contexts.primitive().getComponent(UsersService.class);
-        uuidRepository = Contexts.primitive().getComponent(UUIDRepository.class);
+//        usersService = Contexts.primitive().getComponent(UsersService.class);
+        usersService =(UsersService) servletConfig.getServletContext().getAttribute("usersService");
     }
 
 
@@ -55,7 +55,7 @@ public class SignInServlet extends HttpServlet {
                 String cookieValue = UUID.randomUUID().toString();
                 Cookie userKey = new Cookie("remember", cookieValue);
                 userKey.setMaxAge(60 * 60 * 3000);
-                uuidRepository.save(UUIDUser.builder().user(optionalUser.get()).uuid(cookieValue).build());
+                usersService.saveUUid(UUIDUser.builder().user(optionalUser.get()).uuid(cookieValue).build());
                 response.addCookie(userKey);
             }
             response.setStatus(HttpServletResponse.SC_OK);

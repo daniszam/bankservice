@@ -6,6 +6,7 @@ import mappers.RowMapper;
 import models.Card;
 import models.Icon;
 import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
+@org.springframework.stereotype.Repository
 public class CardRepository implements Repository<Card>, AllByIDRepository<Card> {
 
 
@@ -51,6 +53,7 @@ public class CardRepository implements Repository<Card>, AllByIDRepository<Card>
     //language=SQL
     public static final String SQL_DELEATE_ALL_BY_USER_ID = "DELETE FROM card WHERE bank_user_id=?";
 
+    @Autowired
     public CardRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

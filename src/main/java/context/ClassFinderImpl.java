@@ -2,10 +2,7 @@ package context;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class ClassFinderImpl implements ClassFinder {
 
@@ -26,7 +23,7 @@ public class ClassFinderImpl implements ClassFinder {
         }
         File scannedDir = new File(scannedUrl.getFile());
         Queue<Class<?>> classes = new ArrayDeque<>();
-        for (File file : scannedDir.listFiles()) {
+        for (File file : Objects.requireNonNull(scannedDir.listFiles())) {
             classes.addAll(find(file, packageName));
         }
         return classes;
@@ -36,7 +33,7 @@ public class ClassFinderImpl implements ClassFinder {
         List<Class<?>> classes = new ArrayList<>();
         String resource = scannedPackage + PKG_SEPARATOR + file.getName();
         if (file.isDirectory()) {
-            for (File child : file.listFiles()) {
+            for (File child : Objects.requireNonNull(file.listFiles())) {
                 classes.addAll(find(child, resource));
             }
         } else if (resource.endsWith(CLASS_FILE_SUFFIX)) {

@@ -3,6 +3,7 @@ package servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import context.Contexts;
 import models.LocationUser;
+import org.springframework.stereotype.Component;
 import repositories.LocationRepository;
 import services.CheckIpAddress;
 import services.CheckIpAddressImpl;
@@ -17,11 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@Component
 @WebServlet("/edit")
 public class EditServlet extends HttpServlet {
 
     private LocationService locationService;
-    private ObjectMapper objectMapper = new ObjectMapper();
     private LocationRepository locationRepository;
 
 
@@ -49,6 +50,7 @@ public class EditServlet extends HttpServlet {
                 .country(req.getParameter("country"))
                 .build();
         List<LocationUser> citys = locationRepository.getCitys(locationUser);
+        ObjectMapper objectMapper = new ObjectMapper();
         String citysJson = objectMapper.writeValueAsString(citys);
         resp.setContentType("application/json");
         resp.getWriter().write(citysJson);
@@ -56,7 +58,7 @@ public class EditServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        locationService = Contexts.primitive().getComponent(LocationService.class);
-        locationRepository = Contexts.primitive().getComponent(LocationRepository.class);
+//        locationService = Contexts.primitive().getComponent(LocationService.class);
+//        locationRepository = Contexts.primitive().getComponent(LocationRepository.class);
     }
 }

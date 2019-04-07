@@ -1,9 +1,12 @@
 package services;
 
 import forms.AddBalanceForm;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repositories.BankAccountRepository;
 import repositories.CardRepository;
 import repositories.CashRepository;
@@ -14,13 +17,12 @@ import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @NoArgsConstructor
+@AllArgsConstructor
+@Service
 public class BalanceServiceImpl implements BalanceService {
+
+    @Autowired
     private DataSource dataSource;
-
-    public BalanceServiceImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
 
     @Override
     @SneakyThrows

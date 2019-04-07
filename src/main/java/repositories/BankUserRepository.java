@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import models.*;
 import models.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.List;
 
 @NoArgsConstructor
+@org.springframework.stereotype.Repository
 public class BankUserRepository implements Repository<User>, UserRepository {
 
     private JdbcTemplate jdbcTemplate;
@@ -70,6 +72,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
     private static final String SQL_SELECT_USER_BY_EMAIL = SQL_SELECT_ALL_USER + "WHERE bank_user.email =?";
 
 
+    @Autowired
     public BankUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -83,7 +86,7 @@ public class BankUserRepository implements Repository<User>, UserRepository {
             .email(resultSet.getString("email"))
             .hashPassword(resultSet.getString("hash_password"))
             .phoneNumber(resultSet.getString("phone_number"))
-            .img(resultSet.getString("img"))
+            .img(resultSet.getString("icon"))
             .build());
 
     private RowMapper<User> userWithOrdersForOneUserRowMapper = new RowMapper<User>() {
@@ -308,9 +311,9 @@ public class BankUserRepository implements Repository<User>, UserRepository {
         return true;
     }
 
-    public Optional<User> fingOnlyUser(User user){
-        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_USER_WITHOUT_BALANCE,
-                userRowMapper, user.getEmail()));
+    public Optional<User> findOnlyUser(User user){
+        System.out.println(user.getEmail());
+        return Optional.of(jdbcTemplate.queryForObject(SQL_SELECT_USER_WITHOUT_BALANCE, userRowMapper, user.getEmail()));
     }
 
     @SneakyThrows

@@ -46,7 +46,9 @@ public class RememberFilter implements Filter {
         User user = (User) httpSession.getAttribute("user");
         if (user == null) {
             String userKey;
-            if (httpServletRequest.getCookies().length > 0) {
+            if (httpServletRequest.getCookies()!=null &&
+                    httpServletRequest.getCookies().length > 0) {
+
                 for (Cookie cookie : httpServletRequest.getCookies()) {
                     if (cookie.getName().equals("remember")) {
                         userKey = cookie.getValue();

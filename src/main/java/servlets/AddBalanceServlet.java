@@ -4,6 +4,8 @@ import context.ApplicationDiContext;
 import context.Contexts;
 import forms.AddBalanceForm;
 import models.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import repositories.IconRepository;
 import services.BalanceService;
 import services.BalanceServiceImpl;
@@ -22,7 +24,9 @@ import java.util.List;
 @WebServlet("/addBalance")
 public class AddBalanceServlet extends HttpServlet {
     private List<Balance> balances = new ArrayList<>();
+
     private BalanceService balanceService;
+
     private IconRepository iconRepository;
     private List<Icon> icons;
 
@@ -60,8 +64,11 @@ public class AddBalanceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ApplicationDiContext applicationContext = Contexts.primitive();
-        iconRepository = applicationContext.getComponent(IconRepository.class);
-        balanceService = applicationContext.getComponent(BalanceServiceImpl.class);
+//        ApplicationDiContext applicationContext = Contexts.primitive();
+//        iconRepository = applicationContext.getComponent(IconRepository.class);
+//        balanceService = applicationContext.getComponent(BalanceServiceImpl.class);
+        iconRepository =(IconRepository) config.getServletContext().getAttribute("iconRepository");
+        balanceService =(BalanceService) config.getServletContext().getAttribute("balanceService");
+
     }
 }

@@ -51,7 +51,7 @@ public class CreditRepository implements Repository<Credit>, AllByIDRepository<C
 
 
     private org.springframework.jdbc.core.RowMapper<Credit> creditRowMapper = ((resultSet, i) -> Credit.builder()
-            .type(resultSet.getString("type_credit"))
+//            .type(resultSet.getString("type_credit"))
             .expirationDate(resultSet.getDate("expiration_date"))
             .user(User.builder().id(resultSet.getLong("bank_user_id")).build())
             .percent(resultSet.getFloat("percent"))

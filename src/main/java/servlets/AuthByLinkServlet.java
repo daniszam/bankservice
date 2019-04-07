@@ -3,6 +3,8 @@ package servlets;
 import context.Contexts;
 import forms.SignUpForm;
 import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import services.UsersService;
 
 import javax.servlet.ServletConfig;
@@ -18,18 +20,20 @@ import java.io.IOException;
 @WebServlet("/createPassword")
 public class AuthByLinkServlet extends HttpServlet {
 
-    private HttpSession httpSession;
+
     private User user;
     private UsersService usersService;
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
-        usersService = Contexts.primitive().getComponent(UsersService.class);
+//        usersService = Contexts.primitive().getComponent(UsersService.class);
+        usersService =(UsersService) servletConfig.getServletContext().getAttribute("usersService");
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        httpSession = request.getSession();
+        HttpSession httpSession = request.getSession();
         user = (User) httpSession.getAttribute("user");
         if (user != null) {
             request.setAttribute("email", user.getEmail());
@@ -41,14 +45,6 @@ public class AuthByLinkServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        SignUpForm signUpForm = SignUpForm.builder()
-//                .password(request.getParameter("password"))
-//                .email(user.getEmail())
-//                .birthday(user.getBirthday().toString())
-//                .firstName(user.getFirstName())
-//                .lastName(user.getLastName())
-//                .gender(user.getGender())
-//                .build();
         user.setHashPassword(request.getParameter("password"));
         usersService.signUp(user);
         response.sendRedirect("/home");

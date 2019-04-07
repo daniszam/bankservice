@@ -27,7 +27,6 @@ public class VkAuth {
     private static final String secretKey = "E9fa4jAIm6UxNjes4BU4";
     private static final String redirectUri = "http://localhost:8080/vkAuth";
 
-    private ObjectMapper objectMapper;
 
 
     @SneakyThrows
@@ -43,7 +42,6 @@ public class VkAuth {
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         HttpResponse response = httpClient.execute(httpGet);
 
-        objectMapper = new ObjectMapper();
         String token = IOUtils.toString(response.getEntity().getContent());
         JSONObject array = new JSONObject(token);
 
@@ -72,7 +70,6 @@ public class VkAuth {
                 .build();
         HttpGet httpGet = new HttpGet(uriBuilder.build());
         HttpResponse response = httpClient.execute(httpGet);
-        objectMapper = new ObjectMapper();
         String responseStr = IOUtils.toString(response.getEntity().getContent());
         JSONArray responseJson = new JSONArray(new JSONObject(responseStr).get("response").toString());
         String userStr = responseJson.toString().substring(1, responseJson.toString().length() - 1);

@@ -8,4 +8,5 @@ import lombok.Data;
 public class Icon {
     private Long id;
     private String path;
+    private String name;
 }

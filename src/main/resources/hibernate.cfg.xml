@@ -1,0 +1,25 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+                "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+    <session-factory>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/book_catalog</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">dREAM1cACAO</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        <mapping resource="hbm/Card.hbm.xml"/>
+        <mapping resource="hbm/Icon.hbm.xml"/>
+        <mapping resource="hbm/Transaction.hbm.xml"/>
+        <mapping resource="hbm/User.hbm.xml"/>
+        <mapping resource="hbm/Category.hbm.xml"/>
+        <mapping resource="hbm/CreditType.hbm.xml"/>
+        <mapping resource="hbm/Credit.hbm.xml"/>
+        <mapping resource="hbm/Insurance.hbm.xml"/>
+
+    </session-factory>
+
+</hibernate-configuration>

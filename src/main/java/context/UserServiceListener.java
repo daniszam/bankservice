@@ -1,22 +1,16 @@
 package context;
 
-import config.AppConfig;
+import config.JavaConfig;
 import lombok.SneakyThrows;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import repositories.*;
 import services.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserServiceListener implements ServletContextListener {
 
@@ -24,7 +18,7 @@ public class UserServiceListener implements ServletContextListener {
     @SneakyThrows
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
+//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
         //beans from XML beans config
 //        BankUserRepository bankUserRepository = context.getBean(BankUserRepository.class);
 //        UsersService usersService = context.getBean(UsersServiceImpl.class);
@@ -33,6 +27,8 @@ public class UserServiceListener implements ServletContextListener {
 
        // ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
         //beans from AppConfig
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(JavaConfig.class);
+
         BankAccountRepository bankAccountRepository = applicationContext.getBean(BankAccountRepository.class);
         CardRepository cardRepository = applicationContext.getBean(CardRepository.class);
         BalanceService balanceService = applicationContext.getBean(BalanceServiceImpl.class);

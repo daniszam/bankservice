@@ -2,6 +2,7 @@ package repositories;
 
 import lombok.NoArgsConstructor;
 import models.Icon;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 @NoArgsConstructor
+@org.springframework.stereotype.Repository
 public class IconRepository implements Repository<Icon> {
 
     private JdbcTemplate jdbcTemplate ;
@@ -20,6 +22,7 @@ public class IconRepository implements Repository<Icon> {
     //language=SQL
     private static final String SELECT_BY_NAME = " SELECT * FROM icon WHERE icon_name=?";
 
+    @Autowired
     public IconRepository(DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

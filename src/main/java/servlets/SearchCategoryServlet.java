@@ -3,6 +3,8 @@ package servlets;
 import context.ApplicationDiContext;
 import context.Contexts;
 import models.Category;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import repositories.CategoryRepository;
 
 
@@ -17,6 +19,8 @@ import java.util.List;
 
 @WebServlet("/category")
 public class SearchCategoryServlet extends HttpServlet {
+
+
     private CategoryRepository categoryRepository;
 
     @Override
@@ -38,8 +42,9 @@ public class SearchCategoryServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ApplicationDiContext applicationContext = Contexts.primitive();
-
-        categoryRepository = applicationContext.getComponent(CategoryRepository.class);
+//        ApplicationDiContext applicationContext = Contexts.primitive();
+//
+//        categoryRepository = applicationContext.getComponent(CategoryRepository.class);
+        categoryRepository = (CategoryRepository) config.getServletContext().getAttribute("categoryRepository");
     }
 }

@@ -4,6 +4,8 @@ import forms.LoginForm;
 import forms.SignUpForm;
 import models.*;
 
+import org.json.JSONArray;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +19,6 @@ public interface UsersService {
     List<Transaction> getUserTransaction(User user);
     List<Balance> getUserBalances(User user);
     int getPercentFromSalary(List<Card> cards, List<BankAccount> bankAccounts);
+    List<Balance> check(JSONArray jsonValues, User user);
+    void saveUUid(UUIDUser uuidUser);
 }

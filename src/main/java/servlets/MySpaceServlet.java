@@ -7,6 +7,8 @@ import lombok.SneakyThrows;
 import models.*;
 import models.Transaction;
 import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import repositories.*;
 import services.TransactionService;
 import services.TransactionServiceImpl;
@@ -28,6 +30,7 @@ import java.util.Map;
 
 
 @WebServlet("/mySpace")
+
 public class MySpaceServlet extends HttpServlet {
     private TransactionServiceImpl transactionService;
     private UsersService usersService;
@@ -83,9 +86,12 @@ public class MySpaceServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        ApplicationDiContext applicationContext = Contexts.primitive();
-        usersService = applicationContext.getComponent(UsersServiceImpl.class);
-        transactionService = (TransactionServiceImpl) config.getServletContext().getAttribute("transactionService");
+//        ApplicationDiContext applicationContext = Contexts.primitive();
+//        usersService = applicationContext.getComponent(UsersServiceImpl.class);
+//        transactionService = (TransactionServiceImpl) config.getServletContext().getAttribute("transactionService");
+        usersService =(UsersService) config.getServletContext().getAttribute("usersService");
+        transactionService =(TransactionServiceImpl) config.getServletContext().getAttribute("transactionService");
+
 
     }
 }

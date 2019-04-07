@@ -15,4 +15,5 @@ public class Transaction {
     private Float price;
     private Long id;
     private User user;
+    private Balance balance;
 }

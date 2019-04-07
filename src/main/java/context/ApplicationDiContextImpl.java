@@ -33,9 +33,9 @@ public class ApplicationDiContextImpl implements ApplicationDiContext {
                 throw new FileNotFoundException("property file '" + CONFIG + "' not found in the classpath");
             }
             DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setUrl(properties.getProperty("url"));
-            dataSource.setUsername(properties.getProperty("user"));
-            dataSource.setPassword(properties.getProperty("password"));
+            dataSource.setUrl(properties.getProperty("db.url"));
+            dataSource.setUsername(properties.getProperty("db.user"));
+            dataSource.setPassword(properties.getProperty("db.password"));
             components.put(JdbcTemplate.class.getName(), new JdbcTemplate(dataSource));
             components.put(DataSource.class.getName(), dataSource);
         } catch (IOException e) {
@@ -108,10 +108,10 @@ public class ApplicationDiContextImpl implements ApplicationDiContext {
         }
     }
 
-    public static void main(String[] args) {
-       ApplicationDiContextImpl app = new ApplicationDiContextImpl();
-       for(Map.Entry entry:app.components.entrySet()){
-           System.out.println(entry.getValue());
-       }
-    }
+//    public static void main(String[] args) {
+//       ApplicationDiContextImpl app = new ApplicationDiContextImpl();
+//       for(Map.Entry entry:app.components.entrySet()){
+//           System.out.println(entry.getValue());
+//       }
+//    }
 }

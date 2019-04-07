@@ -12,7 +12,7 @@ import java.sql.Date;
 public class Credit {
     private Date expirationDate;
     private Float percent;
-    private String type;
+    private CreditType type;
     private User user;
     private Long id;
 

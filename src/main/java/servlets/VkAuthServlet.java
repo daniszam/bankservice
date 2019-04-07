@@ -3,7 +3,10 @@ package servlets;
 import context.Contexts;
 import models.User;
 import models.VkAuthUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import services.UsersService;
+import services.UsersServiceImpl;
 import services.VkAuth;
 
 import javax.servlet.ServletConfig;
@@ -20,6 +23,7 @@ import java.util.Optional;
 @WebServlet("/vkAuth")
 public class VkAuthServlet extends HttpServlet {
 
+    @Autowired
     private UsersService usersService;
 
     @Override
@@ -47,7 +51,8 @@ public class VkAuthServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        usersService = Contexts.primitive().getComponent(UsersService.class);
+//        usersService = Contexts.primitive().getComponent(UsersService.class);
+        usersService =(UsersService) config.getServletContext().getAttribute("usersService");
 
     }
 }

@@ -8,6 +8,8 @@ import models.Transaction;
 import models.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repositories.CategoryRepository;
 import repositories.TransactionRepository;
 import utils.CategoryPercent;
@@ -20,17 +22,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @NoArgsConstructor
 @Data
+@Service
 public class TransactionServiceImpl implements TransactionService {
+
+
     private User user;
     private List<Balance> balances;
+
+    @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
-        this.transactionRepository = transactionRepository;
-        this.categoryRepository = categoryRepository;
-        this.balances = new ArrayList<>();
-    }
 
     @Override
     public List<Balance> getUsefulBalances(JSONArray balance) {

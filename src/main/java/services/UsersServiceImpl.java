@@ -1,52 +1,52 @@
 package services;
 
+import context.ApplicationDiContext;
+import context.Contexts;
 import forms.LoginForm;
 import forms.SignUpForm;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.*;
 import models.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import models.Transaction;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import repositories.BankAccountRepository;
-import repositories.BankUserRepository;
-import repositories.CardRepository;
-import repositories.TransactionRepository;
+import org.springframework.stereotype.Service;
+import repositories.*;
 import utils.Circle;
 
-import javax.jws.soap.SOAPBinding;
-import javax.sql.DataSource;
+import org.json.JSONArray;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
+@Service
 public class UsersServiceImpl implements UsersService {
 
+    @Autowired
     private BankUserRepository bankUserRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private CardRepository cardRepository;
+
+    @Autowired
     private BankAccountRepository bankAccountRepository;
+
+    @Autowired
     private TransactionRepository transactionRepository;
 
-    public UsersServiceImpl(BankUserRepository bankUserRepository,
-                            CardRepository cardRepository,
-                            BankAccountRepository bankAccountRepository,
-                            TransactionRepository transactionRepository) {
-
-        this.bankUserRepository = bankUserRepository;
-        this.cardRepository = cardRepository;
-        this.bankAccountRepository = bankAccountRepository;
-        this.transactionRepository = transactionRepository;
-    }
+    @Autowired
+    private UUIDRepository uuidRepository;
 
     @Override
     @SneakyThrows
@@ -85,17 +85,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     public Optional<User> signIn(User user) {
-        Optional<User> optionalUser = bankUserRepository.fingOnlyUser(user);
+        Optional<User> optionalUser = bankUserRepository.findOnlyUser(user);
         if (!optionalUser.isPresent()) {
             return Optional.empty();
         }
-//        List<Balance> balances = new ArrayList<>();
-//        balances.addAll(cardRepository.findAllByUserId(optionalUser.get().getId()));
-//        balances.addAll(bankAccountRepository.findAllByUserId(optionalUser.get().getId()));
-//        user.setBalances(balances);
-//        user.setId(optionalUser.get().getId());
-//        user.setHashPassword(optionalUser.get().getHashPassword());
-//        user.setTransactions(optionalUser.get().getTransactions());
         return optionalUser;
     }
 
@@ -151,6 +144,26 @@ public class UsersServiceImpl implements UsersService {
         return circle.getPercent(cards, bankAccounts);
     }
 
+    @Override
+    public List<Balance> check(JSONArray types, User user) {
+        ApplicationDiContext applicationContext = Contexts.primitive();
+        List<Balance> balances = new ArrayList<>();
+        BalanceService balanceService = applicationContext.getComponent(BalanceService.class);
+        for (int i = 0; i < types.length(); i++) {
+            JSONObject type = types.getJSONObject(i);
+            applicationContext.getComponent(BalanceService.class);
+            Balance balance = this.getUserBalances(user).get(type.getInt("id"));
+            balance.setBalance(balance.getBalance() + type.getInt("sum"));
+            balanceService.increaseBalance(balance);
+            balance.setUser(null);
+            if (balance.getName() == null) {
+                balance.setName(balance.getClass().getSimpleName());
+            }
+            balances.add(balance);
+        }
+        return balances;
+    }
+
 
     @Override
     public List<BankAccount> getBankAccount(User user) {
@@ -164,4 +177,8 @@ public class UsersServiceImpl implements UsersService {
         return user.getTransactions();
     }
 
+
+    public void saveUUid(UUIDUser uuidUser){
+        uuidRepository.save(uuidUser);
+    }
 }
