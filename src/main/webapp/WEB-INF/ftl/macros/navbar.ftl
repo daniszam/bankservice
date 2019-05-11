@@ -28,11 +28,11 @@
     <#if user??>
         <a class="mdl-navigation__link" href="/mySpace">My Space</a>
         <a class="mdl-navigation__link" href="">Friends</a>
-        <a class="mdl-navigation__link" href="">${user.firstName}</a>
-        <a class="mdl-navigation__link" href="">Log Out</a>
+        <a class="mdl-navigation__link" href="">${user.email}</a>
+        <a class="mdl-navigation__link" href="${context.getContextPath()}/logout">Log Out</a>
     <#else>
-        <a class="mdl-navigation__link" href="/signIn">Sign In</a>
-        <a class="mdl-navigation__link" href="/signUp">Sign up</a>
+        <a class="mdl-navigation__link" href="${context.getContextPath()}/login">Sign In</a>
+        <a class="mdl-navigation__link" href="${context.getContextPath()}/signUp">Sign up</a>
     </#if>
     </nav>
 </div>

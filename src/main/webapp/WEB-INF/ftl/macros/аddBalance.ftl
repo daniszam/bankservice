@@ -1,10 +1,12 @@
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"] />
 <#macro addBalance>
 <div class="add item">
     <div class="add item inputs">
         <div class="name box">
+            <#--<@form.select path="balanceType" items="${balanceTypes}" />-->
             <select id="types" name="types">
-                <#list types as type>
-                    <option value="${type?index}">${type.getClass().simpleName}</option>
+                <#list balanceTypes as type>
+                    <option value="${type}">${type}</option>
                 </#list>
             </select>
             <div id="tt4" class="icon material-icons">help_outline</div>
@@ -14,7 +16,7 @@
             <input type="text" placeholder="name" id="balance_name" name="balance_name">
         </div>
         <div class="support box">
-            <input  name="date" placeholder="  upDate" class="textbox-n" type="text"
+            <input  name="upDate" placeholder="  upDate" class="textbox-n" type="text"
                     onfocus="(this.type='date')" id="date">
             <div id="tt3" class="icon material-icons">help_outline</div>
             <div class="mdl-tooltip" data-mdl-for="tt3">
@@ -35,8 +37,8 @@
         <div class="icon box" style="overflow: scroll" id="icons" name="icons">
             <div style="height: 100%">
                 <#list icons as icon>
-                    <input type="radio" id="icon_${icon?index}" name="icon" value="${icon?index}">
-                    <label for="icon_${icon?index}"><img src="${icon.path}"></label>
+                    <input type="radio" id="icon_${icon?index}" name="icon" value="${icon.id}">
+                    <label for="icon_${icon?index}"><img src="/${icon.path}"></label>
                 </#list>
             </div>
         </div>

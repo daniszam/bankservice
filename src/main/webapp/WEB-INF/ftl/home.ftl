@@ -11,12 +11,12 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans"
           rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <link href="/CSS/bankassistant.css" rel="stylesheet">
-    <link href="/CSS/accordion.css" rel="stylesheet">
-    <script src="/JavaScript/accordion.js"></script>
+    <link href="/resources/css/bankassistant.css" rel="stylesheet">
+    <link href="/resources/css/accordion.css" rel="stylesheet">
+    <script src="/resources/JavaScript/accordion.js"></script>
 
 
-    <script src="/JavaScript/chandgeColor.js" rel="stylesheet"></script>
+    <script src="/resources/JavaScript/chandgeColor.js" rel="stylesheet"></script>
     <title>Money assistance</title>
 
 </head>

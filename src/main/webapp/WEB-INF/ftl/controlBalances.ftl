@@ -11,15 +11,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
-    <link href="/CSS/userPage.css" rel="stylesheet">
-    <link href="/CSS/myspace.css" rel="stylesheet">
-    <link href="/CSS/controlBalance.css" rel="stylesheet">
+    <link href="/resources/css/userPage.css" rel="stylesheet">
+    <link href="/resources/css/myspace.css" rel="stylesheet">
+    <link href="/resources/css/controlBalance.css" rel="stylesheet">
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="/JavaScript/increaseBalancePost.js"></script>
-    <link href="/CSS/bankassistant.css" rel="stylesheet">
-            <script src="/JavaScript/chandgeColor.js" rel="stylesheet"></script>
+    <script src="/resources/JavaScript/increaseBalancePost.js"></script>
+    <link href="/resources/css/bankassistant.css" rel="stylesheet">
+            <script src="/resources/JavaScript/chandgeColor.js" rel="stylesheet"></script>
     <title>My Space</title>
 </head>
 <body>

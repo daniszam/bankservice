@@ -7,7 +7,7 @@
 
         <div class="demo-drawer mdl-layout__drawer" aria-hidden="false">
             <header class="demo-drawer-header">
-                <img src="${user.img}" class="demo-avatar">
+                <img src="<#if user.img??>${user.img}<#else>None</#if>" class="demo-avatar">
                 <div class="demo-avatar-dropdown">
                     <div style="width: 90%">
                         <span style="margin-left: 10%">${user.email}</span>

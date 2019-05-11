@@ -1,3 +1,4 @@
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"] />
 <#import "macros/signForm.ftl" as sign>
 <!DOCTYPE html>
 <html>
@@ -5,9 +6,9 @@
     <title>Sign Up</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 
-    <link href="/CSS/signCard.css" rel="stylesheet">
-            <link href="/CSS/bankassistant.css" rel="stylesheet">
-            <script src="/JavaScript/chandgeColor.js" rel="stylesheet"></script>
+    <link href="/resources/css/signCard.css" rel="stylesheet">
+            <link href="/resources/css/bankassistant.css" rel="stylesheet">
+            <script src="/resources/JavaScript/chandgeColor.js" rel="stylesheet"></script>
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 </head>
 <body>
@@ -21,9 +22,9 @@
         <div class="logo" style="position: absolute; left: 70%; right: 3%; top: 5%">
             <img src="/resources/payway.png" style="width: 100%">
         </div>
-        <form id="singUp" method="post" style="width: 100%; height: 100%">
+        <@form.form method="post" modelAttribute="user">
             <@sign.signForm data=true email=true remember=false></@sign.signForm>
-        </form>
+        </@form.form>
 
     </div>
 </div>

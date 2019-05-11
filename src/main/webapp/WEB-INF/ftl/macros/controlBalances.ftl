@@ -1,11 +1,11 @@
 <#macro controlBalances>
 <div class="demo-list-action mdl-list">
     <form id="balance_type">
-        <#list user.balances as item>
+        <#list balances as item>
             <div class="mdl-list__item">
     <span class="mdl-list__item-primary-content">
-        <label for="${item?index}" class="balance"><img src="<c:url value="/resources/bankcard.png"/>"></label>
-         <span name="${item.getClass().simpleName}" id="${item?index}" class="balance"/>
+        <label for="${item?index}" class="balance"><img src="/resources/bankcard.png"/></label>
+         <span name="${item.getClass().simpleName}" id="${item.id}" class="balance"/>
          <span>${item.getClass().simpleName}</span>
     </span>
                 <a class="mdl-list__item-secondary-action" href="#">

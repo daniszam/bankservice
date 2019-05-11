@@ -10,11 +10,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
-    <link href="/CSS/userPage.css" rel="stylesheet">
-    <link href="/CSS/myspace.css" rel="stylesheet">
+    <link href="../../resources/CSS/userPage.css" rel="stylesheet">
+    <link href="../../resources/CSS/myspace.css" rel="stylesheet">
 
-    <link href="/CSS/bankassistant.css" rel="stylesheet">
-    <script src="/JavaScript/chandgeColor.js" rel="stylesheet"></script>
+    <link href="../../resources/CSS/bankassistant.css" rel="stylesheet">
+    <script src="../../resources/JavaScript/chandgeColor.js" rel="stylesheet"></script>
     <title>Category</title>
 
 </head>

@@ -8,13 +8,13 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
 
-    <link rel="stylesheet" href="/CSS/bankassistant.css">
-    <link href="/CSS/addBalance.css" rel="stylesheet">
-    <link href="/CSS/userPage.css" rel="stylesheet">
-    <link href="/CSS/myspace.css" rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/bankassistant.css">
+    <link href="/resources/css/addBalance.css" rel="stylesheet">
+    <link href="/resources/css/userPage.css" rel="stylesheet">
+    <link href="/resources/css/myspace.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="/JavaScript/navbarCloseFunction.js"></script>
-    <script src="/JavaScript/chandgeColor.js"></script>
+    <script src="/resources/JavaScript/navbarCloseFunction.js"></script>
+    <script src="/resources/JavaScript/chandgeColor.js"></script>
 </head>
 <body>
 

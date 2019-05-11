@@ -4,7 +4,7 @@
     <#list categories as category>
         <div class="category box">
             <span>${category.name}</span>
-            <span>${category.percent}</span>
+            <span>${category.sumOfCosts}</span>
         </div>
     </#list>
 </div>
@@ -13,13 +13,13 @@
         <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16" cy="16" r="15" />
         <#list categories as category>
             <circle class="circle-chart__circle" stroke="rgb(${category.color.red},${category.color.green},${category.color.blue})" stroke-width="2"
-                    stroke-dasharray="${category.percent},100" stroke-dashoffset="-${dashoffset}"
+                    stroke-dasharray="${category.sumOfCosts},100" stroke-dashoffset="-${dashoffset}"
                     id="${category.name}circle" stroke-linecap="round" fill="none" cx="16" cy="16" r="15" />
-            <#assign dashoffset=dashoffset+category.percent>
+            <#assign dashoffset=dashoffset+category.sumOfCosts>
         </#list>
         <g class="circle-chart__info">
             <text class="circle-chart__percent" x="15" y="14" alignment-baseline="central" text-anchor="middle" font-size="8">${randomPercent}%</text>
-            <text class="circle-chart__subline" x="15" y="18.5" alignment-baseline="central" text-anchor="middle" font-size="2">You spent to ${randomCategory.name}</text>
+            <text class="circle-chart__subline" x="15" y="18.5" alignment-baseline="central" text-anchor="middle" font-size="2">You spent to ${randomCategoryName}</text>
         </g>
     </svg>
 </section>

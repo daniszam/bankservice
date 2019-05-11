@@ -1,12 +1,14 @@
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"] />
 <#import "macros/signForm.ftl" as sign>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Sign In</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <link href="/CSS/signCard.css" rel="stylesheet">
-            <link href="/CSS/bankassistant.css" rel="stylesheet">
-            <script src="/JavaScript/chandgeColor.js" rel="stylesheet"></script>
+    <link href="/resources/css/signCard.css" rel="stylesheet">
+            <link href="/resources/css/bankassistant.css" rel="stylesheet">
+            <script src="/resources/JavaScript/chandgeColor.js" rel="stylesheet"></script>
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 </head>
 <body>
@@ -20,10 +22,24 @@
         <div class="logo" style="position: absolute; left: 70%; right: 3%; top: 5%">
             <img src="/resources/payway.png" style="width: 100%">
         </div>
-        <form id="singUp" method="post" style="width: 100%; height: 100%">
-            <@sign.signForm data=false email=true remember=true></@sign.signForm>
-        </form>
 
+        <form method="post" style="width: 100%; height: 100%">
+
+            <input id="email" name="email" placeholder="emial"/>
+
+            <input id="password" name="password" placeholder="password"/>
+
+            <div style="position: absolute; bottom: 5%;left: 5%">
+                <input type="checkbox" name="remember" id="save_me">
+                <label for="remember" style="text-align: left">Remember me</label>
+            </div>
+
+            <div class="logo" style="background: white; position: absolute; left: 70%; right: 3%; top: 80%">
+                <button id="submit" type="submit" value="Sign Up" accesskey="enter">
+                    <img src="/resources/visa.png" style="width: 100%">
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 <div class="auth link">
