@@ -12,7 +12,7 @@
                     <#if !item.name?has_content>
                         <span id="span${item.getClass().simpleName}${item.id}">${item.balance}</span>
                     <#else>
-                        <span id="span${item.name}${item.id}">${item.balance}</span>
+                        <span id="span${item.id}">${item.balance}</span>
                     </#if>
                 </a>
                 <input class="mdl-slider mdl-js-slider" type="range"

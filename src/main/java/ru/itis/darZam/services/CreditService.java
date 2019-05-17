@@ -49,4 +49,8 @@ public class CreditService {
         credits.stream().map(Credit::getBalance).forEach(a->balanceRepository.save(a));
     }
 
+    public void save(Credit credit){
+        creditRepository.save(credit);
+    }
+
 }

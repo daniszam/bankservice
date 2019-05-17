@@ -10,7 +10,12 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.itis.darZam.models.User;
+import ru.itis.darZam.models.UserDetailsImpl;
 import ru.itis.darZam.models.VkAuthUser;
 
 import java.sql.Date;
@@ -22,6 +27,8 @@ public class VkAuth {
     private static final String clientId = "6743597";
     private static final String secretKey = "E9fa4jAIm6UxNjes4BU4";
     private static final String redirectUri = "http://localhost:8080/vkAuth";
+    private static final String oauthUri = "https:/oauth.vk.com/authorize?client_id=6743597&display=page" +
+            "&redirect_uri=http://localhost:8080/vkAuth&scope=email&response_type=code&v=5.87";
 
 
 
@@ -50,6 +57,10 @@ public class VkAuth {
 
 
         return vkAuthUser;
+    }
+
+    public static String getOauthUri(){
+        return oauthUri;
     }
 
     @SneakyThrows
@@ -95,4 +106,12 @@ public class VkAuth {
         return user;
     }
 
+
+    public static void auth(User user){
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        Authentication authReq
+                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(authReq);
+    }
 }

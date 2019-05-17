@@ -35,7 +35,7 @@
         <div class="panel">
             <div class="panel-heading">
                 <a>
-                    <span>Lorem ipsum dolor</span>
+                    <span>Control your transactions</span>
                 </a>
             </div>
             <div class="panel-collapse">
@@ -63,7 +63,7 @@
         <div class="panel">
             <div class="panel-heading">
                 <a>
-                    <span>Full functional set of CMS</span>
+                    <span>Check statistic</span>
                 </a>
             </div>
             <div class="panel-collapse">
@@ -87,7 +87,7 @@
         <div class="panel">
             <div class="panel-heading">
                 <a href="#">
-                    <span>Several basic advantages</span>
+                    <span>Add credits</span>
                 </a>
             </div>
             <div class="panel-collapse">

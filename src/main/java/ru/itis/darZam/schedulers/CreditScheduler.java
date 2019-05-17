@@ -14,8 +14,8 @@ public class CreditScheduler {
     @Autowired
     private CreditService creditService;
 //   every day
-//    @Scheduled(cron = "0 0 12 * * ?")
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 12 * * ?")
+//    @Scheduled(cron = "*/10 * * * * *")
     public void makeCreditTransaction(){
         creditService.executeTodayCredit();
     }

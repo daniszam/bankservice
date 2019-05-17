@@ -26,8 +26,11 @@
             <nav class="demo-navigation mdl-navigation">
                 <a class="mdl-navigation__link" href="/home"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>home</a>
                 <a class="mdl-navigation__link" href="/mySpace"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>my space</a>
-                <a class="mdl-navigation__link" href="/controlBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>balances</a>
-                <a class="mdl-navigation__link" href="/addBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>add balance</a>
+                <a class="mdl-navigation__link" href="/controlBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">account_balance_wallet</i>balances</a>
+                <a class="mdl-navigation__link" href="/addBalance"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add_box</i>add balance</a>
+                <a class="mdl-navigation__link" href="/transaction"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add_shopping_cart</i>transaction</a>
+                <a class="mdl-navigation__link" href="/addCredit"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">closed_caption</i>add credit</a>
+
                 <div class="mdl-layout-spacer"></div>
             </nav>
         </div>

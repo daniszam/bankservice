@@ -8,17 +8,14 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Comfortaa|Quicksand|IBM+Plex+Sans" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet">
+    <link href="/resources/css/bankassistant.css" rel="stylesheet">
 
     <link href="/resources/css/userPage.css" rel="stylesheet">
     <link href="/resources/css/myspace.css" rel="stylesheet">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="/resources/JavaScript/postAjax.js"></script>
-
-    <link href="/resources/css/bankassistant.css" rel="stylesheet">
     <script src="/resources/JavaScript/chandgeColor.js" rel="stylesheet"></script>
     <title>My Space</title>
 </head>

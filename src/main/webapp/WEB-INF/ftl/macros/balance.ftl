@@ -21,7 +21,7 @@
         </#if>
     </span>
         <a class="mdl-list__item-secondary-action" href="#">
-            <span id="span_balance${item.id}">${item.balance}</span>
+            <span id="span_balance${item.id}">${item.count}</span>
         </a>
     </div>
     <#if !checkbox>

@@ -25,9 +25,9 @@
 
         <form method="post" style="width: 100%; height: 100%">
 
-            <input id="email" name="email" placeholder="emial"/>
+            <input id="email" name="email" placeholder="email"/>
 
-            <input id="password" name="password" placeholder="password"/>
+            <input id="password" name="password" type="password" placeholder="password"/>
 
             <div style="position: absolute; bottom: 5%;left: 5%">
                 <input type="checkbox" name="remember" id="save_me">

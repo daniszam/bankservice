@@ -3,8 +3,8 @@
 <div id="category_name_box" style="z-index: 999">
     <#list categories as category>
         <div class="category box">
-            <span>${category.name}</span>
-            <span>${category.sumOfCosts}</span>
+            <span id="category_txt_${category.id}">${category.name}</span>
+            <span id="category_txt_sum_${category.id}">${category.sumOfCosts}</span>
         </div>
     </#list>
 </div>
@@ -18,8 +18,8 @@
             <#assign dashoffset=dashoffset+category.sumOfCosts>
         </#list>
         <g class="circle-chart__info">
-            <text class="circle-chart__percent" x="15" y="14" alignment-baseline="central" text-anchor="middle" font-size="8">${randomPercent}%</text>
-            <text class="circle-chart__subline" x="15" y="18.5" alignment-baseline="central" text-anchor="middle" font-size="2">You spent to ${randomCategoryName}</text>
+            <text id="percent_count" class="circle-chart__percent" x="15" y="14" alignment-baseline="central" text-anchor="middle" font-size="8">${randomPercent}%</text>
+            <text id="percent_title" class="circle-chart__subline" x="16" y="19.5" alignment-baseline="central" text-anchor="middle" font-size="2">${randomCategoryName}</text>
         </g>
     </svg>
 </section>

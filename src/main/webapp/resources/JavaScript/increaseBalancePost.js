@@ -36,11 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
             dataType: "json"
         }).done(function (data) {
             console.log(data);
-            alert("Succesful");
             $('form')[0].reset();
             $.each(data, function (i) {
                 var span = data[i].sum;
-                $('#span'+data[i].id).html(span);
+                $('#span_balance'+data[i].id).html(span);
             });
         }).fail(function (t, tetx, er) {
             console.log(t.responseText);

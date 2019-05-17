@@ -50,4 +50,8 @@ public class BalanceService {
     public List<Balance> getAllByDto(List<BalanceUpdateDto> balanceUpdateDtos){
         return balanceUpdateDtos.stream().map(a->balanceRepository.getOne(a.getId())).collect(Collectors.toList());
     }
+
+    public Balance getById(Long id){
+        return balanceRepository.getOne(id);
+    }
 }

@@ -1,11 +1,19 @@
 package ru.itis.darZam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.darZam.models.User;
+import ru.itis.darZam.models.UserDetailsImpl;
 import ru.itis.darZam.models.VkAuthUser;
 import ru.itis.darZam.services.UserService;
 import ru.itis.darZam.utils.VkAuth;
@@ -24,18 +32,20 @@ public class VkAuthController {
     private PasswordEncoder passwordEncoder;
 
 
+
     @GetMapping("/vkAuth")
     public String get(HttpServletRequest request,
                       @RequestParam(value = "code", required = false) String code) {
         if (request.getParameter("code") == null) {
-            return "redirect:https:/oauth.vk.com/authorize?client_id=6743597&display=page" +
-                    "&redirect_uri=http://localhost:8080/vkAuth&scope=email&response_type=code&v=5.87";
+            return "redirect:" + VkAuth.getOauthUri();
         } else {
             VkAuthUser vkAuthUser = VkAuth.getUserToken(code);
             User user = VkAuth.getUser(vkAuthUser);
             Optional<User> optionalUser = userService.getByEmail(user.getEmail());
             if (optionalUser.isPresent()) {
                 user = optionalUser.get();
+                VkAuth.auth(user);
+                return "redirect:/home";
             }
             HttpSession httpSession = request.getSession();
             httpSession.setAttribute("user", user);
